@@ -1,4 +1,4 @@
-import {json,getCountry,getCurrency,cleanId,ensureSchema,EVENT_WEIGHTS} from "./_lib.js";
+import {json,getCountry,getCurrency,cleanId,ensureSchema,EVENT_WEIGHTS} from "../../lib/personalization.js";
 
 export async function onRequestPost(context){
   const body=await context.request.json().catch(()=>null);
