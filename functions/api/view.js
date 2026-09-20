@@ -13,7 +13,7 @@ export async function onRequestPost(context){
     const bucketInsert=await DB.prepare("INSERT OR IGNORE INTO listing_views(visitor_id,listing_id,view_bucket,created_at) VALUES(?,?,?,?)").bind(visitor_id,listing_id,bucketKey,now).run();
     const uniqueInsert=await DB.prepare("INSERT OR IGNORE INTO listing_unique_views(visitor_id,listing_id,created_at) VALUES(?,?,?)").bind(visitor_id,listing_id,now).run();
     const changes=Number(bucketInsert.meta?.changes||0),uniqueChanges=Number(uniqueInsert.meta?.changes||0);
-    await DB.prepare("INSERT INTO listing_stats(listing_id,view_count,unique_view_count,updated_at) VALUES(?,?,?,?) ON CONFLICT(listing_id) DO UPDATE SET view_count=listing_stats.view_count+excluded.view_count,unique_view_count=listing_stats.unique_view_count+excluded.unique_view_count,updated_at=excluded.updated_at").bind(listing_id,changes,uniqueChanges,now).run();
+    // Count every successful view request. Keep unique_view_count deduplicated per visitor.
     if(changes){
       const category=String(body.category||"").toLowerCase().slice(0,60),brand=String(body.brand||"").slice(0,80);
       const item_price=Number.isFinite(Number(body.item_price))?Number(body.item_price):null;
