@@ -249,22 +249,30 @@ function renderCategoryPage(categorySlug,items) {
 
 async function renderSitemap(env){
   const staticPaths=["/","/categories.html","/post-ad.html","/about.html","/contact.html","/privacy.html","/terms.html"];
-  const categoryPaths=["phones","electronics","vehicles","property","fashion","furniture","services","other"].map(x=>"/category/"+x);
-  let dynamic="";
+  const categoryPaths=["phones","electronics","vehicles","property","fashion","furniture","services","other"];
+  let dynamic="",latestAll="",latestByCategory={};
   if(env?.DB){
+    try{
+      const latest=await env.DB.prepare("SELECT MAX(COALESCE(updated_at,created_at)) AS latest FROM listings WHERE COALESCE(status,'active')='active'").first();
+      latestAll=isoDate(latest?.latest);
+    }catch(_){}
+    try{
+      const rows=await env.DB.prepare("SELECT category,MAX(COALESCE(updated_at,created_at)) AS latest FROM listings WHERE COALESCE(status,'active')='active' GROUP BY category").all();
+      for(const row of rows.results||[])latestByCategory[String(row.category||"").toLowerCase()]=isoDate(row.latest);
+    }catch(_){}
     const queries=[
       "SELECT slug,updated_at,image_url,video_url,video_embed_url,title,description,created_at FROM listings WHERE COALESCE(status,'active')='active' AND slug IS NOT NULL ORDER BY datetime(updated_at) DESC LIMIT 50000",
       "SELECT slug,updated_at,title,description,created_at FROM listings WHERE COALESCE(status,'active')='active' AND slug IS NOT NULL ORDER BY datetime(updated_at) DESC LIMIT 50000"
     ];
     for(const query of queries){
       try{
-        const result=env.DB.prepare(query).all();
+        const result=await env.DB.prepare(query).all();
         dynamic=(result.results||[]).map(item=>{
           const loc="https://buysell.best/item/"+slugSafe(item.slug);
           const last=isoDate(item.updated_at,isoDate(item.created_at));
           const image=validHttpUrl(item.image_url);
           const directVideo=directVideoUrl(item.video_url);
-          const embedVideo=normalizeVideoEmbedUrl(item.video_embed_url || item.video_url);
+          const embedVideo=normalizeVideoEmbedUrl(item.video_embed_url||item.video_url);
           const video=(directVideo||embedVideo)&&image
             ?`<video:video><video:thumbnail_loc>${escapeHtml(image)}</video:thumbnail_loc><video:title>${escapeHtml(textSnippet(item.title,120)||"Untitled video")}</video:title><video:description>${escapeHtml(textSnippet(item.description,500)||"Video for "+clean(item.title,"this listing"))}</video:description>${directVideo?`<video:content_loc>${escapeHtml(directVideo)}</video:content_loc>`:`<video:player_loc>${escapeHtml(embedVideo)}</video:player_loc>`}${last?`<video:publication_date>${escapeHtml(last)}</video:publication_date>`:""}</video:video>`
             :"";
@@ -276,8 +284,9 @@ async function renderSitemap(env){
       }catch(_){}
     }
   }
-  const urls=[...staticPaths,...categoryPaths].map(path=>`<url><loc>https://buysell.best${path}</loc></url>`).join("");
-  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${dynamic}</urlset>`;
+  const urls=staticPaths.map(path=>`<url><loc>https://buysell.best${path}</loc>${path==="/"&&latestAll?`<lastmod>${escapeHtml(latestAll)}</lastmod>`:""}</url>`).join("");
+  const cats=categoryPaths.map(path=>`<url><loc>https://buysell.best/category/${path}</loc>${latestByCategory[path]?`<lastmod>${escapeHtml(latestByCategory[path])}</lastmod>`:""}</url>`).join("");
+  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${dynamic}</urlset>`;
 }
 
 async function serveSeoPage(request,env) {
