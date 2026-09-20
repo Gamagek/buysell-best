@@ -2,8 +2,9 @@ document.addEventListener("DOMContentLoaded",async()=>{
   const form=document.querySelector("#search-form"),qInput=document.querySelector("#search-q"),cat=document.querySelector("#search-category"),sort=document.querySelector("#search-sort"),results=document.querySelector("#listing-results"),count=document.querySelector("#result-count"),note=document.querySelector("#result-note"),empty=document.querySelector("#empty-state"),params=new URLSearchParams(location.search);
   qInput.value=params.get("q")||"";cat.value=params.get("category")||"";sort.value=params.get("sort")||"newest";
   function render(){
+    const siteItems=window.__bsbListings||LISTINGS;
     const q=qInput.value.trim().toLowerCase();
-    let data=LISTINGS.filter(x=>{
+    let data=siteItems.filter(x=>{
       const hay=[x.title,x.description,x.category,x.location,x.brand].join(" ").toLowerCase();
       return (!q||hay.includes(q))&&(!cat.value||x.category===cat.value);
     });
@@ -22,5 +23,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
     const query=p.toString();history.replaceState(null,"","search.html"+(query?"?"+query:""));track("search",null,{query:qInput.value.trim(),category:cat.value||null});render();
   });
   window.__bsbProfile=await getProfile();
+  const siteItems=await getBuySellListings();
+  window.__bsbListings=siteItems;
   render();
 });
