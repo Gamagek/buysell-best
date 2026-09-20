@@ -1,0 +1,2 @@
+CREATE TABLE IF NOT EXISTS listings (id TEXT PRIMARY KEY,slug TEXT NOT NULL UNIQUE,title TEXT NOT NULL,brand TEXT,category TEXT NOT NULL,price REAL NOT NULL,currency TEXT NOT NULL DEFAULT 'USD',condition TEXT,description TEXT,image_url TEXT,status TEXT NOT NULL DEFAULT 'pending',created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE INDEX IF NOT EXISTS idx_listings_status_created ON listings(status,created_at DESC);
