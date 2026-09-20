@@ -58,6 +58,34 @@ function setupCurrentListingsCarousel(items=[]){
   if(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)playing=false;
   paint();decoratePrices(window.__bsbProfile||{currency:"USD"});start();
 }
+function hideNullValues(root=document){
+  const clean=node=>{
+    if(node.nodeType===Node.TEXT_NODE){
+      const cleaned=node.nodeValue.replace(/\b(?:null|undefined)\b/gi,"").replace(/[ \t]{2,}/g," ").trim();
+      if(cleaned!==node.nodeValue)node.nodeValue=cleaned;
+    }else if(node.nodeType===Node.ELEMENT_NODE){
+      for(const attr of ["title","aria-label","alt"]){
+        if(node.hasAttribute(attr)){
+          const original=node.getAttribute(attr)||"";
+          const value=original.replace(/\b(?:null|undefined)\b/gi,"").trim();
+          if(value!==original)node.setAttribute(attr,value);
+        }
+      }
+      node.childNodes.forEach(clean);
+    }
+  };
+  if(root)clean(root);
+}
+function watchForNullValues(){
+  hideNullValues(document.body);
+  const observer=new MutationObserver(mutations=>{
+    for(const mutation of mutations){
+      if(mutation.type==="childList")mutation.addedNodes.forEach(node=>hideNullValues(node));
+      if(mutation.type==="characterData")hideNullValues(mutation.target);
+    }
+  });
+  observer.observe(document.body,{subtree:true,childList:true,characterData:true});
+}
 async function loadCurrentListingsCarousel(){
   try{
     const r=await fetch("/api/listings?limit=12",{cache:"no-store"});
@@ -90,7 +118,18 @@ async function track(event_type,item=null,extra={}){
 }
 function candidatePayload(items=LISTINGS){return items.map(x=>({id:x.id,title:x.title,category:x.category,brand:x.brand||"",price:x.price,currency:x.currency,location:x.location}))}
 function listingCard(item,opts={}){
-  return '<article class="listing-card" data-listing-id="'+escapeHtml(item.id)+'"><a class="listing-open" href="ad.html?slug='+encodeURIComponent(item.slug)+'"><div class="listing-image" aria-hidden="true">'+item.emoji+'</div><div class="listing-body"><div class="listing-tag">'+escapeHtml(item.category)+'</div><span class="listing-title">'+escapeHtml(item.title)+'</span><div class="listing-meta"><span>'+escapeHtml(item.location)+'</span><span>'+escapeHtml(item.condition)+'</span></div><div class="price smart-price" data-price="'+item.price+'" data-currency="'+escapeHtml(item.currency)+'">'+money(item.price,item.currency)+'</div></div></a>'+reactionControls(item)+'<button class="more-like" type="button" data-more-like="'+escapeHtml(item.id)+'" aria-label="Show me more like this item">✨ More like this</button></article>';
+  const title=displayText(item.title,"Listing");
+  const category=displayText(item.category,"Other");
+  const condition=displayText(item.condition,"");
+  const location=displayText(item.location,"");
+  const image=displayText(item.image||item.image_url,"");
+  const media=image
+    ? '<img class="listing-real-image" src="'+escapeHtml(image)+'" alt="" loading="lazy" onerror="this.style.display=\'none\';">'
+    : '<span class="listing-emoji">'+displayText(item.emoji,"🛍️")+'</span>';
+  const meta=(location||condition)
+    ? '<div class="listing-meta">'+(location?'<span>'+escapeHtml(location)+'</span>':"")+(condition?'<span>'+escapeHtml(condition)+'</span>':"")+'</div>'
+    : "";
+  return '<article class="listing-card" data-listing-id="'+escapeHtml(item.id)+'"><a class="listing-open" href="ad.html?slug='+encodeURIComponent(item.slug||"")+'"><div class="listing-image" aria-hidden="true">'+media+'</div><div class="listing-body"><div class="listing-tag">'+escapeHtml(category)+'</div><span class="listing-title">'+escapeHtml(title)+'</span>'+meta+'<div class="price smart-price" data-price="'+Number(item.price||0)+'" data-currency="'+escapeHtml(item.currency||"USD")+'">'+money(Number(item.price||0),item.currency||"USD")+'</div></div></a>'+reactionControls(item)+'<button class="more-like" type="button" data-more-like="'+escapeHtml(item.id)+'" aria-label="Show me more like this item">✨ More like this</button></article>';
 }
 async function getProfile(){
   try{
@@ -193,7 +232,7 @@ function setupReset(){
     location.reload();
   }));
 }
-document.addEventListener("DOMContentLoaded",async()=>{
+document.addEventListener("DOMContentLoaded",async()=>{\n  watchForNullValues();
   document.querySelectorAll("#year").forEach(el=>el.textContent=new Date().getFullYear());
   const home=document.querySelector("#home-listings");
   const personalized=document.querySelector("#personalized-listings");
