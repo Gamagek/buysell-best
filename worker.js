@@ -181,8 +181,56 @@ ${image ? `<meta name="twitter:image" content="${escapeHtml(image)}">` : ""}
 </body></html>`;
 }
 
+const CATEGORY_DESCRIPTIONS={
+  phones:"Browse phones, smartphones and mobile devices listed on BuySell.Best.",
+  electronics:"Browse laptops, cameras, audio gear and other electronics listed on BuySell.Best.",
+  vehicles:"Browse cars, motorbikes, vans and other vehicle listings on BuySell.Best.",
+  property:"Browse property, land, homes, rentals and related listings on BuySell.Best.",
+  fashion:"Browse clothes, shoes, bags and fashion accessories listed on BuySell.Best.",
+  furniture:"Browse home, office and furniture listings on BuySell.Best.",
+  services:"Browse local services and professional help listings on BuySell.Best.",
+  other:"Browse miscellaneous classified listings on BuySell.Best."
+};
+
+function renderCategoryPage(categorySlug,items) {
+  const category=categoryLabel(categorySlug);
+  const description=CATEGORY_DESCRIPTIONS[categorySlug] || `Browse ${category} listings on BuySell.Best.`;
+  const canonical="https://buysell.best/category/"+slugSafe(categorySlug);
+  const list=(items||[]).slice(0,40);
+  const itemList={
+    "@context":"https://schema.org",
+    "@type":"ItemList",
+    name:category+" listings on BuySell.Best",
+    itemListElement:list.map((item,index)=>({
+      "@type":"ListItem",
+      position:index+1,
+      url:"https://buysell.best/item/"+slugSafe(item.slug),
+      name:clean(item.title,"Listing")
+    }))
+  };
+  const breadcrumb={
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    itemListElement:[
+      {"@type":"ListItem",position:1,name:"Home",item:"https://buysell.best/"},
+      {"@type":"ListItem",position:2,name:"Categories",item:"https://buysell.best/categories.html"},
+      {"@type":"ListItem",position:3,name:category,item:canonical}
+    ]
+  };
+  const cards=list.map(item=>{
+    const image=clean(item.image_url);
+    const price=Number(item.price);
+    const currency=clean(item.currency,"USD").toUpperCase();
+    let priceText="";
+    try{priceText=Number.isFinite(price)?new Intl.NumberFormat("en-US",{style:"currency",currency,maximumFractionDigits:0}).format(price):"";}catch(_){priceText=Number.isFinite(price)?currency+" "+price.toLocaleString():"";}
+    return `<article class="listing-card" data-listing-id="${escapeHtml(item.id)}"><a class="listing-open" href="/item/${slugSafe(item.slug)}"><div class="listing-image">${image?`<img class="listing-real-image" src="${escapeHtml(image)}" alt="${escapeHtml(clean(item.title,"Listing"))}" width="720" height="540" loading="lazy">`:"🛍️"}</div><div class="listing-body"><div class="listing-tag">${escapeHtml(category)}</div><span class="listing-title">${escapeHtml(clean(item.title,"Listing"))}</span>${clean(item.condition)?`<div class="listing-meta"><span>${escapeHtml(clean(item.condition))}</span></div>`:""}<div class="price">${escapeHtml(priceText)}</div></div></a></article>`;
+  }).join("");
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escapeHtml(category)} Listings | BuySell.Best</title><meta name="description" content="${escapeHtml(description)}"><meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="${escapeHtml(canonical)}"><meta property="og:type" content="website"><meta property="og:title" content="${escapeHtml(category)} Listings | BuySell.Best"><meta property="og:description" content="${escapeHtml(description)}"><meta property="og:url" content="${escapeHtml(canonical)}"><meta property="og:site_name" content="BuySell.Best"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="${escapeHtml(category)} Listings | BuySell.Best"><meta name="twitter:description" content="${escapeHtml(description)}"><script type="application/ld+json">${jsonLd(itemList)}</script><script type="application/ld+json">${jsonLd(breadcrumb)}</script><link rel="stylesheet" href="/css/style.css"></head><body><header class="site-header"><div class="container nav-wrap"><a class="brand" href="/"><span class="brand-mark">B</span><span>BuySell<span class="brand-dot">.Best</span></span></a><nav class="nav" aria-label="Primary navigation"><a href="/categories.html">Categories</a><a href="/search.html">Browse</a><a href="/deals.html">Global Deals</a><a class="nav-cta" href="/post-ad.html">+ Post Free Ad</a></nav></div></header><main><div class="container listing-detail-wrap"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>›</span><a href="/categories.html">Categories</a><span>›</span><span aria-current="page">${escapeHtml(category)}</span></nav><section class="page-hero"><div><div class="eyebrow">CATEGORY</div><h1>${escapeHtml(category)} Listings</h1><p>${escapeHtml(description)}</p></div></section><section class="section"><div class="section-head"><div><div class="eyebrow">ACTIVE ADS</div><h2>Latest ${escapeHtml(category.toLowerCase())}</h2></div><a class="text-link" href="/post-ad.html">+ Post an ad</a></div>${list.length?`<div class="listing-grid">${cards}</div>`:`<div class="empty-state"><h2>No active ${escapeHtml(category.toLowerCase())} listings yet</h2><p>New moderated listings will appear here when sellers publish them.</p><a class="button" href="/post-ad.html">Post a free ad</a></div>`}</section></div></main><footer class="site-footer"><div class="container footer-bottom"><span>© <span id="year"></span> BuySell.Best</span><span><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></span></div></footer><script src="/js/app.js"></script></body></html>`;
+}
+
 async function renderSitemap(env) {
   const staticPaths=["/","/categories.html","/deals.html","/post-ad.html","/about.html","/contact.html","/privacy.html","/terms.html"];
+  const categoryPaths=["phones","electronics","vehicles","property","fashion","furniture","services","other"].map(x=>"/category/"+x);
   let dynamic="";
   if(env?.DB){
     try{
@@ -196,7 +244,7 @@ async function renderSitemap(env) {
       }).join("");
     }catch(_){}
   }
-  const urls=staticPaths.map(path=>`<url><loc>https://buysell.best${path===" /" ? "" : path}</loc></url>`.replace("https://buysell.best /","https://buysell.best/")).join("");
+  const urls=[...staticPaths,...categoryPaths].map(path=>`<url><loc>https://buysell.best${path}</loc></url>`).join("");
   return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}${dynamic}</urlset>`;
 }
 
@@ -211,6 +259,26 @@ async function serveSeoPage(request,env) {
       headers:{
         "content-type":"application/xml; charset=UTF-8",
         "cache-control":"public, max-age=300, s-maxage=300, stale-while-revalidate=600"
+      }
+    });
+  }
+
+  const categoryMatch=pathname.match(/^\/category\/([^/]+)\/?$/);
+  if(categoryMatch){
+    const categorySlug=decodeURIComponent(categoryMatch[1]).toLowerCase();
+    const allowed=["phones","electronics","vehicles","property","fashion","furniture","services","other"];
+    if(!allowed.includes(categorySlug))return new Response("Not found",{status:404,headers:{"x-robots-tag":"noindex"}});
+    let items=[];
+    if(env?.DB){
+      try{
+        const result=await env.DB.prepare("SELECT id,slug,title,brand,category,price,currency,condition,description,image_url,status FROM listings WHERE category=? AND COALESCE(status,'active')='active' ORDER BY datetime(created_at) DESC LIMIT 40").bind(categorySlug).all();
+        items=result.results||[];
+      }catch(_){}
+    }
+    return new Response(renderCategoryPage(categorySlug,items),{
+      headers:{
+        "content-type":"text/html; charset=UTF-8",
+        "cache-control":"public, max-age=60, s-maxage=300, stale-while-revalidate=600"
       }
     });
   }
