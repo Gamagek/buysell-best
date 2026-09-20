@@ -264,7 +264,7 @@ async function renderSitemap(env){
           const last=isoDate(item.updated_at,isoDate(item.created_at));
           const image=validHttpUrl(item.image_url);
           const directVideo=directVideoUrl(item.video_url);
-          const embedVideo=validHttpUrl(item.video_embed_url);
+          const embedVideo=normalizeVideoEmbedUrl(item.video_embed_url || item.video_url);
           const video=(directVideo||embedVideo)&&image
             ?`<video:video><video:thumbnail_loc>${escapeHtml(image)}</video:thumbnail_loc><video:title>${escapeHtml(textSnippet(item.title,120)||"Untitled video")}</video:title><video:description>${escapeHtml(textSnippet(item.description,500)||"Video for "+clean(item.title,"this listing"))}</video:description>${directVideo?`<video:content_loc>${escapeHtml(directVideo)}</video:content_loc>`:`<video:player_loc>${escapeHtml(embedVideo)}</video:player_loc>`}${last?`<video:publication_date>${escapeHtml(last)}</video:publication_date>`:""}</video:video>`
             :"";
