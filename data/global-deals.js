@@ -43,7 +43,7 @@ function storeSearchLinks(title){
 function renderDealCard(item,index){
   return '<article class="deal-card live-deal-card" data-deal-id="'+escapeHtml(item.id)+'" data-deal-query="'+escapeHtml(item.searchQuery||item.title)+'">'+
     '<div class="deal-media">'+dealImage(item)+'</div>'+
-    '<div class="deal-body"><div class="deal-top"><span class="listing-tag">'+escapeHtml(item.category||"deal")+'</span><span class="deal-merchant">'+escapeHtml(item.merchant||"Marketplace")+'</span></div>'+
+    '<div class="deal-body"><div class="deal-top"><span class="listing-tag">'+escapeHtml(item.categoryLabel||item.category||"deal")+'</span><span class="deal-merchant">'+escapeHtml(item.merchant||"Marketplace")+'</span></div>'+
     '<button class="deal-select" type="button" data-deal-select="'+escapeHtml(item.id)+'" aria-expanded="false"><span class="deal-title">'+escapeHtml(item.title)+'</span><span class="deal-hint">Tap to see related prices ↓</span></button>'+
     '<div class="deal-price smart-price" data-price="'+Number(item.price||0)+'" data-currency="'+escapeHtml(item.currency||"USD")+'">'+dealMoney(item.price||0,item.currency||"USD")+'</div>'+
     (item.shipping?'<div class="deal-signal">'+escapeHtml(item.shipping)+'</div>':"")+
