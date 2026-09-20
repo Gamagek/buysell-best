@@ -1,0 +1,8 @@
+name = "buysell-best"
+pages_build_output_dir = "."
+compatibility_date = "2026-08-20"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "buysell-best-db"
+database_id = "822532f2-1e71-41c5-8d3b-0b678c903e0a"
