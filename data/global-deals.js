@@ -1,117 +1,102 @@
-const GLOBAL_DEALS=[
+const FALLBACK_DEALS = [
   {
-    id:"deal-galaxy-s26-256",
+    id:"fallback-s26",
+    title:"Samsung Galaxy S26 5G 256GB",
     category:"phones",
-    title:"Samsung Galaxy S26 5G 256GB Dual SIM Unlocked",
     merchant:"eBay",
     price:699.99,
     currency:"USD",
-    signal:"28 sold on this listing",
-    signalType:"sold",
-    note:"New · Global unlocked model",
-    url:"https://www.ebay.com/itm/257383323159",
-    amazon:"https://www.amazon.com/s?k=Samsung+Galaxy+S26+256GB+unlocked",
-    aliexpress:"https://www.aliexpress.com/w/wholesale-Samsung-Galaxy-S26-256GB.html",
-    emoji:"📱",
-    checked:"Checked from a current eBay listing"
+    image:"",
+    url:"https://www.ebay.com/sch/i.html?_nkw=Samsung+Galaxy+S26+256GB",
+    note:"Live source will replace this card when the marketplace API is enabled."
   },
   {
-    id:"deal-thinkpad-t14-16-512",
+    id:"fallback-t14",
+    title:"Lenovo ThinkPad T14",
     category:"electronics",
-    title:"Lenovo ThinkPad T14 Gen 1 Ryzen 5 Pro · 16GB · 512GB",
     merchant:"eBay",
-    price:172.79,
+    price:0,
     currency:"USD",
-    signal:"297 sold · 401 watching",
-    signalType:"demand",
-    note:"Used · Grade C · free shipping shown",
-    url:"https://www.ebay.com/itm/187720005607",
-    amazon:"https://www.amazon.com/s?k=Lenovo+ThinkPad+T14",
-    aliexpress:"https://www.aliexpress.com/w/wholesale-Lenovo-ThinkPad-T14.html",
-    emoji:"💻",
-    checked:"Checked from a current eBay listing"
-  },
-  {
-    id:"deal-thinkpad-t14-i5-256",
-    category:"electronics",
-    title:"Lenovo ThinkPad T14 Gen 1 Core i5 · 16GB · 256GB SSD",
-    merchant:"eBay",
-    price:234.99,
-    currency:"USD",
-    signal:"277 sold · 576 watching",
-    signalType:"demand",
-    note:"Used · current listing",
-    url:"https://www.ebay.com/itm/298583199831",
-    amazon:"https://www.amazon.com/s?k=Lenovo+ThinkPad+T14+16GB",
-    aliexpress:"https://www.aliexpress.com/w/wholesale-Lenovo-ThinkPad-T14-16GB.html",
-    emoji:"💻",
-    checked:"Checked from a current eBay listing"
-  },
-  {
-    id:"deal-levis-501",
-    category:"fashion",
-    title:"Levi's 501 Original Shrink-to-Fit Button Fly Jeans",
-    merchant:"eBay",
-    price:59.88,
-    currency:"USD",
-    signal:"1,514 sold · 1,665 watching",
-    signalType:"demand",
-    note:"New with tags · multiple sizes shown",
-    url:"https://www.ebay.com/itm/203605954545",
-    amazon:"https://www.amazon.com/s?k=Levis+501+Original+Jeans",
-    aliexpress:"https://www.aliexpress.com/w/wholesale-Levis-501-jeans.html",
-    emoji:"👖",
-    checked:"Checked from an eBay listing"
-  },
-  {
-    id:"deal-ikea-desk",
-    category:"furniture",
-    title:"IKEA MICKE Desk White",
-    merchant:"eBay",
-    price:194.99,
-    currency:"USD",
-    signal:"2 available · current listing",
-    signalType:"fresh",
-    note:"New · free standard shipping shown on the listing",
-    url:"https://www.ebay.com/itm/188266290615",
-    amazon:"https://www.amazon.com/s?k=IKEA+MICKE+desk",
-    aliexpress:"https://www.aliexpress.com/w/wholesale-IKEA-desk.html",
-    emoji:"🪑",
-    checked:"Checked from an eBay listing"
-  },
-  {
-    id:"deal-hyperx-cloud-iii",
-    category:"electronics",
-    title:"HyperX Cloud III Wired Gaming Headset",
-    merchant:"eBay",
-    price:79.99,
-    currency:"USD",
-    signal:"New · just listed",
-    signalType:"fresh",
-    note:"New · free shipping shown",
-    url:"https://www.ebay.com/itm/128084981357",
-    amazon:"https://www.amazon.com/s?k=HyperX+Cloud+III",
-    aliexpress:"https://www.aliexpress.com/w/wholesale-HyperX-Cloud-III.html",
-    emoji:"🎧",
-    checked:"Checked from a current eBay listing"
+    image:"",
+    url:"https://www.ebay.com/sch/i.html?_nkw=Lenovo+ThinkPad+T14",
+    note:"Live marketplace search."
   }
 ];
 
 function dealMoney(value,currency,locale="en-US"){
   try{return new Intl.NumberFormat(locale,{style:"currency",currency,maximumFractionDigits:0}).format(value)}
-  catch{return currency+" "+Number(value).toLocaleString()}
+  catch{return currency+" "+Number(value||0).toLocaleString()}
 }
-
+function dealImage(item){
+  return item.image
+    ? '<img class="deal-image" src="'+escapeHtml(item.image)+'" alt="'+escapeHtml(item.title)+'" loading="lazy" referrerpolicy="no-referrer">'
+    : '<div class="deal-icon" aria-hidden="true">🛍️</div>';
+}
+function storeSearchLinks(title){
+  const q=encodeURIComponent(title);
+  const slug=encodeURIComponent(title.replace(/\s+/g,"-"));
+  return '<a class="deal-link" href="https://www.amazon.com/s?k='+q+'" target="_blank" rel="noopener noreferrer">Amazon ↗</a>'+
+         '<a class="deal-link" href="https://www.aliexpress.com/w/wholesale-'+slug+'.html" target="_blank" rel="noopener noreferrer">AliExpress ↗</a>';
+}
+function renderDealCard(item,index){
+  return '<article class="deal-card live-deal-card" data-deal-id="'+escapeHtml(item.id)+'" data-deal-query="'+escapeHtml(item.searchQuery||item.title)+'">'+
+    '<div class="deal-media">'+dealImage(item)+'</div>'+
+    '<div class="deal-body"><div class="deal-top"><span class="listing-tag">'+escapeHtml(item.category||"deal")+'</span><span class="deal-merchant">'+escapeHtml(item.merchant||"Marketplace")+'</span></div>'+
+    '<button class="deal-select" type="button" data-deal-select="'+escapeHtml(item.id)+'" aria-expanded="false"><span class="deal-title">'+escapeHtml(item.title)+'</span><span class="deal-hint">Tap to see related prices ↓</span></button>'+
+    '<div class="deal-price smart-price" data-price="'+Number(item.price||0)+'" data-currency="'+escapeHtml(item.currency||"USD")+'">'+dealMoney(item.price||0,item.currency||"USD")+'</div>'+
+    (item.shipping?'<div class="deal-signal">'+escapeHtml(item.shipping)+'</div>':"")+
+    '<p>'+escapeHtml(item.note||"Prices, stock and shipping can change on the source marketplace.")+'</p>'+
+    '<div class="deal-actions"><a class="button" href="'+escapeHtml(item.url||"#")+'" target="_blank" rel="noopener noreferrer">Open source ↗</a>'+storeSearchLinks(item.title)+'</div>'+
+    '<small class="deal-checked">'+escapeHtml(item.sourceLabel||"Marketplace source")+' · price and availability may change.</small>'+
+    '<div class="related-deals" hidden><div class="related-loading">Finding related items with current prices…</div></div>'+
+    '</div></article>';
+}
+function renderRelated(target,data){
+  if(!target)return;
+  if(!data?.configured){
+    target.innerHTML='<div class="related-empty">Live marketplace data is ready, but the marketplace API connection still needs to be enabled in Cloudflare.</div>';
+    return;
+  }
+  const items=(data.items||[]).slice(0,4);
+  if(!items.length){
+    target.innerHTML='<div class="related-empty">No current related items were returned.</div>';
+    return;
+  }
+  target.innerHTML='<div class="related-head"><strong>Related current prices</strong><span>'+escapeHtml(data.source||"Marketplace")+'</span></div>'+
+    '<div class="related-grid">'+items.map(x=>'<a class="related-item" href="'+escapeHtml(x.url)+'" target="_blank" rel="noopener noreferrer">'+
+      (x.image?'<img src="'+escapeHtml(x.image)+'" alt="" loading="lazy" referrerpolicy="no-referrer">':'<span class="related-placeholder">🛍️</span>')+
+      '<span class="related-copy"><b>'+escapeHtml(x.title)+'</b><span class="related-price smart-price" data-price="'+Number(x.price||0)+'" data-currency="'+escapeHtml(x.currency||"USD")+'">'+dealMoney(x.price||0,x.currency||"USD")+'</span><small>'+escapeHtml(x.merchant||"eBay")+'</small></span></a>').join("")+
+    '</div>';
+}
 async function renderGlobalDeals(container){
   if(!container)return;
-  container.innerHTML=GLOBAL_DEALS.map(d=>'<article class="deal-card">'+
-    '<div class="deal-icon" aria-hidden="true">'+d.emoji+'</div>'+
-    '<div class="deal-body"><div class="deal-top"><span class="listing-tag">'+escapeHtml(d.category)+'</span><span class="deal-merchant">'+escapeHtml(d.merchant)+'</span></div>'+
-    '<h3>'+escapeHtml(d.title)+'</h3>'+
-    '<div class="deal-price smart-price" data-price="'+d.price+'" data-currency="'+escapeHtml(d.currency)+'">'+dealMoney(d.price,d.currency)+'</div>'+
-    '<div class="deal-signal">'+escapeHtml(d.signal)+'</div><p>'+escapeHtml(d.note)+'</p>'+
-    '<div class="deal-actions"><a class="button" href="'+escapeHtml(d.url)+'" target="_blank" rel="noopener noreferrer">View listing ↗</a><a class="deal-link" href="'+escapeHtml(d.amazon)+'" target="_blank" rel="noopener noreferrer">Amazon</a><a class="deal-link" href="'+escapeHtml(d.aliexpress)+'" target="_blank" rel="noopener noreferrer">AliExpress</a></div>'+
-    '<small class="deal-checked">'+escapeHtml(d.checked)+'. Prices, stock, shipping and availability can change.</small></div></article>'
-  ).join("");
-  await decoratePrices(window.__bsbProfile||await getProfile());
+  const profile=window.__bsbProfile||await getProfile();
+  const live=await fetch("/api/deals?query=popular&limit=8",{cache:"no-store"}).then(r=>r.json()).catch(()=>null);
+  if(live?.configured){
+    container.innerHTML=(live.items||[]).map(renderDealCard).join("");
+    if(!live.items?.length)container.innerHTML='<div class="empty-state">No live marketplace items were returned right now.</div>';
+  }else{
+    container.innerHTML='<div class="marketplace-status"><strong>Live marketplace deals</strong><span>Real source images and current prices appear here when the marketplace API is enabled.</span></div>'+
+      FALLBACK_DEALS.map(renderDealCard).join("");
+  }
+  container.addEventListener("click",async event=>{
+    const button=event.target.closest("[data-deal-select]");
+    if(!button)return;
+    const card=button.closest("[data-deal-id]");
+    const target=card?.querySelector(".related-deals");
+    if(!card||!target)return;
+    const open=target.hidden;
+    document.querySelectorAll("#global-deals .related-deals").forEach(x=>{if(x!==target)x.hidden=true;});
+    document.querySelectorAll("#global-deals [data-deal-select]").forEach(x=>x.setAttribute("aria-expanded","false"));
+    target.hidden=!open;
+    button.setAttribute("aria-expanded",String(open));
+    if(!open||target.dataset.loaded)return;
+    target.dataset.loaded="1";
+    const q=encodeURIComponent(card.dataset.dealQuery||"");
+    const data=await fetch("/api/deals/related?query="+q+"&exclude="+encodeURIComponent(card.dataset.dealId),{cache:"no-store"}).then(r=>r.json()).catch(()=>null);
+    renderRelated(target,data);
+    await decoratePrices(profile||await getProfile());
+  });
+  await decoratePrices(profile);
 }
+window.renderGlobalDeals=renderGlobalDeals;
