@@ -6,7 +6,9 @@ const handlers = {
   events: () => import("./functions/api/events.js"),
   recommendations: () => import("./functions/api/recommendations.js"),
   currency: () => import("./functions/api/currency.js"),
-  privacyReset: () => import("./functions/api/privacy-reset.js")
+  privacyReset: () => import("./functions/api/privacy-reset.js"),
+  deals: () => import("./functions/api/deals.js"),
+  relatedDeals: () => import("./functions/api/related-deals.js")
 };
 
 function route(pathname) {
@@ -18,37 +20,19 @@ function route(pathname) {
   if (pathname === "/api/recommendations") return ["recommendations", "method"];
   if (pathname === "/api/currency") return ["currency", "onRequestGet"];
   if (pathname === "/api/privacy-reset") return ["privacyReset", "onRequestPost"];
+  if (pathname === "/api/deals") return ["deals", "onRequestGet"];
+  if (pathname === "/api/deals/related") return ["relatedDeals", "onRequestGet"];
   return null;
 }
-
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const match = route(url.pathname);
-
-    if (!match) {
-      return env.ASSETS.fetch(request);
-    }
-
+    if (!match) return env.ASSETS.fetch(request);
     const [name, action] = match;
     const mod = await handlers[name]();
-
-    let fn = mod[action];
-    if (action === "method") {
-      const methodName =
-        request.method === "GET" ? "onRequestGet" :
-        request.method === "POST" ? "onRequestPost" :
-        request.method === "OPTIONS" ? "onRequestOptions" : null;
-      fn = methodName ? mod[methodName] : null;
-    }
-
-    if (!fn) {
-      return new Response("Method Not Allowed", {
-        status: 405,
-        headers: { "allow": "GET, POST, OPTIONS" }
-      });
-    }
-
-    return fn({ request, env, ctx });
+    const fn = mod[action];
+    if (!fn) return new Response("Method Not Allowed",{status:405,headers:{allow:"GET"}});
+    return fn({request,env,ctx});
   }
 };
