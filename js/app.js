@@ -49,33 +49,37 @@ async function decoratePrices(profile){
   const target=profile?.currency||"USD";
   const nodes=[...document.querySelectorAll(".smart-price")];
   if(!nodes.length)return;
-  const usdRateCache={};
-  async function usdTo(currency){
-    if(currency==="USD")return 1;
-    if(usdRateCache[currency])return usdRateCache[currency];
+  const rateCache={};
+  async function rate(from,to){
+    if(from===to)return 1;
+    const key=from+"_"+to;
+    if(rateCache[key])return rateCache[key];
     try{
-      const r=await fetch("/api/currency?from=USD&to="+encodeURIComponent(currency)+"&amount=1",{cache:"force-cache"}),d=await r.json();
-      if(d.ok&&Number(d.rate)>0){usdRateCache[currency]=Number(d.rate);return usdRateCache[currency]}
+      const r=await fetch("/api/currency?from="+encodeURIComponent(from)+"&to="+encodeURIComponent(to)+"&amount=1",{cache:"force-cache"});
+      const d=await r.json();
+      if(d.ok&&Number.isFinite(Number(d.rate))&&Number(d.rate)>0){rateCache[key]=Number(d.rate);return rateCache[key];}
     }catch(_){}
     return null;
   }
-  const rate=await usdTo(target);
+  const locale=target==="LKR"?"en-LK":"en-US";
   for(const node of nodes){
-    const value=Number(node.dataset.price),from=node.dataset.currency;
+    const value=Number(node.dataset.price),from=String(node.dataset.currency||"USD").toUpperCase();
     if(!Number.isFinite(value))continue;
-    let html=money(value,from);
-    if(from==="USD"&&target!=="USD"&&rate) html+='<small class="local-price">≈ '+money(value*rate,target)+'</small>';
-    else if(from!==target&&target==="USD"&&from!=="USD"){
-      const fromRate=await usdTo(from);
-      if(fromRate) html+='<small class="local-price">≈ '+money(value/fromRate,"USD")+'</small>';
-    }else if(from!==target&&rate){
-      const fromRate=await usdTo(from);
-      if(fromRate) html+='<small class="local-price">≈ '+money((value/fromRate)*rate,target)+'</small>';
+    const usdRate=await rate(from,"USD");
+    const localRate=await rate(from,target);
+    const usdValue=from==="USD"?value:(usdRate?value*usdRate:null);
+    const localValue=from===target?value:(localRate?value*localRate:null);
+    const usdText=usdValue!==null?money(usdValue,"USD","en-US"):null;
+    const localText=localValue!==null?money(localValue,target,locale):null;
+    if(from===target){
+      node.innerHTML=localText+(usdText?'<small class="usd-price">≈ '+usdText+'</small>':"");
+    }else if(target==="USD"){
+      node.innerHTML=usdText+(localText?'<small class="local-price">≈ '+localText+'</small>':"");
+    }else{
+      node.innerHTML=localText+(usdText?'<small class="usd-price">≈ '+usdText+'</small>':"");
     }
-    node.innerHTML=html;
   }
 }
-function addFxAttribution(){document.querySelectorAll(".footer-bottom").forEach(el=>{if(el.querySelector("[data-fx-attribution]"))return;const a=document.createElement("a");a.dataset.fxAttribution="1";a.href="https://www.exchangerate-api.com";a.target="_blank";a.rel="noopener noreferrer";a.textContent="Exchange rates by ExchangeRate-API";a.style.marginLeft="12px";a.style.color="inherit";a.style.textDecoration="underline";el.appendChild(a);});}
 async function loadRecommendations(target,items=LISTINGS,seedItem=null){
   if(!target)return;
   try{
@@ -150,6 +154,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
     wireInteractions(document.querySelector("#similar-listings")||document);
   }
   await decoratePrices(profile);
+  if(window.renderGlobalDeals){const deals=document.querySelector("#global-deals");if(deals)await window.renderGlobalDeals(deals);}
   addFxAttribution();
   document.querySelectorAll("[data-personalization-profile]").forEach(el=>el.textContent="Personalized for "+(COUNTRY_NAMES[profile.country]||profile.country)+" · "+(profile.currency||"USD"));
   setupReset();
