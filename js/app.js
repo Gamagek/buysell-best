@@ -147,6 +147,8 @@ document.addEventListener("DOMContentLoaded",async()=>{
     home.innerHTML=LISTINGS.slice(0,8).map(listingCard).join("");
     wireInteractions(home);
   }
+  // Start immediately; do not wait for recommendations, currency lookup, or global deals.
+  setupCurrentListingsCarousel();
   const profile=await getProfile();
   if(personalized){
     await loadRecommendations(personalized,LISTINGS);
