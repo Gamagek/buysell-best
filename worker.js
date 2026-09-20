@@ -78,10 +78,16 @@ async function getActiveListing(env, slug) {
   if (!env?.DB || !slug) return null;
   try {
     return await env.DB.prepare(
-      "SELECT id,slug,title,brand,category,price,currency,condition,description,image_url,status,created_at,updated_at FROM listings WHERE slug=? AND COALESCE(status,'active')='active' LIMIT 1"
+      "SELECT id,slug,title,brand,category,price,currency,condition,description,image_url,status,location,video_url,video_embed_url,video_thumbnail_url,video_duration,video_upload_date,created_at,updated_at FROM listings WHERE slug=? AND COALESCE(status,'active')='active' LIMIT 1"
     ).bind(slug).first();
   } catch (_) {
-    return null;
+    try {
+      return await env.DB.prepare(
+        "SELECT id,slug,title,brand,category,price,currency,condition,description,image_url,status,created_at,updated_at FROM listings WHERE slug=? AND COALESCE(status,'active')='active' LIMIT 1"
+      ).bind(slug).first();
+    } catch (_) {
+      return null;
+    }
   }
 }
 
