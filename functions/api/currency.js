@@ -22,14 +22,13 @@ export async function onRequestGet(context){
   const to=String(url.searchParams.get("to")||getCurrency(getCountry(context.request))).toUpperCase();
   const amount=Number(url.searchParams.get("amount"));
   if(!Number.isFinite(amount)||amount<0||amount>100000000000) return json({error:"Invalid amount."},400);
-  if(from===to) return json({ok:true,from,to,amount,converted:amount,updated:null});
-  if(from!=="USD"){
-    return json({error:"For this version, conversion quotes are supported from USD; store marketplace base prices in USD for best consistency."},422);
-  }
+  if(from===to) return json({ok:true,from,to,amount,converted:amount,rate:1,updated:null});
   try{
     const data=await getRates(context);
-    const rate=Number(data.conversion_rates?.[to]);
-    if(!Number.isFinite(rate)) return json({error:"Currency not supported."},422);
+    const usdToFrom=from==="USD"?1:Number(data.conversion_rates?.[from]);
+    const usdToTo=to==="USD"?1:Number(data.conversion_rates?.[to]);
+    if(!Number.isFinite(usdToFrom)||!Number.isFinite(usdToTo)||usdToFrom<=0||usdToTo<=0) return json({error:"Currency not supported."},422);
+    const rate=usdToTo/usdToFrom;
     return json({ok:true,from,to,amount,rate,converted:amount*rate,updated:data.time_last_update_utc||null,source:"ExchangeRate-API Open Access"});
   }catch(_){
     return json({error:"Live exchange rate unavailable. Showing original price only."},503);
