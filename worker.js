@@ -8,6 +8,7 @@ const handlers = {
   currency: () => import("./functions/api/currency.js"),
   privacyReset: () => import("./functions/api/privacy-reset.js"),
   deals: () => import("./functions/api/deals.js"),
+  listings: () => import("./functions/api/listings.js"),
   relatedDeals: () => import("./functions/api/related-deals.js")
 };
 
@@ -21,6 +22,7 @@ function route(pathname) {
   if (pathname === "/api/currency") return "currency";
   if (pathname === "/api/privacy-reset") return "privacyReset";
   if (pathname === "/api/deals") return "deals";
+  if (pathname === "/api/listings") return "listings";
   if (pathname === "/api/deals/related") return "relatedDeals";
   return null;
 }
