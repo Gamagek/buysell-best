@@ -9,12 +9,13 @@ export async function onRequestPost(context){
   const type=String(body.reaction_type||"").toLowerCase();
 
   if(!visitor_id||!listing_id||!REACTION_TYPES[type]) return json({error:"Invalid reaction."},400);
-  if(!context.env.DB) return json({ok:true,persisted:false,active:false});
+  if(!context.env.DB) return json({ok:true,persisted:false,active:false,mine:{}});
 
   try{
     const DB=context.env.DB;
     await ensureSchema(DB);
     const now=new Date().toISOString();
+
     const existing=await DB.prepare(
       "SELECT 1 FROM listing_reactions WHERE visitor_id=? AND listing_id=? AND reaction_type=?"
     ).bind(visitor_id,listing_id,type).first();
@@ -65,7 +66,14 @@ export async function onRequestPost(context){
       "SELECT view_count,unique_view_count,like_count,interested_count,save_count FROM listing_stats WHERE listing_id=?"
     ).bind(listing_id).first();
 
-    return json({ok:true,persisted:true,active,...stats});
+    const myReactions=await DB.prepare(
+      "SELECT reaction_type FROM listing_reactions WHERE visitor_id=? AND listing_id=?"
+    ).bind(visitor_id,listing_id).all();
+
+    const mine={};
+    for(const row of (myReactions.results||[])) mine[String(row.reaction_type)]=true;
+
+    return json({ok:true,persisted:true,active,mine,...stats});
   }catch(_){
     return json({ok:false,error:"Could not save reaction."},500);
   }
