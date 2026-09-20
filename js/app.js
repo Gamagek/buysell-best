@@ -75,6 +75,7 @@ async function decoratePrices(profile){
     node.innerHTML=html;
   }
 }
+function addFxAttribution(){document.querySelectorAll(".footer-bottom").forEach(el=>{if(el.querySelector("[data-fx-attribution]"))return;const a=document.createElement("a");a.dataset.fxAttribution="1";a.href="https://www.exchangerate-api.com";a.target="_blank";a.rel="noopener noreferrer";a.textContent="Exchange rates by ExchangeRate-API";a.style.marginLeft="12px";a.style.color="inherit";a.style.textDecoration="underline";el.appendChild(a);});}
 async function loadRecommendations(target,items=LISTINGS,seedItem=null){
   if(!target)return;
   try{
@@ -149,6 +150,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
     wireInteractions(document.querySelector("#similar-listings")||document);
   }
   await decoratePrices(profile);
+  addFxAttribution();
   document.querySelectorAll("[data-personalization-profile]").forEach(el=>el.textContent="Personalized for "+(COUNTRY_NAMES[profile.country]||profile.country)+" · "+(profile.currency||"USD"));
   setupReset();
 });
