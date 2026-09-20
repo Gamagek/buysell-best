@@ -56,7 +56,10 @@ function setupCurrentListingsCarousel(items=[]){
   viewport?.addEventListener("pointercancel",()=>{dragging=false;paint();start()});
   root.addEventListener("mouseenter",stop);root.addEventListener("mouseleave",start);root.addEventListener("focusin",stop);root.addEventListener("focusout",e=>{if(!root.contains(e.relatedTarget))start()});
   if(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)playing=false;
-  paint();\n  requestAnimationFrame(paint);\n  decoratePrices(window.__bsbProfile||{currency:"USD"});\n  start();
+  paint();
+  requestAnimationFrame(paint);
+  decoratePrices(window.__bsbProfile||{currency:"USD"});
+  start();
 }
 function hideNullValues(root=document){
   const clean=node=>{
@@ -285,7 +288,8 @@ function setupReset(){
     location.reload();
   }));
 }
-document.addEventListener("DOMContentLoaded",async()=>{\n  watchForNullValues();
+document.addEventListener("DOMContentLoaded",async()=>{
+  watchForNullValues();
   document.querySelectorAll("#year").forEach(el=>el.textContent=new Date().getFullYear());
   const home=document.querySelector("#home-listings");
   const personalized=document.querySelector("#personalized-listings");
