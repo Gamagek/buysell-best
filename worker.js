@@ -220,22 +220,29 @@ async function renderSitemap(env){
   const categoryPaths=["phones","electronics","vehicles","property","fashion","furniture","services","other"].map(x=>"/category/"+x);
   let dynamic="";
   if(env?.DB){
-    try{
-      const result=env.DB.prepare("SELECT slug,updated_at,image_url,video_url,video_embed_url,title,description,created_at FROM listings WHERE COALESCE(status,'active')='active' AND slug IS NOT NULL ORDER BY datetime(updated_at) DESC LIMIT 50000").all();
-      dynamic=result.results.map(item=>{
-        const loc="https://buysell.best/item/"+slugSafe(item.slug);
-        const last=isoDate(item.updated_at,isoDate(item.created_at));
-        const image=validHttpUrl(item.image_url);
-        const directVideo=directVideoUrl(item.video_url);
-        const embedVideo=validHttpUrl(item.video_embed_url);
-        const video=(directVideo||embedVideo)&&image
-          ?`<video:video><video:thumbnail_loc>${escapeHtml(image)}</video:thumbnail_loc><video:title>${escapeHtml(textSnippet(item.title,120)||"Untitled video")}</video:title><video:description>${escapeHtml(textSnippet(item.description,500)||"Video for "+clean(item.title,"this listing"))}</video:description>${directVideo?`<video:content_loc>${escapeHtml(directVideo)}</video:content_loc>`:`<video:player_loc>${escapeHtml(embedVideo)}</video:player_loc>`}${last?`<video:publication_date>${escapeHtml(last)}</video:publication_date>`:""}</video:video>`
-          :"";
-        let imageTag="";
-        if(image){try{const u=new URL(image);if(u.hostname==="buysell.best"||u.hostname.endsWith(".buysell.best"))imageTag=`<image:image><image:loc>${escapeHtml(image)}</image:loc></image:image>`;}catch(_){}}
-        return `<url><loc>${escapeHtml(loc)}</loc>${last?`<lastmod>${escapeHtml(last)}</lastmod>`:""}${imageTag}${video}</url>`;
-      }).join("");
-    }catch(_){ dynamic=""; }
+    const queries=[
+      "SELECT slug,updated_at,image_url,video_url,video_embed_url,title,description,created_at FROM listings WHERE COALESCE(status,'active')='active' AND slug IS NOT NULL ORDER BY datetime(updated_at) DESC LIMIT 50000",
+      "SELECT slug,updated_at,title,description,created_at FROM listings WHERE COALESCE(status,'active')='active' AND slug IS NOT NULL ORDER BY datetime(updated_at) DESC LIMIT 50000"
+    ];
+    for(const query of queries){
+      try{
+        const result=env.DB.prepare(query).all();
+        dynamic=(result.results||[]).map(item=>{
+          const loc="https://buysell.best/item/"+slugSafe(item.slug);
+          const last=isoDate(item.updated_at,isoDate(item.created_at));
+          const image=validHttpUrl(item.image_url);
+          const directVideo=directVideoUrl(item.video_url);
+          const embedVideo=validHttpUrl(item.video_embed_url);
+          const video=(directVideo||embedVideo)&&image
+            ?`<video:video><video:thumbnail_loc>${escapeHtml(image)}</video:thumbnail_loc><video:title>${escapeHtml(textSnippet(item.title,120)||"Untitled video")}</video:title><video:description>${escapeHtml(textSnippet(item.description,500)||"Video for "+clean(item.title,"this listing"))}</video:description>${directVideo?`<video:content_loc>${escapeHtml(directVideo)}</video:content_loc>`:`<video:player_loc>${escapeHtml(embedVideo)}</video:player_loc>`}${last?`<video:publication_date>${escapeHtml(last)}</video:publication_date>`:""}</video:video>`
+            :"";
+          let imageTag="";
+          if(image){try{const u=new URL(image);if(u.hostname==="buysell.best"||u.hostname.endsWith(".buysell.best"))imageTag=`<image:image><image:loc>${escapeHtml(image)}</image:loc></image:image>`;}catch(_){}}
+          return `<url><loc>${escapeHtml(loc)}</loc>${last?`<lastmod>${escapeHtml(last)}</lastmod>`:""}${imageTag}${video}</url>`;
+        }).join("");
+        break;
+      }catch(_){}
+    }
   }
   const urls=[...staticPaths,...categoryPaths].map(path=>`<url><loc>https://buysell.best${path}</loc></url>`).join("");
   return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${dynamic}</urlset>`;
