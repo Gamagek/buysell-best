@@ -1,11 +1,12 @@
 let ebayTokenCache={token:"",expiresAt:0};
+let tempCatalogCache={items:[],expiresAt:0};
 
-function json(data,status=200){
+function json(data,status=200,cache="no-store"){
   return new Response(JSON.stringify(data),{
     status,
     headers:{
       "content-type":"application/json; charset=utf-8",
-      "cache-control":"no-store"
+      "cache-control":cache
     }
   });
 }
@@ -74,26 +75,128 @@ export async function searchEbay(env,query,limit,exclude="",country="US"){
   const items=(data.itemSummaries||[]).map(mapItem).filter(x=>x.id&&x.title&&x.url);
   return {configured:true,items:items.filter(x=>x.id!==exclude).slice(0,limit),source:"eBay Browse API"};
 }
+
+const TEMP_CATEGORY_LABELS={
+  beauty:"Beauty",fragrances:"Fragrances",furniture:"Furniture",groceries:"Groceries",
+  "home-decoration":"Home & Decoration","kitchen-accessories":"Kitchen Accessories",
+  laptops:"Laptops","mens-shirts":"Men's Shirts","mens-shoes":"Men's Shoes",
+  "mens-watches":"Men's Watches","mobile-accessories":"Mobile Accessories",
+  motorcycle:"Motorcycles","skin-care":"Skin Care",smartphones:"Smartphones",
+  "sports-accessories":"Sports Accessories",sunglasses:"Sunglasses",tablets:"Tablets",
+  tops:"Tops",vehicle:"Vehicles","womens-bags":"Women's Bags",
+  "womens-dresses":"Women's Dresses","womens-jewellery":"Women's Jewellery",
+  "womens-shoes":"Women's Shoes","womens-watches":"Women's Watches"
+};
+
+function mapTemporaryProduct(x,categoryOverride){
+  const category=String(categoryOverride||x?.category||"other");
+  const price=Number(x?.price);
+  const discount=Number(x?.discountPercentage||0);
+  const rating=Number(x?.rating||0);
+  const hotScore=(rating*20)+(discount*0.5);
+  return {
+    id:"temp-"+String(x?.id||""),
+    title:String(x?.title||"Product").slice(0,220),
+    category,
+    categoryLabel:TEMP_CATEGORY_LABELS[category]||category.replace(/-/g," "),
+    merchant:"Catalog preview",
+    price:Number.isFinite(price)?price:0,
+    currency:"USD",
+    image:String(x?.images?.[0]||x?.thumbnail||""),
+    url:"https://www.google.com/search?tbm=shop&q="+encodeURIComponent(String(x?.title||"")),
+    note:"Temporary product-catalog preview. Check the seller for current price, stock, shipping and authenticity.",
+    shipping:String(x?.shippingInformation||""),
+    sourceLabel:"Temporary catalog data",
+    rating:Number.isFinite(rating)?rating:0,
+    discount:Number.isFinite(discount)?discount:0,
+    hotScore
+  };
+}
+
+async function getTemporaryCatalog(){
+  const now=Date.now();
+  if(tempCatalogCache.items.length&&tempCatalogCache.expiresAt>now)return tempCatalogCache.items;
+  const r=await fetch("https://dummyjson.com/products?limit=0",{headers:{Accept:"application/json"}});
+  if(!r.ok)throw new Error("Temporary catalog source failed");
+  const data=await r.json();
+  const items=(data.products||[]).map(x=>mapTemporaryProduct(x));
+  tempCatalogCache={items,expiresAt:now+30*60*1000};
+  return items;
+}
+
+function lowestPerCategory(items){
+  const byCategory=new Map();
+  for(const item of items){
+    const arr=byCategory.get(item.category)||[];
+    arr.push(item);
+    byCategory.set(item.category,arr);
+  }
+  const result=[];
+  for(const [category,arr] of byCategory){
+    arr.sort((a,b)=>a.price-b.price || b.hotScore-a.hotScore);
+    result.push(...arr.slice(0,2));
+  }
+  return result.sort((a,b)=>b.hotScore-a.hotScore || a.price-b.price);
+}
+
+export async function searchTemporary(query,limit=8,exclude=""){
+  const clean=cleanQuery(query,"popular");
+  const all=await getTemporaryCatalog();
+  let items;
+  if(clean==="popular"){
+    items=lowestPerCategory(all);
+  }else{
+    const q=clean.toLowerCase();
+    items=all.filter(x=>(x.title+" "+x.category+" "+x.categoryLabel).toLowerCase().includes(q))
+      .sort((a,b)=>a.price-b.price || b.hotScore-a.hotScore);
+  }
+  items=items.filter(x=>x.id!==exclude).slice(0,limit).map(x=>({...x,sourceLabel:"Temporary catalog preview"}));
+  return {
+    configured:false,
+    temporary:true,
+    items,
+    source:"Temporary catalog preview",
+    message:"Sample product data is used until approved live marketplace feeds are connected."
+  };
+}
+
 const POPULAR_QUERIES=["smartphone","laptop","wireless headphones","gaming monitor","mirrorless camera","smart watch","tablet","office chair"];
+
 export async function onRequestGet(context){
   const u=new URL(context.request.url);
   const query=cleanQuery(u.searchParams.get("query"),"popular");
   const limit=limitValue(u.searchParams.get("limit"));
   const country=String(context.request.cf?.country||context.request.headers.get("CF-IPCountry")||"US").toUpperCase().slice(0,2);
-  if(query==="popular"){
-    const buckets=POPULAR_QUERIES.slice(0,4);
-    const results=await Promise.all(buckets.map(q=>searchEbay(context.env,q,Math.max(2,Math.ceil(limit/buckets.length)),"",country).catch(()=>({configured:false,items:[]}))));
-    const configured=results.some(x=>x.configured);
-    if(!configured)return json({ok:false,configured:false,items:[],message:"Set EBAY_CLIENT_ID and EBAY_CLIENT_SECRET in Cloudflare Worker secrets to enable live marketplace data."});
-    const items=[...new Map(results.flatMap(x=>x.items).map(x=>[x.id,x])).values()].slice(0,limit);
-    return json({ok:true,configured:true,items,source:"eBay Browse API"});
-  }
+
   try{
-    return json({ok:true,...await searchEbay(context.env,query,limit,"",country)});
+    if(query==="popular"){
+      const buckets=POPULAR_QUERIES.slice(0,4);
+      const results=await Promise.all(buckets.map(q=>searchEbay(context.env,q,Math.max(2,Math.ceil(limit/buckets.length)),"",country).catch(()=>({configured:false,items:[]}))));
+      const ebayItems=[...new Map(results.flatMap(x=>x.items||[]).map(x=>[x.id,x])).values()].slice(0,limit);
+      if(ebayItems.length){
+        return json({ok:true,configured:true,temporary:false,items:ebayItems,source:"eBay Browse API"},"200","public, max-age=120");
+      }
+      const temp=await searchTemporary("popular",Math.max(8,limit));
+      return json({ok:true,...temp},"200","public, max-age=900");
+    }
+
+    const ebay=await searchEbay(context.env,query,limit,"",country).catch(()=>({configured:false,items:[]}));
+    if(ebay.items?.length){
+      return json({ok:true,...ebay,temporary:false},"200","public, max-age=120");
+    }
+    const temp=await searchTemporary(query,limit);
+    return json({ok:true,...temp},"200","public, max-age=900");
   }catch(error){
-    return json({ok:false,configured:Boolean(context.env.EBAY_CLIENT_ID&&context.env.EBAY_CLIENT_SECRET),items:[],message:String(error?.message||"Marketplace search failed.")},502);
+    return json({
+      ok:false,
+      configured:Boolean(context.env.EBAY_CLIENT_ID&&context.env.EBAY_CLIENT_SECRET),
+      temporary:false,
+      items:[],
+      message:String(error?.message||"Marketplace search failed.")
+    },502);
   }
 }
+
 export async function onRequestOptions(){
   return new Response(null,{status:204,headers:{"access-control-allow-methods":"GET,OPTIONS"}});
 }
