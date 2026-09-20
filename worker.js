@@ -12,27 +12,61 @@ const handlers = {
 };
 
 function route(pathname) {
-  if (pathname === "/api/health") return ["health", "onRequestGet"];
-  if (pathname === "/api/view") return ["view", "method"];
-  if (pathname === "/api/stats") return ["stats", "onRequestGet"];
-  if (pathname === "/api/reaction") return ["reaction", "method"];
-  if (pathname === "/api/events") return ["events", "method"];
-  if (pathname === "/api/recommendations") return ["recommendations", "method"];
-  if (pathname === "/api/currency") return ["currency", "onRequestGet"];
-  if (pathname === "/api/privacy-reset") return ["privacyReset", "onRequestPost"];
-  if (pathname === "/api/deals") return ["deals", "onRequestGet"];
-  if (pathname === "/api/deals/related") return ["relatedDeals", "onRequestGet"];
+  if (pathname === "/api/health") return "health";
+  if (pathname === "/api/view") return "view";
+  if (pathname === "/api/stats") return "stats";
+  if (pathname === "/api/reaction") return "reaction";
+  if (pathname === "/api/events") return "events";
+  if (pathname === "/api/recommendations") return "recommendations";
+  if (pathname === "/api/currency") return "currency";
+  if (pathname === "/api/privacy-reset") return "privacyReset";
+  if (pathname === "/api/deals") return "deals";
+  if (pathname === "/api/deals/related") return "relatedDeals";
   return null;
 }
+
+function methodName(request) {
+  const method = request.method.toUpperCase();
+  if (method === "GET") return "onRequestGet";
+  if (method === "POST") return "onRequestPost";
+  if (method === "OPTIONS") return "onRequestOptions";
+  return null;
+}
+
+async function serveAsset(request, env) {
+  const response = await env.ASSETS.fetch(request);
+  const path = new URL(request.url).pathname;
+  if (path.endsWith(".js") || path.endsWith(".html")) {
+    const headers = new Headers(response.headers);
+    headers.set("cache-control", "no-cache, no-store, must-revalidate");
+    headers.set("pragma", "no-cache");
+    headers.set("expires", "0");
+    return new Response(response.body, {
+      status: response.status,
+      statusText: response.statusText,
+      headers
+    });
+  }
+  return response;
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    const match = route(url.pathname);
-    if (!match) return env.ASSETS.fetch(request);
-    const [name, action] = match;
+    const name = route(url.pathname);
+    if (!name) return serveAsset(request, env);
+
     const mod = await handlers[name]();
-    const fn = mod[action];
-    if (!fn) return new Response("Method Not Allowed",{status:405,headers:{allow:"GET"}});
-    return fn({request,env,ctx});
+    const action = methodName(request);
+    const fn = action ? mod[action] : null;
+
+    if (!fn) {
+      return new Response("Method Not Allowed", {
+        status: 405,
+        headers: { allow: "GET, POST, OPTIONS" }
+      });
+    }
+
+    return fn({request, env, ctx});
   }
 };
