@@ -205,7 +205,7 @@ async function react(item,type,button){
     const r=await fetch("/api/reaction",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({visitor_id:visitorId(),listing_id:item.id,reaction_type:type,category:item.category,brand:item.brand||""})});
     const d=await r.json();
     if(d.ok){
-      const stats={...d,mine:{[type]:!!d.active}};
+      const stats={...d,mine:d.mine||{[type]:!!d.active}};
       document.querySelectorAll("[data-listing-id]").forEach(card=>{if(card.dataset.listingId===item.id)renderStats(card,stats);});
     }
   }catch(_){}
