@@ -1,0 +1,9 @@
+functions/
+db/
+lib/
+wrangler.toml
+worker.js
+.assetsignore
+.github/
+.git/
+README.md
