@@ -12,12 +12,5 @@ CREATE INDEX IF NOT EXISTS idx_interest_scores_visitor_score ON interest_scores(
 CREATE INDEX IF NOT EXISTS idx_item_affinity_visitor_score ON item_affinity(visitor_id,score DESC);
 CREATE INDEX IF NOT EXISTS idx_listing_views_listing_time ON listing_views(listing_id,created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_listing_reactions_listing ON listing_reactions(listing_id,reaction_type);
-CREATE TABLE IF NOT EXISTS listings (id TEXT PRIMARY KEY,slug TEXT NOT NULL UNIQUE,title TEXT NOT NULL,brand TEXT,category TEXT NOT NULL,price REAL NOT NULL,currency TEXT NOT NULL DEFAULT 'USD',condition TEXT,description TEXT,image_url TEXT,status TEXT NOT NULL DEFAULT 'pending',created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS listings (id TEXT PRIMARY KEY,slug TEXT NOT NULL UNIQUE,title TEXT NOT NULL,brand TEXT,category TEXT NOT NULL,price REAL NOT NULL,currency TEXT NOT NULL DEFAULT 'USD',condition TEXT,description TEXT,image_url TEXT,status TEXT NOT NULL DEFAULT 'pending',location TEXT,video_url TEXT,video_embed_url TEXT,video_thumbnail_url TEXT,video_duration TEXT,video_upload_date TEXT,created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP);
 CREATE INDEX IF NOT EXISTS idx_listings_status_created ON listings(status,created_at DESC);
-
-ALTER TABLE listings ADD COLUMN location TEXT;
-ALTER TABLE listings ADD COLUMN video_url TEXT;
-ALTER TABLE listings ADD COLUMN video_embed_url TEXT;
-ALTER TABLE listings ADD COLUMN video_thumbnail_url TEXT;
-ALTER TABLE listings ADD COLUMN video_duration TEXT;
-ALTER TABLE listings ADD COLUMN video_upload_date TEXT;
