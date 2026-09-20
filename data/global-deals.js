@@ -48,6 +48,38 @@ const GLOBAL_DEALS=[
     checked:"Checked from a current eBay listing"
   },
   {
+    id:"deal-levis-501",
+    category:"fashion",
+    title:"Levi's 501 Original Shrink-to-Fit Button Fly Jeans",
+    merchant:"eBay",
+    price:59.88,
+    currency:"USD",
+    signal:"1,514 sold · 1,665 watching",
+    signalType:"demand",
+    note:"New with tags · multiple sizes shown",
+    url:"https://www.ebay.com/itm/203605954545",
+    amazon:"https://www.amazon.com/s?k=Levis+501+Original+Jeans",
+    aliexpress:"https://www.aliexpress.com/w/wholesale-Levis-501-jeans.html",
+    emoji:"👖",
+    checked:"Checked from an eBay listing"
+  },
+  {
+    id:"deal-ikea-desk",
+    category:"furniture",
+    title:"IKEA MICKE Desk White",
+    merchant:"eBay",
+    price:194.99,
+    currency:"USD",
+    signal:"2 available · current listing",
+    signalType:"fresh",
+    note:"New · free standard shipping shown on the listing",
+    url:"https://www.ebay.com/itm/188266290615",
+    amazon:"https://www.amazon.com/s?k=IKEA+MICKE+desk",
+    aliexpress:"https://www.aliexpress.com/w/wholesale-IKEA-desk.html",
+    emoji:"🪑",
+    checked:"Checked from an eBay listing"
+  },
+  {
     id:"deal-hyperx-cloud-iii",
     category:"electronics",
     title:"HyperX Cloud III Wired Gaming Headset",
