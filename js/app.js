@@ -36,8 +36,7 @@ async function track(event_type,item=null,extra={}){
 }
 function candidatePayload(items=LISTINGS){return items.map(x=>({id:x.id,title:x.title,category:x.category,brand:x.brand||"",price:x.price,currency:x.currency,location:x.location}))}
 function listingCard(item,opts={}){
-  const seed=opts.seedId||"";
-  return '<article class="listing-card" data-listing-id="'+escapeHtml(item.id)+'"><a class="listing-open" href="ad.html?slug='+encodeURIComponent(item.slug)+'" data-track-view="'+escapeHtml(item.id)+'"><div class="listing-image" aria-hidden="true">'+item.emoji+'</div><div class="listing-body"><div class="listing-tag">'+escapeHtml(item.category)+'</div><span class="listing-title">'+escapeHtml(item.title)+'</span><div class="listing-meta"><span>'+escapeHtml(item.location)+'</span><span>'+escapeHtml(item.condition)+'</span></div><div class="price smart-price" data-price="'+item.price+'" data-currency="'+escapeHtml(item.currency)+'">'+money(item.price,item.currency)+'</div></div></a><button class="more-like" type="button" data-more-like="'+escapeHtml(item.id)+'" aria-label="Show me more like this item">✨ More like this</button></article>';
+  return '<article class="listing-card" data-listing-id="'+escapeHtml(item.id)+'"><a class="listing-open" href="ad.html?slug='+encodeURIComponent(item.slug)+'"><div class="listing-image" aria-hidden="true">'+item.emoji+'</div><div class="listing-body"><div class="listing-tag">'+escapeHtml(item.category)+'</div><span class="listing-title">'+escapeHtml(item.title)+'</span><div class="listing-meta"><span>'+escapeHtml(item.location)+'</span><span>'+escapeHtml(item.condition)+'</span></div><div class="price smart-price" data-price="'+item.price+'" data-currency="'+escapeHtml(item.currency)+'">'+money(item.price,item.currency)+'</div></div></a>'+reactionControls(item)+'<button class="more-like" type="button" data-more-like="'+escapeHtml(item.id)+'" aria-label="Show me more like this item">✨ More like this</button></article>';
 }
 async function getProfile(){
   try{
@@ -113,10 +112,24 @@ function wireInteractions(root=document){
       btn.disabled=false;btn.textContent="✓ Showing more like this";
     });
   });
-  root.querySelectorAll("[data-track-view]").forEach(link=>{
-    if(link.dataset.bound==="1")return; link.dataset.bound="1";
-    link.addEventListener("click",()=>{const item=LISTINGS.find(x=>x.id===link.dataset.trackView);if(item)track("view",item)});
+  root.querySelectorAll("[data-reaction]").forEach(btn=>{
+    if(btn.dataset.bound==="1")return; btn.dataset.bound="1";
+    btn.addEventListener("click",async e=>{
+      e.preventDefault();e.stopPropagation();
+      const card=btn.closest("[data-listing-id]");
+      const item=LISTINGS.find(x=>x.id===card?.dataset.listingId); if(!item)return;
+      await react(item,btn.dataset.reaction,btn);
+    });
   });
+  root.querySelectorAll(".listing-open").forEach(link=>{
+    if(link.dataset.bound==="1")return; link.dataset.bound="1";
+    link.addEventListener("click",()=>{
+      const card=link.closest("[data-listing-id]");
+      const item=LISTINGS.find(x=>x.id===card?.dataset.listingId);
+      if(item)sendView(item);
+    });
+  });
+  hydrateStats(root);
 }
 function setupReset(){
   document.querySelectorAll("[data-reset-personalization]").forEach(btn=>btn.addEventListener("click",async()=>{
@@ -143,11 +156,12 @@ document.addEventListener("DOMContentLoaded",async()=>{
   if(detail){
     const slug=new URLSearchParams(location.search).get("slug");
     const item=LISTINGS.find(x=>x.slug===slug)||LISTINGS[0];
-    track("view",item);
+    sendView(item);
     document.title=item.title+" for Sale in "+item.location+" | BuySell.Best";
     const meta=document.querySelector('meta[name="description"]');
     if(meta)meta.setAttribute("content",item.title+" for sale in "+item.location+". "+item.condition+" listing on BuySell.Best.");
-    detail.innerHTML='<div class="detail-grid"><div><div class="detail-photo" aria-label="'+escapeHtml(item.title)+'">'+item.emoji+'</div></div><div class="detail-card"><div class="eyebrow">'+escapeHtml(item.category)+' · '+escapeHtml(item.location)+'</div><h1>'+escapeHtml(item.title)+'</h1><div class="detail-price smart-price" data-price="'+item.price+'" data-currency="'+escapeHtml(item.currency)+'">'+money(item.price,item.currency)+'</div><div class="detail-pills"><span class="pill">'+escapeHtml(item.condition)+'</span><span class="pill">'+escapeHtml(item.location)+'</span><span class="pill">Personalization enabled</span></div><p class="detail-muted">'+escapeHtml(item.description)+'</p><div class="detail-actions"><button class="button" type="button" id="detail-more-like">✨ Show me more like this</button> <a class="button button-secondary" href="contact.html">Report / Contact</a></div></div></div>';
+    detail.innerHTML='<div class="detail-grid"><div><div class="detail-photo" aria-label="'+escapeHtml(item.title)+'">'+item.emoji+'</div></div><div class="detail-card" data-listing-id="'+escapeHtml(item.id)+'"><div class="eyebrow">'+escapeHtml(item.category)+' · '+escapeHtml(item.location)+'</div><h1>'+escapeHtml(item.title)+'</h1><div class="detail-price smart-price" data-price="'+item.price+'" data-currency="'+escapeHtml(item.currency)+'">'+money(item.price,item.currency)+'</div><div class="detail-pills"><span class="pill">'+escapeHtml(item.condition)+'</span><span class="pill">'+escapeHtml(item.location)+'</span><span class="pill">Personalization enabled</span></div><p class="detail-muted">'+escapeHtml(item.description)+'</p>'+reactionControls(item)+'<div class="detail-actions"><button class="button" type="button" id="detail-more-like">✨ Show me more like this</button> <a class="button button-secondary" href="contact.html">Report / Contact</a></div></div></div>';
+    wireInteractions(detail);
     const more=document.querySelector("#detail-more-like");
     more?.addEventListener("click",async()=>{await track("show_more",item);const s=document.querySelector("#similar-listings");if(s)await loadRecommendations(s,LISTINGS,item);more.textContent="✓ Showing more like this";more.disabled=true;});
     await loadRecommendations(document.querySelector("#similar-listings"),LISTINGS,item);
@@ -159,3 +173,41 @@ document.addEventListener("DOMContentLoaded",async()=>{
   document.querySelectorAll("[data-personalization-profile]").forEach(el=>el.textContent="Personalized for "+(COUNTRY_NAMES[profile.country]||profile.country)+" · "+(profile.currency||"USD"));
   setupReset();
 });
+
+async function sendView(item){
+  try{
+    await fetch("/api/view",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({visitor_id:visitorId(),listing_id:item.id,category:item.category,brand:item.brand||"",item_price:item.price,item_currency:item.currency,item_location:item.location}),keepalive:true});
+  }catch(_){}
+}
+function reactionControls(item){
+  return '<div class="reaction-row"><button type="button" data-reaction="like" aria-pressed="false">❤️ Like</button><button type="button" data-reaction="interested" aria-pressed="false">⭐ Interested</button><button type="button" data-reaction="save" aria-pressed="false">🔖 Save</button></div><div class="listing-stats" aria-label="Listing activity"><span>👁 0</span><span>❤️ 0</span><span>⭐ 0</span><span>🔖 0</span></div>';
+}
+async function hydrateStats(root=document){
+  const ids=[...new Set([...root.querySelectorAll("[data-listing-id]")].map(x=>x.dataset.listingId).filter(Boolean))];
+  if(!ids.length)return;
+  try{
+    const r=await fetch("/api/stats?ids="+encodeURIComponent(ids.join(","))+"&visitor_id="+encodeURIComponent(visitorId()),{cache:"no-store"});
+    const d=await r.json(); if(!d.ok)return;
+    root.querySelectorAll("[data-listing-id]").forEach(card=>{const stats=d.stats?.[card.dataset.listingId];if(stats)renderStats(card,stats);});
+  }catch(_){}
+}
+function renderStats(card,stats){
+  const bar=card?.querySelector(".listing-stats"); if(!bar)return;
+  bar.innerHTML='<span>👁 '+Number(stats.view_count||0).toLocaleString()+'</span><span>❤️ '+Number(stats.like_count||0).toLocaleString()+'</span><span>⭐ '+Number(stats.interested_count||0).toLocaleString()+'</span><span>🔖 '+Number(stats.save_count||0).toLocaleString()+'</span>';
+  card.querySelectorAll("[data-reaction]").forEach(btn=>{
+    const active=!!stats.mine?.[btn.dataset.reaction];
+    btn.classList.toggle("is-active",active);btn.setAttribute("aria-pressed",String(active));
+  });
+}
+async function react(item,type,button){
+  if(button)button.disabled=true;
+  try{
+    const r=await fetch("/api/reaction",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({visitor_id:visitorId(),listing_id:item.id,reaction_type:type,category:item.category,brand:item.brand||""})});
+    const d=await r.json();
+    if(d.ok){
+      const stats={...d,mine:{[type]:!!d.active}};
+      document.querySelectorAll("[data-listing-id]").forEach(card=>{if(card.dataset.listingId===item.id)renderStats(card,stats);});
+    }
+  }catch(_){}
+  if(button)button.disabled=false;
+}
