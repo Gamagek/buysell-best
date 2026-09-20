@@ -91,6 +91,12 @@ async function getActiveListing(env, slug) {
   }
 }
 
+function validHttpUrl(value){const s=clean(value);if(!s)return "";try{const u=new URL(s);return /^https?:$/i.test(u.protocol)?u.toString():"";}catch(_){return "";}}
+
+function isoDate(value,fallback=""){const s=clean(value);if(!s)return fallback;const d=new Date(s.includes("T")?s:s.replace(" ","T")+"Z");return Number.isNaN(d.getTime())?fallback:d.toISOString();}
+
+function directVideoUrl(value){const u=validHttpUrl(value);return /\.(mp4|webm|m4v|ogv|mov)(?:$|[?#])/i.test(u)?u:"";}
+
 function renderItemPage(item){
   const title=clean(item.title,"Marketplace listing");
   const category=categoryLabel(item.category);
