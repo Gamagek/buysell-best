@@ -16,6 +16,60 @@ function money(value,currency,locale="en-US"){
   catch{return (currency||"USD")+" "+Number(value).toLocaleString()}
 }
 function escapeHtml(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+
+function displayText(value,fallback=""){
+  const s=String(value??"").trim();
+  return s&&s.toLowerCase()!=="null"&&s.toLowerCase()!=="undefined"?s:fallback;
+}
+function carouselCard(item,index){
+  const image=item.image||item.image_url||"";
+  const title=displayText(item.title,"Global product");
+  const category=displayText(item.categoryLabel||item.category,"Global Market");
+  const condition=displayText(item.condition,"Online offer");
+  const url=displayText(item.url,"#");
+  const media=image
+    ? '<img class="carousel-image" src="'+escapeHtml(image)+'" alt="" loading="'+(index<3?"eager":"lazy")+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"><span class="carousel-emoji" style="display:none">🛍️</span>'
+    : '<span class="carousel-emoji">🛍️</span>';
+  return '<article class="carousel-card" data-carousel-index="'+index+'"><div class="carousel-card-inner"><a href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer nofollow"><div class="carousel-visual">'+media+'<span class="carousel-badge">GLOBAL MARKET</span></div><div class="carousel-body"><span class="carousel-tag">'+escapeHtml(category)+'</span><span class="carousel-title">'+escapeHtml(title)+'</span><span class="carousel-condition">'+escapeHtml(condition)+'</span><div class="carousel-price smart-price" data-price="'+Number(item.price||0)+'" data-currency="'+escapeHtml(item.currency||"USD")+'">'+money(Number(item.price||0),item.currency||"USD")+'</div></div></a></div></article>';
+}
+function setupCurrentListingsCarousel(items=[]){
+  const root=document.querySelector("#current-listings-carousel"),track=document.querySelector("#current-listings-track"),dots=document.querySelector("#current-listings-dots"),prev=document.querySelector(".carousel-prev"),next=document.querySelector(".carousel-next"),pause=document.querySelector("#current-listings-pause");
+  if(!root||!track)return;
+  const valid=(items||[]).filter(x=>x&&String(x.title||"").trim()&&Number.isFinite(Number(x.price))&&Number(x.price)>0).slice(0,12);
+  if(!valid.length){track.innerHTML='<div class="carousel-empty"><strong>No current listings yet.</strong><span>Global market offers will appear here automatically.</span></div>';if(dots)dots.innerHTML="";return;}
+  track.innerHTML=valid.map(carouselCard).join("");
+  const cards=[...track.querySelectorAll(".carousel-card")];let current=0,playing=true,timer=null,startX=0,dragging=false;
+  function paint(){
+    const n=cards.length;
+    cards.forEach((card,i)=>{let d=i-current;if(d>n/2)d-=n;if(d<-n/2)d+=n;const abs=Math.abs(d);const x=d*Math.min(270,Math.max(190,track.clientWidth*.30));const z=abs===0?60:Math.max(0,40-abs*15);const scale=abs===0?1:Math.max(.72,1-abs*.09);const opacity=abs>2?.12:Math.max(.32,1-abs*.25);card.style.transform="translateX(calc(-50% + "+x+"px)) translateZ("+z+"px) rotateY("+(d*-18)+"deg) scale("+scale+")";card.style.opacity=opacity;card.style.zIndex=String(20-abs);card.classList.toggle("is-active",d===0);card.classList.toggle("is-dragging",dragging);});
+    if(dots)dots.innerHTML=cards.map((_,i)=>'<button type="button" class="'+(i===current?"is-active":"")+'" data-carousel-dot="'+i+'" aria-label="Show listing '+(i+1)+'"></button>').join("");
+  }
+  function go(step){current=(current+step+cards.length)%cards.length;paint();}
+  function stop(){if(timer){clearInterval(timer);timer=null;}}
+  function start(){stop();if(!playing||cards.length<2)return;timer=setInterval(()=>go(1),3800);}
+  prev?.addEventListener("click",()=>{go(-1);start()});next?.addEventListener("click",()=>{go(1);start()});
+  pause?.addEventListener("click",()=>{playing=!playing;pause.textContent=playing?"Ⅱ Pause":"▶ Play";pause.setAttribute("aria-pressed",String(!playing));start();});
+  dots?.addEventListener("click",e=>{const b=e.target.closest("[data-carousel-dot]");if(!b)return;current=Number(b.dataset.carouselDot)||0;paint();start();});
+  const viewport=root.querySelector(".carousel-viewport");
+  viewport?.addEventListener("pointerdown",e=>{dragging=true;startX=e.clientX;viewport.setPointerCapture?.(e.pointerId);stop();paint();});
+  viewport?.addEventListener("pointerup",e=>{if(!dragging)return;const dx=e.clientX-startX;dragging=false;if(Math.abs(dx)>45)go(dx<0?1:-1);paint();start();});
+  viewport?.addEventListener("pointercancel",()=>{dragging=false;paint();start()});
+  root.addEventListener("mouseenter",stop);root.addEventListener("mouseleave",start);root.addEventListener("focusin",stop);root.addEventListener("focusout",e=>{if(!root.contains(e.relatedTarget))start()});
+  if(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)playing=false;
+  paint();decoratePrices(window.__bsbProfile||{currency:"USD"});start();
+}
+async function loadCurrentListingsCarousel(){
+  try{
+    const r=await fetch("/api/listings?limit=12",{cache:"no-store"});
+    if(r.ok){const d=await r.json();const local=(d.items||d.listings||[]).filter(x=>x&&x.status!=="pending");if(local.length){setupCurrentListingsCarousel(local.map(x=>({...x,image:x.image||x.image_url||"",url:x.url||("ad.html?slug="+encodeURIComponent(x.slug||""))})));return;}}
+  }catch(_){}
+  try{
+    const r=await fetch("/api/deals?query=popular&limit=12",{cache:"no-store"}),d=await r.json(),items=(d.items||[]).filter(x=>x&&x.title&&Number(x.price)>0);
+    if(items.length){setupCurrentListingsCarousel(items);const note=document.querySelector(".carousel-note");if(note)note.textContent=d.temporary?"No local listings yet — showing global market catalog media. Prices may change; verify the seller before buying.":"No local listings yet — showing current global marketplace offers and their returned prices.";return;}
+  }catch(_){}
+  setupCurrentListingsCarousel([]);
+}
+
 function visitorId(){
   let id=localStorage.getItem("bsb_visitor_id");
   if(!id){
@@ -148,7 +202,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
     wireInteractions(home);
   }
   // Start immediately; do not wait for recommendations, currency lookup, or global deals.
-  setupCurrentListingsCarousel();
+  loadCurrentListingsCarousel();
   const profile=await getProfile();
   if(personalized){
     await loadRecommendations(personalized,LISTINGS);
