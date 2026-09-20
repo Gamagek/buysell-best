@@ -57,3 +57,5 @@
 .carousel-visual{isolation:isolate}
 
 .detail-photo{overflow:hidden;position:relative}.detail-real-image{width:100%;height:100%;object-fit:contain;object-position:center;display:block;padding:12px;box-sizing:border-box}.breadcrumbs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--muted);font-size:.82rem;margin:0 0 18px}.breadcrumbs a{color:var(--accent);font-weight:750}.breadcrumbs span[aria-current="page"]{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:min(52vw,520px)}
+
+.hero-subtopic{margin:0 0 8px;font-size:clamp(1rem,2vw,1.35rem);line-height:1.35;letter-spacing:-.025em;font-weight:800;color:#334155;max-width:680px}.hero-subtopic+ .hero-copy{margin-top:10px}
