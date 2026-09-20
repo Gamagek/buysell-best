@@ -51,3 +51,7 @@
 .carousel-visual{overflow:hidden;display:grid;place-items:center;position:relative;padding:10px;box-sizing:border-box}
 .carousel-image{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;object-position:center;display:block;padding:8px;box-sizing:border-box;background:transparent}
 .carousel-visual:after{pointer-events:none}
+
+.carousel-track{min-height:300px;width:100%}
+.carousel-empty{width:100%;min-height:300px;box-sizing:border-box;padding:30px}
+.carousel-visual{isolation:isolate}
