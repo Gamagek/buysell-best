@@ -229,7 +229,7 @@ function renderCategoryPage(categorySlug,items) {
 }
 
 async function renderSitemap(env) {
-  const staticPaths=["/","/categories.html","/deals.html","/post-ad.html","/about.html","/contact.html","/privacy.html","/terms.html"];
+  const staticPaths=["/","/categories.html","/post-ad.html","/about.html","/contact.html","/privacy.html","/terms.html"];
   const categoryPaths=["phones","electronics","vehicles","property","fashion","furniture","services","other"].map(x=>"/category/"+x);
   let dynamic="";
   if(env?.DB){
