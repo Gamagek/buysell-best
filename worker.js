@@ -35,6 +35,217 @@ function methodName(request) {
   return null;
 }
 
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[c]));
+}
+
+function clean(value, fallback="") {
+  const s=String(value ?? "").trim();
+  return s && !/^(null|undefined)$/i.test(s) ? s : fallback;
+}
+
+function slugSafe(value) {
+  return encodeURIComponent(clean(value));
+}
+
+function textSnippet(value, max=220) {
+  const s=clean(value).replace(/\s+/g," ").trim();
+  return s.length>max ? s.slice(0,max-1).trim()+"…" : s;
+}
+
+function categoryLabel(value) {
+  const map={
+    phones:"Phones",
+    electronics:"Electronics",
+    vehicles:"Vehicles",
+    property:"Property",
+    fashion:"Fashion",
+    furniture:"Furniture",
+    services:"Services",
+    other:"Other"
+  };
+  const key=clean(value).toLowerCase();
+  return map[key] || (key ? key.charAt(0).toUpperCase()+key.slice(1) : "Marketplace");
+}
+
+function jsonLd(data) {
+  return JSON.stringify(data).replace(/</g,"\\u003c").replace(/>/g,"\\u003e").replace(/&/g,"\\u0026");
+}
+
+async function getActiveListing(env, slug) {
+  if (!env?.DB || !slug) return null;
+  try {
+    return await env.DB.prepare(
+      "SELECT id,slug,title,brand,category,price,currency,condition,description,image_url,status,created_at,updated_at FROM listings WHERE slug=? AND COALESCE(status,'active')='active' LIMIT 1"
+    ).bind(slug).first();
+  } catch (_) {
+    return null;
+  }
+}
+
+function renderItemPage(item) {
+  const title=clean(item.title,"Marketplace listing");
+  const category=categoryLabel(item.category);
+  const condition=clean(item.condition,"For sale");
+  const description=textSnippet(item.description,250) || `View ${title}, including the listed price and details, on BuySell.Best.`;
+  const canonical="https://buysell.best/item/"+slugSafe(item.slug);
+  const image=clean(item.image_url);
+  const currency=clean(item.currency,"USD").toUpperCase();
+  const price=Number(item.price);
+  const priceText=Number.isFinite(price) ? new Intl.NumberFormat("en-US",{style:"currency",currency,maximumFractionDigits:0}).format(price) : "";
+  const conditionSchema=/used|pre-owned/i.test(condition) ? "https://schema.org/UsedCondition" : "https://schema.org/NewCondition";
+
+  const product={
+    "@context":"https://schema.org",
+    "@type":"Product",
+    name:title,
+    url:canonical,
+    description,
+    category,
+    ...(item.brand ? {brand:{"@type":"Brand",name:clean(item.brand)}} : {}),
+    ...(image ? {image:[image]} : {}),
+    offers:{
+      "@type":"Offer",
+      url:canonical,
+      price:Number.isFinite(price) ? price : undefined,
+      priceCurrency:currency,
+      availability:"https://schema.org/InStock",
+      itemCondition:conditionSchema,
+      seller:{"@type":"Organization",name:"BuySell.Best"}
+    }
+  };
+  const breadcrumb={
+    "@context":"https://schema.org",
+    "@type":"BreadcrumbList",
+    itemListElement:[
+      {"@type":"ListItem",position:1,name:"Home",item:"https://buysell.best/"},
+      {"@type":"ListItem",position:2,name:category,item:"https://buysell.best/categories.html"},
+      {"@type":"ListItem",position:3,name:title,item:canonical}
+    ]
+  };
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${escapeHtml(title)} | BuySell.Best</title>
+<meta name="description" content="${escapeHtml(description)}">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<link rel="canonical" href="${escapeHtml(canonical)}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="${escapeHtml(title)} | BuySell.Best">
+<meta property="og:description" content="${escapeHtml(description)}">
+<meta property="og:url" content="${escapeHtml(canonical)}">
+<meta property="og:site_name" content="BuySell.Best">
+${image ? `<meta property="og:image" content="${escapeHtml(image)}">` : ""}
+<meta name="twitter:card" content="${image ? "summary_large_image" : "summary"}">
+<meta name="twitter:title" content="${escapeHtml(title)} | BuySell.Best">
+<meta name="twitter:description" content="${escapeHtml(description)}">
+${image ? `<meta name="twitter:image" content="${escapeHtml(image)}">` : ""}
+<script type="application/ld+json">${jsonLd(product)}</script>
+<script type="application/ld+json">${jsonLd(breadcrumb)}</script>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<header class="site-header"><div class="container nav-wrap">
+<a class="brand" href="/"><span class="brand-mark">B</span><span>BuySell<span class="brand-dot">.Best</span></span></a>
+<nav class="nav" aria-label="Primary navigation"><a href="/categories.html">Categories</a><a href="/search.html">Browse</a><a href="/deals.html">Global Deals</a><a class="nav-cta" href="/post-ad.html">+ Post Free Ad</a></nav>
+</div></header>
+<main>
+<div class="container listing-detail-wrap">
+<nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>›</span><a href="/categories.html">${escapeHtml(category)}</a><span>›</span><span aria-current="page">${escapeHtml(title)}</span></nav>
+<div id="listing-detail" data-ssr="1" data-listing-id="${escapeHtml(item.id)}">
+<div class="detail-grid">
+<div>
+<div class="detail-photo" aria-label="${escapeHtml(title)}">${image ? `<img class="detail-real-image" src="${escapeHtml(image)}" alt="${escapeHtml(title)}" width="900" height="675" fetchpriority="high">` : "🛍️"}</div>
+</div>
+<div class="detail-card" data-listing-id="${escapeHtml(item.id)}">
+<div class="eyebrow">${escapeHtml(category)}</div>
+<h1>${escapeHtml(title)}</h1>
+<div class="detail-price smart-price" data-price="${Number.isFinite(price)?String(price):"0"}" data-currency="${escapeHtml(currency)}">${escapeHtml(priceText)}</div>
+<div class="detail-pills"><span class="pill">${escapeHtml(condition)}</span><span class="pill">BuySell.Best listing</span></div>
+<p class="detail-muted">${escapeHtml(clean(item.description,"No additional description was provided."))}</p>
+<div class="reaction-row"><button type="button" data-reaction="like" aria-pressed="false">❤️ Like</button><button type="button" data-reaction="interested" aria-pressed="false">⭐ Interested</button><button type="button" data-reaction="save" aria-pressed="false">🔖 Save</button></div>
+<div class="listing-stats" aria-label="Listing activity"><span>👁 0</span><span>❤️ 0</span><span>⭐ 0</span><span>🔖 0</span></div>
+<div class="detail-actions"><a class="button button-secondary" href="/search.html?q=${encodeURIComponent(title)}">Find similar</a> <a class="button button-secondary" href="/contact.html">Report / Contact</a></div>
+</div>
+</div>
+<section class="section similar-section"><div class="section-head"><div><div class="eyebrow">PERSONALIZED</div><h2>You may also like</h2></div><span class="personalization-note" data-personalization-profile>Personalized recommendations</span></div><div id="similar-listings" class="listing-grid"></div></section>
+</div>
+</main>
+<footer class="site-footer"><div class="container footer-bottom"><span>© <span id="year"></span> BuySell.Best</span><span><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></span></div></footer>
+<script src="/js/app.js"></script>
+</body></html>`;
+}
+
+async function renderSitemap(env) {
+  const staticPaths=["/","/categories.html","/deals.html","/post-ad.html","/about.html","/contact.html","/privacy.html","/terms.html"];
+  let dynamic="";
+  if(env?.DB){
+    try{
+      const result=await env.DB.prepare(
+        "SELECT slug,updated_at FROM listings WHERE COALESCE(status,'active')='active' AND slug IS NOT NULL ORDER BY datetime(updated_at) DESC LIMIT 5000"
+      ).all();
+      dynamic=(result.results||[]).map(item=>{
+        const loc="https://buysell.best/item/"+slugSafe(item.slug);
+        const last=clean(item.updated_at);
+        return `<url><loc>${escapeHtml(loc)}</loc>${last ? `<lastmod>${escapeHtml(last.includes("T") ? last : last.replace(" ","T")+"Z")}</lastmod>` : ""}</url>`;
+      }).join("");
+    }catch(_){}
+  }
+  const urls=staticPaths.map(path=>`<url><loc>https://buysell.best${path===" /" ? "" : path}</loc></url>`.replace("https://buysell.best /","https://buysell.best/")).join("");
+  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}${dynamic}</urlset>`;
+}
+
+async function serveSeoPage(request,env) {
+  const url=new URL(request.url);
+  const pathname=url.pathname;
+
+  if (request.method !== "GET") return null;
+
+  if (pathname === "/sitemap.xml") {
+    return new Response(await renderSitemap(env),{
+      headers:{
+        "content-type":"application/xml; charset=UTF-8",
+        "cache-control":"public, max-age=300, s-maxage=300, stale-while-revalidate=600"
+      }
+    });
+  }
+
+  const match=pathname.match(/^\/item\/([^/]+)\/?$/);
+  if(match){
+    const slug=decodeURIComponent(match[1]);
+    const item=await getActiveListing(env,slug);
+    if(!item){
+      return new Response("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"robots\" content=\"noindex,follow\"><title>Listing not found | BuySell.Best</title></head><body><main><h1>Listing not found</h1><p>This listing is no longer available.</p><a href=\"/search.html\">Browse listings</a></main></body></html>",{
+        status:404,
+        headers:{"content-type":"text/html; charset=UTF-8","x-robots-tag":"noindex,follow","cache-control":"no-store"}
+      });
+    }
+    return new Response(renderItemPage(item),{
+      status:200,
+      headers:{
+        "content-type":"text/html; charset=UTF-8",
+        "cache-control":"public, max-age=60, s-maxage=300, stale-while-revalidate=600"
+      }
+    });
+  }
+
+  // Send only active D1 listings to the new crawlable item URLs.
+  if(pathname === "/ad.html" && url.searchParams.get("slug") && env?.DB){
+    const slug=clean(url.searchParams.get("slug"));
+    const item=await getActiveListing(env,slug);
+    if(item){
+      return Response.redirect("https://buysell.best/item/"+slugSafe(slug),301);
+    }
+  }
+
+  return null;
+}
+
 async function serveAsset(request, env) {
   const response = await env.ASSETS.fetch(request);
   const path = new URL(request.url).pathname;
@@ -54,6 +265,9 @@ async function serveAsset(request, env) {
 
 export default {
   async fetch(request, env, ctx) {
+    const seoResponse=await serveSeoPage(request,env);
+    if(seoResponse)return seoResponse;
+
     const url = new URL(request.url);
     const name = route(url.pathname);
     if (!name) return serveAsset(request, env);
