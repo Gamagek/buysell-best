@@ -56,7 +56,7 @@ function setupCurrentListingsCarousel(items=[]){
   viewport?.addEventListener("pointercancel",()=>{dragging=false;paint();start()});
   root.addEventListener("mouseenter",stop);root.addEventListener("mouseleave",start);root.addEventListener("focusin",stop);root.addEventListener("focusout",e=>{if(!root.contains(e.relatedTarget))start()});
   if(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)playing=false;
-  paint();decoratePrices(window.__bsbProfile||{currency:"USD"});start();
+  paint();\n  requestAnimationFrame(paint);\n  decoratePrices(window.__bsbProfile||{currency:"USD"});\n  start();
 }
 function hideNullValues(root=document){
   const clean=node=>{
@@ -87,13 +87,59 @@ function watchForNullValues(){
   observer.observe(document.body,{subtree:true,childList:true,characterData:true});
 }
 async function loadCurrentListingsCarousel(){
+  const root=document.querySelector("#current-listings-carousel");
+  if(!root)return;
+  const show=items=>{
+    const valid=(items||[]).filter(x=>x&&displayText(x.title)&&Number(x.price)>0);
+    if(!valid.length)return false;
+    setupCurrentListingsCarousel(valid);
+    return true;
+  };
+  // Real BuySell.Best listings first.
   try{
     const r=await fetch("/api/listings?limit=12",{cache:"no-store"});
-    if(r.ok){const d=await r.json();const local=(d.items||d.listings||[]).filter(x=>x&&x.status!=="pending");if(local.length){setupCurrentListingsCarousel(local.map(x=>({...x,image:x.image||x.image_url||"",url:x.url||("ad.html?slug="+encodeURIComponent(x.slug||""))})));return;}}
+    if(r.ok){
+      const d=await r.json();
+      const local=(d.items||[]).filter(x=>x&&x.status==="active");
+      if(show(local))return;
+    }
   }catch(_){}
+  // Global market feed next.
   try{
-    const r=await fetch("/api/deals?query=popular&limit=12",{cache:"no-store"}),d=await r.json(),items=(d.items||[]).filter(x=>x&&x.title&&Number(x.price)>0);
-    if(items.length){setupCurrentListingsCarousel(items);const note=document.querySelector(".carousel-note");if(note)note.textContent=d.temporary?"No local listings yet — showing global market catalog media. Prices may change; verify the seller before buying.":"No local listings yet — showing current global marketplace offers and their returned prices.";return;}
+    const r=await fetch("/api/deals?query=popular&limit=12",{cache:"no-store"});
+    if(r.ok){
+      const d=await r.json();
+      const globalItems=(d.items||[]).filter(x=>x&&displayText(x.title)&&Number(x.price)>0&&displayText(x.image||x.image_url));
+      if(show(globalItems)){
+        const note=document.querySelector(".carousel-note");
+        if(note)note.textContent=d.temporary
+          ?"No local listings yet — showing global market catalog media. Prices can change; verify the seller before buying."
+          :"No local listings yet — showing current global market offers and their returned prices.";
+        return;
+      }
+    }
+  }catch(_){}
+  // Last-resort media feed: keeps the carousel populated even if the Worker API is temporarily unavailable.
+  try{
+    const r=await fetch("https://dummyjson.com/products?limit=12",{headers:{Accept:"application/json"}});
+    if(r.ok){
+      const d=await r.json();
+      const items=(d.products||[]).map(x=>({
+        id:"global-"+x.id,
+        title:displayText(x.title,"Product"),
+        category:displayText(x.category,"Global Market"),
+        condition:"Online offer",
+        price:Number(x.price)||0,
+        currency:"USD",
+        image:displayText(x.thumbnail||x.images?.[0],""),
+        url:"https://www.google.com/search?tbm=shop&q="+encodeURIComponent(displayText(x.title,"product"))
+      })).filter(x=>x.image&&x.price>0);
+      if(show(items)){
+        const note=document.querySelector(".carousel-note");
+        if(note)note.textContent="No local listings yet — showing global market catalog media. Prices can change; verify the seller before buying.";
+        return;
+      }
+    }
   }catch(_){}
   setupCurrentListingsCarousel([]);
 }
