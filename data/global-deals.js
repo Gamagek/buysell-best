@@ -36,7 +36,9 @@ function storeSearchLinks(title){
   const q=encodeURIComponent(title);
   const slug=encodeURIComponent(title.replace(/\s+/g,"-"));
   return '<a class="deal-link" href="https://www.amazon.com/s?k='+q+'" target="_blank" rel="noopener noreferrer">Amazon ↗</a>'+
-         '<a class="deal-link" href="https://www.aliexpress.com/w/wholesale-'+slug+'.html" target="_blank" rel="noopener noreferrer">AliExpress ↗</a>';
+         '<a class="deal-link" href="https://www.aliexpress.com/w/wholesale-'+slug+'.html" target="_blank" rel="noopener noreferrer">AliExpress ↗</a>'+
+         '<a class="deal-link" href="https://www.ebay.com/sch/i.html?_nkw='+q+'" target="_blank" rel="noopener noreferrer">eBay ↗</a>'+
+         '<a class="deal-link" href="https://www.google.com/search?tbm=shop&q='+q+'" target="_blank" rel="noopener noreferrer">Compare ↗</a>';
 }
 function renderDealCard(item,index){
   return '<article class="deal-card live-deal-card" data-deal-id="'+escapeHtml(item.id)+'" data-deal-query="'+escapeHtml(item.searchQuery||item.title)+'">'+
@@ -71,13 +73,17 @@ function renderRelated(target,data){
 async function renderGlobalDeals(container){
   if(!container)return;
   const profile=window.__bsbProfile||await getProfile();
-  const live=await fetch("/api/deals?query=popular&limit=8",{cache:"no-store"}).then(r=>r.json()).catch(()=>null);
-  if(live?.configured){
-    container.innerHTML=(live.items||[]).map(renderDealCard).join("");
-    if(!live.items?.length)container.innerHTML='<div class="empty-state">No live marketplace items were returned right now.</div>';
+  const isDealsPage=location.pathname.endsWith("/deals.html");
+  const feedLimit=isDealsPage?48:8;
+  const live=await fetch("/api/deals?query=popular&limit="+feedLimit,{cache:"no-store"}).then(r=>r.json()).catch(()=>null);
+  if(live?.ok&&live.items?.length){
+    const status=live.temporary
+      ? '<div class="marketplace-status"><strong>Temporary universal product catalog</strong><span>Prices and images are catalog-preview data for now. Use the store buttons to check the current seller price. Approved live feeds can replace this layer later.</span></div>'
+      : '<div class="marketplace-status"><strong>Live marketplace deals</strong><span>Current marketplace items are shown from the connected live feed.</span></div>';
+    container.innerHTML=status+(live.items||[]).map(renderDealCard).join("");
+    if(!isDealsPage){container.innerHTML+='<div class="marketplace-more"><a class="button button-secondary" href="deals.html">View all product categories →</a></div>';}
   }else{
-    container.innerHTML='<div class="marketplace-status"><strong>Live marketplace deals</strong><span>Real source images and current prices appear here when the marketplace API is enabled.</span></div>'+
-      FALLBACK_DEALS.map(renderDealCard).join("");
+    container.innerHTML='<div class="marketplace-status"><strong>Marketplace preview</strong><span>Temporary catalog data could not be loaded right now.</span></div>'+FALLBACK_DEALS.map(renderDealCard).join("");
   }
   container.addEventListener("click",async event=>{
     const button=event.target.closest("[data-deal-select]");
