@@ -1,4 +1,4 @@
-import {json,getCountry,getCurrency} from "./_lib.js";
+import {json,getCountry,getCurrency} from "../../lib/personalization.js";
 
 const API="https://open.er-api.com/v6/latest/USD";
 const CACHE_KEY="https://buysell.best/__fx_usd__";
