@@ -86,61 +86,68 @@ function watchForNullValues(){
   });
   observer.observe(document.body,{subtree:true,childList:true,characterData:true});
 }
+async function fetchJson(url,ms=4500){
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),ms);
+  try{
+    const r=await fetch(url,{cache:"no-store",signal:controller.signal,headers:{Accept:"application/json"}});
+    if(!r.ok)return null;
+    return await r.json();
+  }catch(_){return null}
+  finally{clearTimeout(timer)}
+}
 async function loadCurrentListingsCarousel(){
   const root=document.querySelector("#current-listings-carousel");
-  if(!root)return;
-  const show=items=>{
-    const valid=(items||[]).filter(x=>x&&displayText(x.title)&&Number(x.price)>0);
-    if(!valid.length)return false;
-    setupCurrentListingsCarousel(valid);
+  const track=document.querySelector("#current-listings-track");
+  if(!root||!track)return;
+
+  track.innerHTML='<div class="carousel-empty"><strong>Loading current listings…</strong><span>Checking BuySell.Best and the global market.</span></div>';
+
+  const normalizeLocal=d=>(d?.items||[]).filter(x=>x&&x.status==="active"&&displayText(x.title)&&Number(x.price)>0).map(x=>({
+    ...x,image:displayText(x.image||x.image_url,""),url:displayText(x.url,"ad.html?slug="+encodeURIComponent(x.slug||""))
+  }));
+  const normalizeGlobal=d=>(d?.items||[]).filter(x=>x&&displayText(x.title)&&Number(x.price)>0).map(x=>({...x,image:displayText(x.image||x.image_url,"")}));
+  const show=(items,note)=>{
+    if(!items.length)return false;
+    setupCurrentListingsCarousel(items);
+    const n=document.querySelector(".carousel-note");
+    if(n&&note)n.textContent=note;
     return true;
   };
-  // Real BuySell.Best listings first.
-  try{
-    const r=await fetch("/api/listings?limit=12",{cache:"no-store"});
-    if(r.ok){
-      const d=await r.json();
-      const local=(d.items||[]).filter(x=>x&&x.status==="active");
-      if(show(local))return;
-    }
-  }catch(_){}
-  // Global market feed next.
-  try{
-    const r=await fetch("/api/deals?query=popular&limit=12",{cache:"no-store"});
-    if(r.ok){
-      const d=await r.json();
-      const globalItems=(d.items||[]).filter(x=>x&&displayText(x.title)&&Number(x.price)>0&&displayText(x.image||x.image_url));
-      if(show(globalItems)){
-        const note=document.querySelector(".carousel-note");
-        if(note)note.textContent=d.temporary
-          ?"No local listings yet — showing global market catalog media. Prices can change; verify the seller before buying."
-          :"No local listings yet — showing current global market offers and their returned prices.";
-        return;
-      }
-    }
-  }catch(_){}
-  // Last-resort media feed: keeps the carousel populated even if the Worker API is temporarily unavailable.
-  try{
-    const r=await fetch("https://dummyjson.com/products?limit=12",{headers:{Accept:"application/json"}});
-    if(r.ok){
-      const d=await r.json();
-      const items=(d.products||[]).map(x=>({
-        id:"global-"+x.id,
-        title:displayText(x.title,"Product"),
-        category:displayText(x.category,"Global Market"),
-        condition:"Online offer",
-        price:Number(x.price)||0,
-        currency:"USD",
-        image:displayText(x.thumbnail||x.images?.[0],""),
-        url:"https://www.google.com/search?tbm=shop&q="+encodeURIComponent(displayText(x.title,"product"))
-      })).filter(x=>x.image&&x.price>0);
-      if(show(items)){
-        const note=document.querySelector(".carousel-note");
-        if(note)note.textContent="No local listings yet — showing global market catalog media. Prices can change; verify the seller before buying.";
-        return;
-      }
-    }
-  }catch(_){}
+
+  // Fetch local and global in parallel. A slow local database must not block the carousel.
+  const localPromise=fetchJson("/api/listings?limit=12",2500).then(normalizeLocal);
+  const globalPromise=fetchJson("/api/deals?query=popular&limit=12",4500).then(d=>({items:normalizeGlobal(d),temporary:!!d?.temporary}));
+
+  const localFirst=await Promise.race([
+    localPromise.then(items=>({kind:"local",items})),
+    new Promise(resolve=>setTimeout(()=>resolve({kind:"timeout",items:[]}),900))
+  ]);
+  if(localFirst.kind==="local"&&show(localFirst.items,"Live BuySell.Best listings — prices come from the listing records."))return;
+
+  const globalResult=await globalPromise;
+  if(globalResult&&show(globalResult.items,globalResult.temporary
+    ?"No local listings yet — showing global market catalog media. Prices can change; verify the seller before buying."
+    :"No local listings yet — showing current global market offers and their returned prices."))return;
+
+  // Final direct media fallback when the Worker marketplace feed is temporarily unavailable.
+  const direct=await fetchJson("https://dummyjson.com/products?limit=12",4500);
+  const directItems=(direct?.products||[]).map(x=>({
+    id:"global-"+x.id,
+    title:displayText(x.title,"Product"),
+    category:displayText(x.category,"Global Market"),
+    condition:"Online offer",
+    price:Number(x.price)||0,
+    currency:"USD",
+    image:displayText(x.thumbnail||x.images?.[0],""),
+    url:"https://www.google.com/search?tbm=shop&q="+encodeURIComponent(displayText(x.title,"product"))
+  })).filter(x=>x.image&&x.price>0);
+  if(show(directItems,"No local listings yet — showing global market catalog media. Prices can change; verify the seller before buying."))return;
+
+  // If local D1 responds after the global attempt and has real listings, use them.
+  const lateLocal=await localPromise.catch(()=>[]);
+  if(show(lateLocal,"Live BuySell.Best listings — prices come from the listing records."))return;
+
   setupCurrentListingsCarousel([]);
 }
 
