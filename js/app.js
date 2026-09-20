@@ -83,7 +83,7 @@ async function loadRecommendations(target,items=LISTINGS,seedItem=null){
     if(!d.ok)return;
     const byId=new Map(items.map(x=>[x.id,x]));
     const ranked=(d.recommendations||[]).map(x=>byId.get(x.id)).filter(Boolean);
-    if(ranked.length)target.innerHTML=ranked.slice(0,8).map(x=>listingCard(x,{seedId:seedItem?.id})).join("");
+    if(ranked.length){target.innerHTML=ranked.slice(0,8).map(x=>listingCard(x,{seedId:seedItem?.id})).join("");wireInteractions(target);}
     await decoratePrices(d);
     const profileEls=document.querySelectorAll("[data-personalization-profile]");
     const name=COUNTRY_NAMES[d.country]||d.country||"your region";
@@ -97,6 +97,7 @@ async function loadRecommendations(target,items=LISTINGS,seedItem=null){
 }
 function wireInteractions(root=document){
   root.querySelectorAll("[data-more-like]").forEach(btn=>{
+    if(btn.dataset.bound==="1")return; btn.dataset.bound="1";
     btn.addEventListener("click",async e=>{
       e.preventDefault();e.stopPropagation();
       const item=LISTINGS.find(x=>x.id===btn.dataset.moreLike); if(!item)return;
@@ -108,6 +109,7 @@ function wireInteractions(root=document){
     });
   });
   root.querySelectorAll("[data-track-view]").forEach(link=>{
+    if(link.dataset.bound==="1")return; link.dataset.bound="1";
     link.addEventListener("click",()=>{const item=LISTINGS.find(x=>x.id===link.dataset.trackView);if(item)track("view",item)});
   });
 }
