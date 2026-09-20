@@ -1,4 +1,4 @@
-import {json,getCountry,getCurrency,cleanId,ensureSchema} from "./_lib.js";
+import {json,getCountry,getCurrency,cleanId,ensureSchema} from "../../lib/personalization.js";
 
 function normalizeCandidates(input){
   if(!Array.isArray(input)) return [];
