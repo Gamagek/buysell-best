@@ -205,7 +205,7 @@ function listingCard(item,opts={}){
   const location=displayText(item.location,"");
   const image=displayText(item.image||item.image_url,"");
   const media=image
-    ? '<img class="listing-real-image" src="'+escapeHtml(image)+'" alt="" loading="lazy" onerror="this.style.display=\'none\';">'
+    ? '<img class="listing-real-image" src="'+escapeHtml(image)+'" alt="" width="720" height="540" loading="lazy" decoding="async" onerror="this.style.display=\'none\';">'
     : '<span class="listing-emoji">'+displayText(item.emoji,"🛍️")+'</span>';
   const meta=(location||condition)
     ? '<div class="listing-meta">'+(location?'<span>'+escapeHtml(location)+'</span>':"")+(condition?'<span>'+escapeHtml(condition)+'</span>':"")+'</div>'
