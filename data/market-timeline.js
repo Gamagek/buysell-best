@@ -5,7 +5,7 @@ const GLOBAL_MARKET_TIMELINE = [
     merchant:"Daraz",
     label:"Flash Sale & On Sale Now",
     date:"Live now",
-    detail:"Sri Lanka",
+    detail:"International marketplace",
     url:"https://www.daraz.lk/",
     tone:"live"
   },
