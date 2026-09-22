@@ -272,10 +272,9 @@ function dealCardHtml(item){
   try{if(Number.isFinite(price))priceText=new Intl.NumberFormat("en-US",{style:"currency",currency,maximumFractionDigits:2}).format(price);}catch(_){if(Number.isFinite(price))priceText=currency+" "+price.toLocaleString("en-US");}
   return '<article class="deal-card live-deal-card"><div class="deal-media">'+(image?'<img class="deal-image" src="'+escapeHtml(image)+'" alt="'+escapeHtml(title)+'" loading="lazy" referrerpolicy="no-referrer">':'<div class="deal-icon" aria-hidden="true">🛍️</div>')+'</div><div class="deal-body"><div class="deal-top"><span class="listing-tag">'+escapeHtml(clean(item.category,"Global Deal"))+'</span><span class="deal-merchant">'+escapeHtml(clean(item.merchant,"Marketplace"))+'</span></div><h2 class="deal-title">'+escapeHtml(title)+'</h2><div class="deal-price">'+escapeHtml(priceText)+'</div>'+(item.condition?'<div class="deal-signal">'+escapeHtml(item.condition)+'</div>':"")+'<p>Live marketplace result. Price, seller, stock and shipping can change; check the source before buying.</p><div class="deal-actions"><a class="button" href="'+escapeHtml(item.url||"#")+'" target="_blank" rel="noopener noreferrer nofollow">Open '+escapeHtml(clean(item.merchant,"source"))+' ↗</a><a class="deal-link" href="'+escapeHtml(dealSearchUrl("amazon",title))+'" target="_blank" rel="noopener noreferrer nofollow">Amazon search</a><a class="deal-link" href="'+escapeHtml(dealSearchUrl("aliexpress",title))+'" target="_blank" rel="noopener noreferrer nofollow">AliExpress search</a><a class="deal-link" href="'+escapeHtml(dealSearchUrl("walmart",title))+'" target="_blank" rel="noopener noreferrer nofollow">Walmart search</a><a class="deal-link" href="'+escapeHtml(dealSearchUrl("temu",title))+'" target="_blank" rel="noopener noreferrer nofollow">Temu search</a></div><small class="deal-checked">Source: '+escapeHtml(clean(item.sourceLabel,item.merchant||"Marketplace"))+' · checked for this page request.</small></div></article>';
 }
-async function getLiveDealHubData(env,query){
+async function getLiveDealHubData(env,query,country="US"){
   if(!env?.EBAY_CLIENT_ID||!env?.EBAY_CLIENT_SECRET)return {configured:false,items:[]};
   try{
-    const country="US";
     if(query==="popular"){
       const qs=DEAL_CATEGORIES.slice(0,6).map(x=>x.query);
       const results=await Promise.all(qs.map(q=>searchEbay(env,q,3,"",country).catch(()=>({configured:false,items:[]}))));
@@ -300,11 +299,11 @@ function renderDealHubPage(config,items,live){
   const cards=items.length?items.map(dealCardHtml).join(""):'<div class="marketplace-status"><strong>Live deal feed is not available yet</strong><span>This hub stays out of search results until an approved live marketplace source returns useful offers. Temporary catalogue data is never presented as current store data.</span></div>';
   return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+escapeHtml(title)+' | BuySell.Best</title><meta name="description" content="'+escapeHtml(intro)+'"><meta name="robots" content="'+robots+'"><link rel="canonical" href="'+escapeHtml(canonical)+'"><meta property="og:type" content="website"><meta property="og:title" content="'+escapeHtml(title)+' | BuySell.Best"><meta property="og:description" content="'+escapeHtml(intro)+'"><meta property="og:url" content="'+escapeHtml(canonical)+'"><meta property="og:site_name" content="BuySell.Best"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="'+escapeHtml(title)+' | BuySell.Best"><meta name="twitter:description" content="'+escapeHtml(intro)+'"><script type="application/ld+json">'+jsonLd(collection)+'</script><script type="application/ld+json">'+jsonLd(listLd)+'</script><link rel="stylesheet" href="/css/style.css"></head><body><header class="site-header"><div class="container nav-wrap"><a class="brand" href="/"><span class="brand-mark">B</span><span>BuySell<span class="brand-dot">.Best</span></span></a><nav class="nav" aria-label="Primary navigation"><a href="/categories.html">Categories</a><a href="/search.html">Browse</a><a href="/deals/">Global Deals</a><a class="nav-cta" href="/post-ad.html">+ Post Free Ad</a></nav></div></header><main><div class="container listing-detail-wrap"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>›</span><a href="/deals/">Global Deals</a><span>›</span><span aria-current="page">'+escapeHtml(title)+'</span></nav><section class="page-hero"><div><div class="eyebrow">'+(config?.type==="seasonal"?"SEASONAL SHOPPING":"GLOBAL DEAL DISCOVERY")+'</div><h1>'+escapeHtml(title)+'</h1><p>'+escapeHtml(intro)+'</p></div></section><section class="section"><div class="section-head"><div><div class="eyebrow">'+(isLive?"LIVE RESULTS":"WAITING FOR LIVE SOURCE")+'</div><h2>'+(isLive?"Current marketplace offers":"Deal discovery hub")+'</h2></div><a class="text-link" href="/deals/">All deal categories →</a></div><div class="deal-grid">'+cards+'</div></section><section class="section section-alt"><div class="container prose"><h2>Explore more deal categories</h2><div class="quick-links">'+hubs+'</div><h2>Seasonal shopping</h2><div class="quick-links">'+seasons+'</div><p>BuySell.Best adds useful comparison context around marketplace results instead of copying store descriptions. Always verify the final seller price, shipping, availability and product details on the source marketplace.</p></div></section></div></main><footer class="site-footer"><div class="container footer-bottom"><span>© <span id="year"></span> BuySell.Best</span><span><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></span></div></footer><script src="/js/app.js"></script></body></html>';
 }
-async function renderDealHub(env,type,slug){
+async function renderDealHub(env,type,slug,country="US"){
   const configs=type==="seasonal"?SEASONAL_PAGES:DEAL_CATEGORIES;
   const config=configs.find(x=>x.slug===slug);
   if(!config)return null;
-  const live=await getLiveDealHubData(env,config.query);
+  const live=await getLiveDealHubData(env,config.query,country);
   return new Response(renderDealHubPage({...config,type},live.items,live),{headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=300, s-maxage=600, stale-while-revalidate=900"}});
 }
 async function renderSitemap(env){
@@ -356,13 +355,15 @@ async function serveSeoPage(request,env) {
 
   if (request.method !== "GET") return null;
 
+  if(pathname === "/deals.html") return Response.redirect("https://buysell.best/deals/",301);
   if(pathname === "/deals/"){
-    const live=await getLiveDealHubData(env,"popular");
+    const country=String(request.headers.get("CF-IPCountry")||"US").toUpperCase().slice(0,2);
+    const live=await getLiveDealHubData(env,"popular",country);
     return new Response(renderDealHubPage({slug:"",title:"Global Deals & Price Discovery",intro:"Discover current marketplace offers across phones, laptops, gaming, home, fashion and more. Compare source results and verify the final seller price before buying."},live.items,live),{headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=300, s-maxage=600, stale-while-revalidate=900"}});
   }
   const dealMatch=pathname.match(/^\/deals\/([^/]+)\/?$/);
   if(dealMatch){
-    const response=await renderDealHub(env,"deal",decodeURIComponent(dealMatch[1]));
+    const response=await renderDealHub(env,"deal",decodeURIComponent(dealMatch[1]),country);
     return response||new Response("Not found",{status:404,headers:{"x-robots-tag":"noindex"}});
   }
   const seasonalMatch=pathname.match(/^\/seasonal\/([^/]+)\/?$/);
