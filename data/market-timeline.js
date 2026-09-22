@@ -107,7 +107,6 @@ function renderGlobalMarketPulse() {
     </a>`).join("");
 
   const originalCount=GLOBAL_MARKET_TIMELINE.length;
-  let x=0;
   let paused=false;
   let dragging=false;
   let startClientX=0;
@@ -115,12 +114,12 @@ function renderGlobalMarketPulse() {
 
   function resetLoop(){
     const half=track.scrollWidth/2;
-    if(half>0 && track.scrollLeft>=half)track.scrollLeft-=half;
-    if(track.scrollLeft<0)track.scrollLeft+=half;
+    if(half>0 && root.scrollLeft>=half)root.scrollLeft-=half;
+    if(root.scrollLeft<0)root.scrollLeft+=half;
   }
   function tick(){
     if(!paused&&!dragging&&window.innerWidth>620){
-      track.scrollLeft+=0.45;
+      root.scrollLeft+=0.45;
       resetLoop();
     }
     requestAnimationFrame(tick);
@@ -131,24 +130,26 @@ function renderGlobalMarketPulse() {
   root.addEventListener("focusin",()=>paused=true);
   root.addEventListener("focusout",e=>{if(!root.contains(e.relatedTarget))paused=false;});
 
-  track.addEventListener("pointerdown",e=>{
-    dragging=true;paused=true;startClientX=e.clientX;startScroll=track.scrollLeft;
-    track.setPointerCapture?.(e.pointerId);
+  root.addEventListener("pointerdown",e=>{
+    dragging=true;paused=true;startClientX=e.clientX;startScroll=root.scrollLeft;
+    root.setPointerCapture?.(e.pointerId);
     root.classList.add("is-dragging");
   });
-  track.addEventListener("pointermove",e=>{
+  root.addEventListener("pointermove",e=>{
     if(!dragging)return;
-    track.scrollLeft=startScroll-(e.clientX-startClientX);
+    root.scrollLeft=startScroll-(e.clientX-startClientX);
     resetLoop();
   });
   const endDrag=e=>{
     if(!dragging)return;
     dragging=false;paused=false;
-    track.releasePointerCapture?.(e.pointerId);
+    root.releasePointerCapture?.(e.pointerId);
     root.classList.remove("is-dragging");
   };
-  track.addEventListener("pointerup",endDrag);
-  track.addEventListener("pointercancel",endDrag);
+  root.addEventListener("pointerup",endDrag);
+  root.addEventListener("pointercancel",endDrag);
+
+  root.addEventListener("click",e=>{if(Math.abs(startClientX-(e.clientX||startClientX))>8)e.preventDefault();},{capture:true});
 
   if(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches){
     paused=true;
