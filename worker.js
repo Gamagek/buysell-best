@@ -344,6 +344,7 @@ async function renderSitemap(env){
       }catch(_){}
     }
   }
+  const dealPaths=(env?.EBAY_CLIENT_ID&&env?.EBAY_CLIENT_SECRET) ? ["/deals/",...DEAL_CATEGORIES.map(x=>"/deals/"+x.slug),...SEASONAL_PAGES.map(x=>"/seasonal/"+x.slug)] : [];
   const urls=staticPaths.map(path=>`<url><loc>https://buysell.best${path}</loc>${path==="/"&&latestAll?`<lastmod>${escapeHtml(latestAll)}</lastmod>`:""}</url>`).join("");
   const cats=categoryPaths.map(path=>`<url><loc>https://buysell.best/category/${path}</loc>${latestByCategory[path]?`<lastmod>${escapeHtml(latestByCategory[path])}</lastmod>`:""}</url>`).join("");
   return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${dynamic}</urlset>`;
