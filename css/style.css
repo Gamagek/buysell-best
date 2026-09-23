@@ -121,3 +121,133 @@
   .market-pulse-card{width:205px}
   .market-pulse-note{font-size:.76rem}
 }
+
+/* PRO VIP Product Analyzer */
+.vip-analyzer-section{padding-top:18px}
+.vip-analyzer-card{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:28px;
+  padding:28px;
+  border-radius:26px;
+  overflow:hidden;
+  color:#fff;
+  background:linear-gradient(120deg,#111827,#1e40af,#7c3aed,#0891b2);
+  background-size:300% 300%;
+  animation:vipGradientMove 10s ease infinite;
+  box-shadow:0 22px 55px rgba(15,23,42,.18);
+}
+.vip-analyzer-card:before,.vip-analyzer-card:after{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  border-radius:50%;
+  opacity:.5;
+  filter:blur(2px);
+}
+.vip-analyzer-card:before{width:220px;height:220px;right:-70px;top:-100px;background:rgba(255,255,255,.16)}
+.vip-analyzer-card:after{width:180px;height:180px;left:38%;bottom:-120px;background:rgba(6,182,212,.23)}
+.vip-analyzer-copy{position:relative;z-index:1;max-width:760px}
+.vip-analyzer-copy .eyebrow{color:#dbeafe}
+.vip-analyzer-copy h2{font-size:clamp(1.45rem,3vw,2.1rem);margin:0 0 8px;letter-spacing:-.045em}
+.vip-analyzer-copy p{margin:0;color:#e2e8f0;max-width:720px}
+.vip-analyzer-points{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}
+.vip-analyzer-points span{padding:7px 10px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.08);font-size:.76rem;font-weight:800}
+.vip-inline-button{
+  position:relative;
+  z-index:1;
+  flex:none;
+  border:0;
+  border-radius:16px;
+  padding:14px 18px;
+  color:#111827;
+  background:#fff;
+  font-weight:900;
+  cursor:pointer;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.vip-inline-button:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(0,0,0,.22)}
+@keyframes vipGradientMove{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+
+.vip-launcher{
+  position:fixed;
+  left:50%;
+  bottom:26px;
+  transform:translateX(-50%);
+  z-index:99999;
+  padding:17px 30px;
+  border-radius:999px;
+  color:#fff;
+  font-size:16px;
+  font-weight:900;
+  letter-spacing:-.01em;
+  cursor:pointer;
+  white-space:nowrap;
+  background:linear-gradient(120deg,#2563eb,#9333ea,#06b6d4,#2563eb);
+  background-size:300% 300%;
+  animation:vipGradientMove 6s ease infinite;
+  box-shadow:0 0 30px rgba(37,99,235,.42),0 10px 28px rgba(15,23,42,.2);
+  transition:opacity .35s ease,transform .35s ease,box-shadow .25s ease;
+}
+.vip-launcher:hover{box-shadow:0 0 40px rgba(37,99,235,.55),0 14px 34px rgba(15,23,42,.24)}
+.vip-launcher:focus-visible,.vip-inline-button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.vip-launcher.hideButton{opacity:0;transform:translateX(-50%) scale(.25);pointer-events:none}
+.vip-window{
+  display:none;
+  position:fixed;
+  left:3%;
+  top:3%;
+  width:94%;
+  height:94vh;
+  z-index:99998;
+  background:#fff;
+  border-radius:25px;
+  overflow:hidden;
+  box-shadow:0 25px 90px rgba(0,0,0,.65);
+  transform:scale(.72);
+  opacity:0;
+  transition:.35s ease;
+}
+.vip-window.active{transform:scale(1);opacity:1}
+.vip-header{
+  height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:0 18px;
+  color:#fff;
+  background:linear-gradient(90deg,#111827,#1e40af,#06b6d4);
+  font-weight:900;
+  cursor:move;
+}
+.vip-header.is-moving{cursor:grabbing}
+#closeVIP{
+  width:36px;
+  height:36px;
+  border:0;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  background:rgba(255,255,255,.1);
+  font-size:27px;
+  line-height:1;
+  cursor:pointer;
+}
+#closeVIP:hover{background:rgba(255,255,255,.2)}
+#vipFrame{width:100%;height:calc(100% - 54px);border:0;display:block}
+.vip-modal-open{overflow:hidden}
+@media(max-width:760px){
+  .vip-analyzer-card{align-items:flex-start;flex-direction:column;padding:22px}
+  .vip-inline-button{width:100%}
+}
+@media(max-width:600px){
+  .vip-launcher{bottom:18px;padding:14px 22px;font-size:14px}
+  .vip-window{left:0;top:0;width:100%;height:100dvh;border-radius:0}
+  .vip-header{height:56px;padding:0 14px}
+  #vipFrame{height:calc(100% - 56px)}
+}
