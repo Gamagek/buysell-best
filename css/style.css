@@ -251,3 +251,13 @@
   .vip-header{height:56px;padding:0 14px}
   #vipFrame{height:calc(100% - 56px)}
 }
+
+.vip-frame-wrap{position:relative;width:100%;height:calc(100% - 54px);background:#f8fafc}
+.vip-frame-wrap #vipFrame{height:100%}
+.vip-frame-fallback{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;background:rgba(248,250,252,.97);z-index:2}
+.vip-frame-fallback[hidden]{display:none}
+.vip-frame-fallback strong{font-size:1.05rem}
+.vip-frame-fallback p{color:var(--muted);margin:6px 0 14px}
+@media(max-width:600px){
+  .vip-frame-wrap{height:calc(100% - 56px)}
+}
