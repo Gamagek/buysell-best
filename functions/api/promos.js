@@ -1,4 +1,4 @@
-import { ensurePromoTable, fallbackPromos } from "../../lib/promo-sync.js";
+import { fallbackPromos } from "../../lib/promo-sync.js";
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -15,6 +15,25 @@ function cleanCountry(value) {
   return /^[A-Z]{2}$/.test(s) ? s : "";
 }
 
+function responseItems(items) {
+  return (items || []).map(x => ({
+    id: x.id,
+    store: x.store,
+    title: x.title,
+    code: x.code || "",
+    promoType: x.promo_type || x.promoType || "deal",
+    valueText: x.value_text || x.valueText || "",
+    url: x.url,
+    country: x.country || "GLOBAL",
+    terms: x.terms || "",
+    startsAt: x.starts_at || x.startsAt || "",
+    expiresAt: x.expires_at || x.expiresAt || "",
+    source: x.source || "",
+    verifiedAt: x.verified_at || x.verifiedAt || "",
+    updatedAt: x.updated_at || x.updatedAt || ""
+  }));
+}
+
 export async function onRequestGet({ request, env }) {
   const url = new URL(request.url);
   const requestedCountry = cleanCountry(url.searchParams.get("country"));
@@ -24,6 +43,7 @@ export async function onRequestGet({ request, env }) {
   if (!env?.DB) {
     return json({
       ok: true,
+      country,
       items: fallbackPromos().slice(0, limit),
       syncedAt: null,
       sourceMode: "fallback"
@@ -31,8 +51,8 @@ export async function onRequestGet({ request, env }) {
   }
 
   try {
-    await ensurePromoTable(env);
-
+    // Do not create tables during a normal page request. The scheduled sync
+    // creates the table; a missing table falls back instantly instead of hanging.
     const result = await env.DB.prepare(
       "SELECT id,store,title,code,promo_type,value_text,url,country,terms,starts_at,expires_at,source,verified_at,updated_at " +
       "FROM promo_codes " +
@@ -42,29 +62,14 @@ export async function onRequestGet({ request, env }) {
       "LIMIT ?"
     ).bind(country, limit).all();
 
-    const items = (result.results || []).map(x => ({
-      id: x.id,
-      store: x.store,
-      title: x.title,
-      code: x.code || "",
-      promoType: x.promo_type,
-      valueText: x.value_text || "",
-      url: x.url,
-      country: x.country || "GLOBAL",
-      terms: x.terms || "",
-      startsAt: x.starts_at || "",
-      expiresAt: x.expires_at || "",
-      source: x.source,
-      verifiedAt: x.verified_at,
-      updatedAt: x.updated_at
-    }));
+    const items = responseItems(result.results || []);
 
     return json({
       ok: true,
       country,
-      items,
+      items: items.length ? items : fallbackPromos().slice(0, limit),
       syncedAt: items[0]?.updatedAt || null,
-      sourceMode: "d1"
+      sourceMode: items.length ? "d1" : "fallback"
     });
   } catch (error) {
     return json({
@@ -81,6 +86,9 @@ export async function onRequestGet({ request, env }) {
 export async function onRequestOptions() {
   return new Response(null, {
     status: 204,
-    headers: { "Access-Control-Allow-Methods": "GET,OPTIONS" }
+    headers: {
+      "Access-Control-Allow-Methods": "GET,OPTIONS",
+      "Access-Control-Allow-Origin": "*"
+    }
   });
 }
