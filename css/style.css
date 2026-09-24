@@ -261,3 +261,21 @@
 @media(max-width:600px){
   .vip-frame-wrap{height:calc(100% - 56px)}
 }
+
+/* Website shortcut + browser alerts toolbar */
+.browser-tools-bar{background:linear-gradient(90deg,#f8fbff,#f5f3ff,#f0fdff);border-bottom:1px solid #e2e8f0}
+.browser-tools-inner{min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:10px 0}
+.browser-tools-copy{display:flex;flex-direction:column;gap:1px;min-width:0}
+.browser-tools-copy strong{font-size:.88rem;letter-spacing:-.015em}
+.browser-tools-copy span{color:#64748b;font-size:.76rem}
+.browser-tools-actions{display:flex;gap:9px;flex-wrap:wrap;justify-content:flex-end}
+.browser-tool-button{border:1px solid #cbd5e1;border-radius:13px;padding:10px 13px;background:#fff;color:#0f172a;font-size:.79rem;font-weight:850;cursor:pointer;box-shadow:0 4px 14px rgba(15,23,42,.05);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+.browser-tool-button:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 22px rgba(15,23,42,.08);border-color:#94a3b8}
+.browser-tool-button:disabled{cursor:default;opacity:.82}
+.browser-tool-button.is-done{background:#ecfdf5;border-color:#a7f3d0;color:#047857}
+.shortcut-tool{background:#fff}
+.notify-tool{background:linear-gradient(135deg,#eef2ff,#ecfeff);border-color:#c7d2fe}
+.site-tools-toast{position:fixed;left:50%;bottom:88px;transform:translateX(-50%);z-index:100000;max-width:min(560px,calc(100% - 24px));padding:13px 16px;border:1px solid #cbd5e1;border-radius:14px;background:#0f172a;color:#fff;box-shadow:0 18px 45px rgba(15,23,42,.28);font-size:.82rem;font-weight:700;text-align:center}
+.site-tools-toast.success{background:#065f46;border-color:#34d399}.site-tools-toast.error{background:#7f1d1d;border-color:#fca5a5}
+@media(max-width:720px){.browser-tools-inner{align-items:stretch;flex-direction:column}.browser-tools-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}.browser-tool-button{width:100%;min-height:44px}.browser-tools-copy span{font-size:.72rem}}
+@media(max-width:470px){.browser-tools-actions{grid-template-columns:1fr}.site-tools-toast{bottom:76px}}
