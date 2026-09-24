@@ -279,3 +279,29 @@
 .site-tools-toast.success{background:#065f46;border-color:#34d399}.site-tools-toast.error{background:#7f1d1d;border-color:#fca5a5}
 @media(max-width:720px){.browser-tools-inner{align-items:stretch;flex-direction:column}.browser-tools-actions{width:100%;display:grid;grid-template-columns:1fr 1fr}.browser-tool-button{width:100%;min-height:44px}.browser-tools-copy span{font-size:.72rem}}
 @media(max-width:470px){.browser-tools-actions{grid-template-columns:1fr}.site-tools-toast{bottom:76px}}
+
+/* Live promo code, coupon and voucher wall */
+.promo-wall-panel{margin-top:14px}
+.promo-loading,.promo-empty{padding:13px 15px;border:1px solid var(--line);border-radius:16px;background:#fff;color:var(--muted);font-size:.8rem}
+.promo-wall-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin:14px 0}
+.promo-wall-head h2{margin:0;font-size:1.2rem;letter-spacing:-.035em}
+.promo-wall-head p{margin:4px 0 0;color:var(--muted);font-size:.72rem}
+.promo-sync-note{font-size:.68rem;color:var(--muted);white-space:nowrap}
+.promo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.promo-card{border:1px solid var(--line);border-radius:16px;background:linear-gradient(145deg,#fff,#f8fbff);padding:13px;box-shadow:0 6px 18px rgba(15,23,42,.05)}
+.promo-top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.promo-store{font-size:.72rem;font-weight:900;color:var(--accent)}
+.promo-type{font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;padding:4px 7px;border-radius:999px;background:#eef2ff;color:#4338ca}
+.promo-card h3{font-size:.88rem;line-height:1.28;margin:9px 0 6px}
+.promo-value{font-size:1.05rem;font-weight:950;color:#0f172a;margin-bottom:9px}
+.promo-code-row{display:flex;gap:6px;align-items:center;margin:8px 0}
+.promo-code-row code{display:block;flex:1;min-width:0;padding:10px;border:1px dashed #94a3b8;border-radius:10px;background:#f8fafc;color:#0f172a;font:900 .85rem ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.04em;text-align:center;overflow:hidden;text-overflow:ellipsis}
+.promo-copy{border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:9px 10px;font-size:.72rem;font-weight:850;cursor:pointer}
+.promo-voucher-label{padding:10px;border:1px solid #bae6fd;border-radius:10px;background:#ecfeff;color:#0e7490;font-size:.76rem;font-weight:850;margin:8px 0}
+.promo-meta{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:.62rem;margin:7px 0}
+.promo-card details{margin-top:7px}
+.promo-card summary{cursor:pointer;color:#475569;font-size:.68rem;font-weight:800}
+.promo-card details p{color:var(--muted);font-size:.67rem;line-height:1.45;margin:5px 0}
+.promo-open{display:inline-flex;margin-top:9px;color:var(--accent);font-size:.72rem;font-weight:900}
+@media(max-width:900px){.promo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.promo-wall-head{align-items:flex-start;flex-direction:column}.promo-sync-note{white-space:normal}.promo-grid{grid-template-columns:1fr}}
