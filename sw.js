@@ -1,4 +1,4 @@
-const CACHE_NAME = "buysell-best-shell-v1";
+const CACHE_NAME = "buysell-best-shell-v2";
 const SHELL = [
   "/",
   "/index.html",
@@ -7,6 +7,7 @@ const SHELL = [
   "/data/global-deals.js",
   "/data/market-timeline.js",
   "/site-tools.js",
+  "/js/promo-wall.js",
   "/manifest.webmanifest",
   "/icons/buysell-192.svg",
   "/icons/buysell-512.svg"
