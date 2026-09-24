@@ -1,5 +1,6 @@
 import { DEAL_CATEGORIES, SEASONAL_PAGES, DEAL_HUB_LINKS } from "./lib/deal-seo.js";
 import { searchEbay } from "./functions/api/deals.js";
+import { syncPromos } from "./lib/promo-sync.js";
 
 const handlers = {
   health: () => import("./functions/api/health.js"),
@@ -11,6 +12,7 @@ const handlers = {
   currency: () => import("./functions/api/currency.js"),
   privacyReset: () => import("./functions/api/privacy-reset.js"),
   deals: () => import("./functions/api/deals.js"),
+  promos: () => import("./functions/api/promos.js"),
   listings: () => import("./functions/api/listings.js"),
   relatedDeals: () => import("./functions/api/related-deals.js")
 };
@@ -25,6 +27,7 @@ function route(pathname) {
   if (pathname === "/api/currency") return "currency";
   if (pathname === "/api/privacy-reset") return "privacyReset";
   if (pathname === "/api/deals") return "deals";
+  if (pathname === "/api/promos") return "promos";
   if (pathname === "/api/listings") return "listings";
   if (pathname === "/api/deals/related") return "relatedDeals";
   return null;
@@ -450,6 +453,10 @@ async function serveAsset(request, env) {
 }
 
 export default {
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(syncPromos(env).catch(() => {}));
+  },
+
   async fetch(request, env, ctx) {
     const seoResponse=await serveSeoPage(request,env);
     if(seoResponse)return seoResponse;
