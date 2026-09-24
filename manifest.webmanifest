@@ -1,0 +1,14 @@
+{
+  "name": "BuySell.Best",
+  "short_name": "BuySell.Best",
+  "description": "Buy and sell items online with BuySell.Best.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "icons": [
+    {"src":"/icons/buysell-192.svg","sizes":"192x192","type":"image/svg+xml","purpose":"any maskable"},
+    {"src":"/icons/buysell-512.svg","sizes":"512x512","type":"image/svg+xml","purpose":"any maskable"}
+  ]
+}
