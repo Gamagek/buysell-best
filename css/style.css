@@ -305,3 +305,10 @@
 .promo-open{display:inline-flex;margin-top:9px;color:var(--accent);font-size:.72rem;font-weight:900}
 @media(max-width:900px){.promo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.promo-wall-head{align-items:flex-start;flex-direction:column}.promo-sync-note{white-space:normal}.promo-grid{grid-template-columns:1fr}}
+
+
+/* Low-interruption ad slot */
+.site-ad-banner{width:100%;max-width:420px;margin:18px auto 0;text-align:center;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+.site-ad-label{font-size:10px;line-height:14px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.site-ad-slot{width:320px;height:50px;min-width:320px;min-height:50px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+@media(max-width:360px){.site-ad-banner{max-width:100%;overflow:hidden}.site-ad-slot-320x50{transform:scale(.9);transform-origin:top center;margin-bottom:-5px}}
