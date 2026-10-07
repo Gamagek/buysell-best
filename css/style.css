@@ -307,6 +307,11 @@
 @media(max-width:620px){.promo-wall-head{align-items:flex-start;flex-direction:column}.promo-sync-note{white-space:normal}.promo-grid{grid-template-columns:1fr}}
 
 
+/* 160x300 mini-rectangle ads: keep the complete creative visible */
+.site-ad-160x300{width:160px;margin:24px auto;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+.site-ad-slot-160x300{width:160px;height:300px;min-width:160px;min-height:300px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+@media(max-width:420px){.site-ad-160x300{max-width:100%;overflow:visible}.site-ad-slot-160x300{transform:scale(.9);transform-origin:top center;margin-bottom:-30px}}
+
 /* Low-interruption ad slot */
 .site-ad-banner{width:100%;max-width:420px;margin:18px auto 0;text-align:center;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
 .site-ad-label{font-size:10px;line-height:14px;color:#64748b;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
