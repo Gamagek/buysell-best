@@ -72,6 +72,8 @@ function renderRelated(target,data){
 }
 async function renderGlobalDeals(container){
   if(!container)return;
+  // Preserve the crawlable curated product tile when the remote feed renders.
+  const curated=container.querySelector("[data-curated-products]")?.outerHTML||"";
   const profile=window.__bsbProfile||await getProfile();
   const isDealsPage=location.pathname.endsWith("/deals.html");
   const feedLimit=isDealsPage?48:8;
@@ -80,10 +82,10 @@ async function renderGlobalDeals(container){
     const status=live.temporary
       ? '<div class="marketplace-status"><strong>Temporary universal product catalog</strong><span>Prices and images are catalog-preview data for now. Use the store buttons to check the current seller price. Approved live feeds can replace this layer later.</span></div>'
       : '<div class="marketplace-status"><strong>Live marketplace deals</strong><span>Current marketplace items are shown from the connected live feed.</span></div>';
-    container.innerHTML=status+(live.items||[]).map(renderDealCard).join("");
+    container.innerHTML=curated+status+(live.items||[]).map(renderDealCard).join("");
     if(!isDealsPage){container.innerHTML+='<div class="marketplace-more"><a class="button button-secondary" href="/deals/">View all deal hubs →</a></div>';}
   }else{
-    container.innerHTML='<div class="marketplace-status"><strong>Marketplace preview</strong><span>Temporary catalog data could not be loaded right now.</span></div>'+FALLBACK_DEALS.map(renderDealCard).join("");
+    container.innerHTML=curated+'<div class="marketplace-status"><strong>Marketplace preview</strong><span>Temporary catalog data could not be loaded right now.</span></div>'+FALLBACK_DEALS.map(renderDealCard).join("");
   }
   container.addEventListener("click",async event=>{
     const button=event.target.closest("[data-deal-select]");

@@ -1,6 +1,29 @@
 import { DEAL_CATEGORIES, SEASONAL_PAGES, DEAL_HUB_LINKS } from "./lib/deal-seo.js";
 import { searchEbay } from "./functions/api/deals.js";
 import { syncPromos } from "./lib/promo-sync.js";
+import { AFFILIATE_PRODUCTS, findProduct, featuredCarouselItems, productPath, renderSpotlight, renderInitialCarousel, renderMiniProductTile, renderProductPage, renderProductsIndex, productSitemapEntries } from "./lib/affiliate-products.js";
+
+const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js" defer></script>';
+
+function withSponsoredSupport(response) {
+  if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) return response;
+  return new HTMLRewriter().on("head", {element(element) {element.append(sponsoredHead, {html:true});}}).transform(response);
+}
+
+async function renderAffiliateHome(request, env) {
+  const response = await env.ASSETS.fetch(request);
+  if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) return response;
+  const rewriter = new HTMLRewriter()
+    .on("#affiliate-product-spotlight", {element(element) {element.setInnerContent(renderSpotlight(), {html:true});}})
+    .on("#current-listings-track", {element(element) {element.setInnerContent(AFFILIATE_PRODUCTS.map(renderInitialCarousel).join(""), {html:true});}})
+    .on("#global-deals", {element(element) {element.setInnerContent('<div data-curated-products>'+AFFILIATE_PRODUCTS.map(renderMiniProductTile).join("")+'</div>', {html:true});}})
+    .on("head", {element(element) {element.append('<script type="application/json" id="affiliate-products-data">'+jsonLd(featuredCarouselItems())+'</script>', {html:true});}});
+  const headers = new Headers(response.headers);
+  headers.set("cache-control", "public, max-age=0, s-maxage=300, must-revalidate");
+  headers.delete("etag");
+  headers.delete("content-length");
+  return rewriter.transform(new Response(response.body, {status:response.status, headers}));
+}
 
 const handlers = {
   health: () => import("./functions/api/health.js"),
@@ -349,18 +372,31 @@ async function renderSitemap(env){
   const dealPaths=(env?.EBAY_CLIENT_ID&&env?.EBAY_CLIENT_SECRET) ? ["/deals/",...DEAL_CATEGORIES.map(x=>"/deals/"+x.slug),...SEASONAL_PAGES.map(x=>"/seasonal/"+x.slug)] : [];
   const urls=staticPaths.map(path=>`<url><loc>https://buysell.best${path}</loc>${path==="/"&&latestAll?`<lastmod>${escapeHtml(latestAll)}</lastmod>`:""}</url>`).join("");
   const cats=categoryPaths.map(path=>`<url><loc>https://buysell.best/category/${path}</loc>${latestByCategory[path]?`<lastmod>${escapeHtml(latestByCategory[path])}</lastmod>`:""}</url>`).join("");
-  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${dynamic}</urlset>`;
+  const products = productSitemapEntries();
+  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${dynamic}</urlset>`;
 }
 
 async function serveSeoPage(request,env) {
   const url=new URL(request.url);
   const pathname=url.pathname;
 
-  if (request.method !== "GET") return null;
+  if (request.method !== "GET" && request.method !== "HEAD") return null;
+
+  if (pathname === "/" || pathname === "/index.html") return renderAffiliateHome(request,env);
+  if (pathname === "/products") return Response.redirect("https://buysell.best/products/",301);
+  if (pathname === "/products/") return new Response(renderProductsIndex(), {headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=60, s-maxage=300"}});
+  const productMatch = pathname.match(/^\/products\/([^/]+)\/?$/);
+  if (productMatch) {
+    const product = findProduct(productMatch[1]);
+    if (!product) return new Response("Product not found", {status:404,headers:{"x-robots-tag":"noindex","content-type":"text/plain; charset=UTF-8"}});
+    if (pathname !== productPath(product)) return Response.redirect("https://buysell.best"+productPath(product),301);
+    return new Response(renderProductPage(product), {headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=60, s-maxage=300","x-content-type-options":"nosniff","referrer-policy":"strict-origin-when-cross-origin"}});
+  }
+  if (pathname.startsWith("/products/")) return new Response("Product not found", {status:404,headers:{"x-robots-tag":"noindex"}});
+  const country=String(request.headers.get("CF-IPCountry")||"US").toUpperCase().slice(0,2);
 
   if(pathname === "/deals.html") return Response.redirect("https://buysell.best/deals/",301);
   if(pathname === "/deals/"){
-    const country=String(request.headers.get("CF-IPCountry")||"US").toUpperCase().slice(0,2);
     const live=await getLiveDealHubData(env,"popular",country);
     return new Response(renderDealHubPage({slug:"",title:"Global Deals & Price Discovery",intro:"Discover current marketplace offers across phones, laptops, gaming, home, fashion and more. Compare source results and verify the final seller price before buying."},live.items,live),{headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=300, s-maxage=600, stale-while-revalidate=900"}});
   }
@@ -459,7 +495,11 @@ export default {
 
   async fetch(request, env, ctx) {
     const seoResponse=await serveSeoPage(request,env);
-    if(seoResponse)return seoResponse;
+    if(seoResponse){
+      if(request.method === "HEAD") return new Response(null, {status:seoResponse.status,headers:seoResponse.headers});
+      const path = new URL(request.url).pathname;
+      return path === "/" || path === "/index.html" ? seoResponse : withSponsoredSupport(seoResponse);
+    }
 
     const url = new URL(request.url);
     const name = route(url.pathname);

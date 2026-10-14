@@ -7,3 +7,17 @@ worker.js
 .github/
 .git/
 README.md
+test/
+node_modules/
+package.json
+package-lock.json
+.test-build/**
+.wrangler/**
+.git/**
+.github/**
+functions/**
+db/**
+lib/**
+test/**
+node_modules/**
+.gitignore

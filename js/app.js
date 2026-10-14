@@ -46,6 +46,10 @@ function displayText(value,fallback=""){
   const s=String(value??"").trim();
   return s&&s.toLowerCase()!=="null"&&s.toLowerCase()!=="undefined"?s:fallback;
 }
+function curatedCarouselItems(){
+  try{return JSON.parse(document.getElementById("affiliate-products-data")?.textContent||"[]")}
+  catch(_){return []}
+}
 function carouselCard(item,index){
   const image=item.image||item.image_url||"";
   const title=displayText(item.title,"Global product");
@@ -53,38 +57,44 @@ function carouselCard(item,index){
   const condition=displayText(item.condition,"Online offer");
   const url=displayText(item.url,"#");
   const media=image
-    ? '<img class="carousel-image" src="'+escapeHtml(image)+'" alt="" loading="'+(index<3?"eager":"lazy")+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'block\';"><span class="carousel-emoji" style="display:none">🛍️</span>'
+    ? '<img class="carousel-image" src="'+escapeHtml(image)+'" alt="'+escapeHtml(item.imageAlt||title)+'" width="960" height="960" loading="'+(index<3?"eager":"lazy")+'">'
     : '<span class="carousel-emoji">🛍️</span>';
-  return '<article class="carousel-card" data-carousel-index="'+index+'"><div class="carousel-card-inner"><a href="'+escapeHtml(url)+'" target="_blank" rel="noopener noreferrer nofollow"><div class="carousel-visual">'+media+'<span class="carousel-badge">GLOBAL MARKET</span></div><div class="carousel-body"><span class="carousel-tag">'+escapeHtml(category)+'</span><span class="carousel-title">'+escapeHtml(title)+'</span><span class="carousel-condition">'+escapeHtml(condition)+'</span><div class="carousel-price smart-price" data-price="'+Number(item.price||0)+'" data-currency="'+escapeHtml(item.currency||"USD")+'">'+money(Number(item.price||0),item.currency||"USD")+'</div></div></a></div></article>';
+  const featured=!!item.featuredAffiliate;
+  const price=featured?escapeHtml(item.priceLabel):money(Number(item.price||0),item.currency||"USD");
+  const linkAttrs=featured?' data-sponsored-navigation':' target="_blank" rel="noopener noreferrer nofollow"';
+  const priceAttrs=featured?'':' smart-price';
+  return '<article class="carousel-card'+(featured?' affiliate-carousel-card':'')+'" data-carousel-index="'+index+'"><div class="carousel-card-inner"><a href="'+escapeHtml(url)+'"'+linkAttrs+'><div class="carousel-visual">'+media+'<span class="carousel-badge">'+(featured?'ALIEXPRESS PICK':'GLOBAL MARKET')+'</span></div><div class="carousel-body"><span class="carousel-tag">'+escapeHtml(category)+'</span><span class="carousel-title">'+escapeHtml(title)+'</span><span class="carousel-condition">'+escapeHtml(condition)+'</span><div class="carousel-price'+priceAttrs+'" data-price="'+Number(item.price||0)+'" data-currency="'+escapeHtml(item.currency||"USD")+'">'+price+'</div></div></a>'+(featured?'<a class="offer-button carousel-buy" href="'+escapeHtml(item.affiliateUrl)+'" rel="sponsored noopener noreferrer" data-sponsored-navigation>Buy now · check price ↗</a>':'')+'</div></article>';
 }
 function setupCurrentListingsCarousel(items=[]){
   const root=document.querySelector("#current-listings-carousel"),track=document.querySelector("#current-listings-track"),dots=document.querySelector("#current-listings-dots"),prev=document.querySelector(".carousel-prev"),next=document.querySelector(".carousel-next"),pause=document.querySelector("#current-listings-pause");
   if(!root||!track)return;
+  root.__carouselCleanup?.();
   const valid=(items||[]).filter(x=>x&&String(x.title||"").trim()&&Number.isFinite(Number(x.price))&&Number(x.price)>0).slice(0,12);
   if(!valid.length){track.innerHTML='<div class="carousel-empty"><strong>No current listings yet.</strong><span>Global market offers will appear here automatically.</span></div>';if(dots)dots.innerHTML="";return;}
   track.innerHTML=valid.map(carouselCard).join("");
-  const cards=[...track.querySelectorAll(".carousel-card")];let current=0,playing=true,timer=null,startX=0,dragging=false;
+  const controller=new AbortController(),options={signal:controller.signal};
+  const cards=[...track.querySelectorAll(".carousel-card")];let current=0,playing=!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches,timer=null,startX=0,dragging=false,suppressClickUntil=0;
   function paint(){
     const n=cards.length;
     cards.forEach((card,i)=>{let d=i-current;if(d>n/2)d-=n;if(d<-n/2)d+=n;const abs=Math.abs(d);const x=d*Math.min(270,Math.max(190,track.clientWidth*.30));const z=abs===0?60:Math.max(0,40-abs*15);const scale=abs===0?1:Math.max(.72,1-abs*.09);const opacity=abs>2?.12:Math.max(.32,1-abs*.25);card.style.transform="translateX(calc(-50% + "+x+"px)) translateZ("+z+"px) rotateY("+(d*-18)+"deg) scale("+scale+")";card.style.opacity=opacity;card.style.zIndex=String(20-abs);card.classList.toggle("is-active",d===0);card.classList.toggle("is-dragging",dragging);});
-    if(dots)dots.innerHTML=cards.map((_,i)=>'<button type="button" class="'+(i===current?"is-active":"")+'" data-carousel-dot="'+i+'" aria-label="Show listing '+(i+1)+'"></button>').join("");
+    if(dots)dots.innerHTML=cards.map((_,i)=>'<button type="button" class="carousel-dot '+(i===current?"is-active":"")+'" data-carousel-dot="'+i+'" aria-label="Show listing '+(i+1)+'"></button>').join("");
   }
   function go(step){current=(current+step+cards.length)%cards.length;paint();}
   function stop(){if(timer){clearInterval(timer);timer=null;}}
   function start(){stop();if(!playing||cards.length<2)return;timer=setInterval(()=>go(1),3800);}
-  prev?.addEventListener("click",()=>{go(-1);start()});next?.addEventListener("click",()=>{go(1);start()});
-  pause?.addEventListener("click",()=>{playing=!playing;pause.textContent=playing?"Ⅱ Pause":"▶ Play";pause.setAttribute("aria-pressed",String(!playing));start();});
-  dots?.addEventListener("click",e=>{const b=e.target.closest("[data-carousel-dot]");if(!b)return;current=Number(b.dataset.carouselDot)||0;paint();start();});
+  root.__carouselCleanup=()=>{stop();controller.abort();};
+  prev?.addEventListener("click",()=>{go(-1);start()},options);next?.addEventListener("click",()=>{go(1);start()},options);
+  pause?.addEventListener("click",()=>{playing=!playing;pause.textContent=playing?"Ⅱ Pause":"▶ Play";pause.setAttribute("aria-pressed",String(!playing));start();},options);
+  dots?.addEventListener("click",e=>{const b=e.target.closest("[data-carousel-dot]");if(!b)return;current=Number(b.dataset.carouselDot)||0;paint();start();},options);
   const viewport=root.querySelector(".carousel-viewport");
-  viewport?.addEventListener("pointerdown",e=>{dragging=true;startX=e.clientX;viewport.setPointerCapture?.(e.pointerId);stop();paint();});
-  viewport?.addEventListener("pointerup",e=>{if(!dragging)return;const dx=e.clientX-startX;dragging=false;if(Math.abs(dx)>45)go(dx<0?1:-1);paint();start();});
-  viewport?.addEventListener("pointercancel",()=>{dragging=false;paint();start()});
-  root.addEventListener("mouseenter",stop);root.addEventListener("mouseleave",start);root.addEventListener("focusin",stop);root.addEventListener("focusout",e=>{if(!root.contains(e.relatedTarget))start()});
-  if(window.matchMedia?.("(prefers-reduced-motion: reduce)").matches)playing=false;
-  paint();
-  requestAnimationFrame(paint);
-  decoratePrices(window.__bsbProfile||{currency:"USD"});
-  start();
+  // Do not capture an ordinary tap: capturing on the viewport steals link clicks.
+  viewport?.addEventListener("pointerdown",e=>{dragging=true;startX=e.clientX;stop();},options);
+  viewport?.addEventListener("pointerup",e=>{if(!dragging)return;const dx=e.clientX-startX;dragging=false;if(Math.abs(dx)>45){suppressClickUntil=Date.now()+400;go(dx<0?1:-1);}paint();start();},options);
+  viewport?.addEventListener("pointercancel",()=>{dragging=false;paint();start()},options);
+  root.addEventListener("click",e=>{if(Date.now()<suppressClickUntil){e.preventDefault();e.stopPropagation();}},{...options,capture:true});
+  root.addEventListener("mouseenter",stop,options);root.addEventListener("mouseleave",start,options);root.addEventListener("focusin",stop,options);root.addEventListener("focusout",e=>{if(!root.contains(e.relatedTarget))start()},options);
+  if(pause){pause.textContent=playing?"Ⅱ Pause":"▶ Play";pause.setAttribute("aria-pressed",String(!playing));}
+  paint();requestAnimationFrame(paint);decoratePrices(window.__bsbProfile||{currency:"USD"});start();
 }
 function hideNullValues(root=document){
   const clean=node=>{
@@ -125,57 +135,33 @@ async function fetchJson(url,ms=4500){
   finally{clearTimeout(timer)}
 }
 async function loadCurrentListingsCarousel(){
-  const root=document.querySelector("#current-listings-carousel");
-  const track=document.querySelector("#current-listings-track");
+  const root=document.querySelector("#current-listings-carousel"),track=document.querySelector("#current-listings-track");
   if(!root||!track)return;
-
-  track.innerHTML='<div class="carousel-empty"><strong>Loading current listings…</strong><span>Checking BuySell.Best and the global market.</span></div>';
-
-  const normalizeLocal=d=>(d?.items||[]).filter(x=>x&&x.status==="active"&&displayText(x.title)&&Number(x.price)>0).map(x=>({
-    ...x,image:displayText(x.image||x.image_url,""),url:displayText(x.url,"ad.html?slug="+encodeURIComponent(x.slug||""))
-  }));
+  const featured=curatedCarouselItems();
+  if(featured.length)setupCurrentListingsCarousel(featured);
+  else track.innerHTML='<div class="carousel-empty"><strong>Loading current listings…</strong><span>Checking BuySell.Best and the global market.</span></div>';
+  const normalizeLocal=d=>(d?.items||[]).filter(x=>x&&x.status==="active"&&displayText(x.title)&&Number(x.price)>0).map(x=>({...x,image:displayText(x.image||x.image_url,""),url:displayText(x.url,"ad.html?slug="+encodeURIComponent(x.slug||""))}));
   const normalizeGlobal=d=>(d?.items||[]).filter(x=>x&&displayText(x.title)&&Number(x.price)>0).map(x=>({...x,image:displayText(x.image||x.image_url,"")}));
   const show=(items,note)=>{
     if(!items.length)return false;
-    setupCurrentListingsCarousel(items);
+    setupCurrentListingsCarousel([...featured,...items.filter(item=>!featured.some(product=>product.id===item.id))]);
     const n=document.querySelector(".carousel-note");
-    if(n&&note)n.textContent=note;
+    if(n)n.textContent=(featured.length?"Featured AliExpress offer: shared reference price; check the seller. ":"")+(note||"");
     return true;
   };
-
-  // Fetch local and global in parallel. A slow local database must not block the carousel.
   const localPromise=fetchJson("/api/listings?limit=12",2500).then(normalizeLocal);
   const globalPromise=fetchJson("/api/deals?query=popular&limit=12",4500).then(d=>({items:normalizeGlobal(d),temporary:!!d?.temporary}));
-
-  const localFirst=await Promise.race([
-    localPromise.then(items=>({kind:"local",items})),
-    new Promise(resolve=>setTimeout(()=>resolve({kind:"timeout",items:[]}),900))
-  ]);
+  const localFirst=await Promise.race([localPromise.then(items=>({kind:"local",items})),new Promise(resolve=>setTimeout(()=>resolve({kind:"timeout",items:[]}),900))]);
   if(localFirst.kind==="local"&&show(localFirst.items,"Live BuySell.Best listings — prices come from the listing records."))return;
-
   const globalResult=await globalPromise;
-  if(globalResult&&show(globalResult.items,globalResult.temporary
-    ?"No local listings yet — showing global market catalog media. Prices can change; verify the seller before buying."
-    :"No local listings yet — showing current global market offers and their returned prices."))return;
-
-  // Final direct media fallback when the Worker marketplace feed is temporarily unavailable.
+  if(globalResult&&show(globalResult.items,globalResult.temporary?"Global catalog preview; verify seller prices.":"Current global market offers and returned prices."))return;
+  // A curated product remains usable even when every remote feed is unavailable.
+  if(featured.length)return;
   const direct=await fetchJson("https://dummyjson.com/products?limit=12",4500);
-  const directItems=(direct?.products||[]).map(x=>({
-    id:"global-"+x.id,
-    title:displayText(x.title,"Product"),
-    category:displayText(x.category,"Global Market"),
-    condition:"Online offer",
-    price:Number(x.price)||0,
-    currency:"USD",
-    image:displayText(x.thumbnail||x.images?.[0],""),
-    url:"https://www.google.com/search?tbm=shop&q="+encodeURIComponent(displayText(x.title,"product"))
-  })).filter(x=>x.image&&x.price>0);
-  if(show(directItems,"No local listings yet — showing global market catalog media. Prices can change; verify the seller before buying."))return;
-
-  // If local D1 responds after the global attempt and has real listings, use them.
+  const directItems=(direct?.products||[]).map(x=>({id:"global-"+x.id,title:displayText(x.title,"Product"),category:displayText(x.category,"Global Market"),condition:"Online offer",price:Number(x.price)||0,currency:"USD",image:displayText(x.thumbnail||x.images?.[0],""),url:"https://www.google.com/search?tbm=shop&q="+encodeURIComponent(displayText(x.title,"product"))})).filter(x=>x.image&&x.price>0);
+  if(show(directItems,"Global catalog preview; verify seller prices."))return;
   const lateLocal=await localPromise.catch(()=>[]);
   if(show(lateLocal,"Live BuySell.Best listings — prices come from the listing records."))return;
-
   setupCurrentListingsCarousel([]);
 }
 
@@ -321,13 +307,13 @@ document.addEventListener("DOMContentLoaded",async()=>{
   document.querySelectorAll("#year").forEach(el=>el.textContent=new Date().getFullYear());
   const home=document.querySelector("#home-listings");
   const personalized=document.querySelector("#personalized-listings");
+  // Start the featured carousel before awaiting any database or profile lookup.
+  loadCurrentListingsCarousel();
   const siteItems=await loadSiteListings();
   if(home){
     home.innerHTML=siteItems.slice(0,8).map(listingCard).join("");
     wireInteractions(home);
   }
-  // Start immediately; do not wait for recommendations, currency lookup, or global deals.
-  loadCurrentListingsCarousel();
   const profile=await getProfile();
   if(personalized){
     await loadRecommendations(personalized,siteItems);
