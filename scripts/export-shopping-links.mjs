@@ -1,0 +1,14 @@
+import {readFile,writeFile} from "node:fs/promises";
+import {SHOPPING_GUIDES,SHOPPING_PRODUCTS,shoppingDestination,guideSitemapEntries} from "../lib/shopping-guides.js";
+import {AFFILIATE_PRODUCTS,productSitemapEntries} from "../lib/affiliate-products.js";
+const quote = value => '"'+String(value??"").replace(/"/g,'""')+'"';
+const rows = [["Product ID","Product","Link type","Merchant URL","Reference URL","Admitad affiliate URL (add here)","Related guides"]];
+for(const product of SHOPPING_PRODUCTS) rows.push([product.id,product.name,product.linkKind,product.merchantUrl,product.referenceUrl,shoppingDestination(product)!==product.merchantUrl?shoppingDestination(product):"",SHOPPING_GUIDES.filter(g=>g.selection.some(c=>c.productId===product.id)).map(g=>"https://buysell.best/guides/"+g.slug+"/").join(" | ")]);
+for(const product of AFFILIATE_PRODUCTS.filter(p=>!SHOPPING_PRODUCTS.some(item=>item.merchantUrl===p.sellerUrl))) rows.push([product.id,product.title,"item",product.sellerUrl,"User-supplied listing and promotional images",product.affiliateUrl,"https://buysell.best/products/"+product.slug+"/"]);
+await writeFile(new URL("../shopping-links.csv",import.meta.url),'\ufeff'+rows.map(row=>row.map(quote).join(",")).join("\r\n")+"\r\n");
+console.log("Exported "+(rows.length-1)+" product link records to shopping-links.csv");
+const sitemapPath=new URL("../sitemap.xml",import.meta.url);
+const old=await readFile(sitemapPath,"utf8");
+const preserved=old.replace(/<url>\s*<loc>https:\/\/buysell\.best\/(?:guides|shopping-methodology|products)(?:\/|<)[\s\S]*?<\/url>/g,"");
+await writeFile(sitemapPath,preserved.replace("</urlset>",productSitemapEntries()+guideSitemapEntries()+"</urlset>"));
+console.log("Updated the static fallback sitemap without removing existing marketplace URLs.");

@@ -1,0 +1,86 @@
+[
+  {
+    "category": "sports-outdoors",
+    "output": "assets/guides/sports-outdoors-equipment.webp",
+    "kind": "AI-generated category illustration",
+    "generator": "built-in image_gen",
+    "size": {
+      "width": 1536,
+      "height": 1024
+    },
+    "sourceSha256": "87ed474f64316607dd92624fb6f6367a0409e2ef6234f5dcea16435d156185d9",
+    "prompt": "A wide editorial still-life illustration for a practical sports and outdoor equipment shopping guide: a pair of resistance loop bands, compact jump rope, rolled exercise mat, water bottle, a badminton shuttlecock and simple cycling pouch. All unbranded, clearly concept gear, no logos or labels. Clean off-white studio backdrop with a muted sage plane, honest material detail, tasteful soft shadows, sophisticated high quality 3D product editorial style, wide 3:2 composition. No humans, no text, no badges, no made-up brand or sales graphics.",
+    "encoding": "WebP, quality 86; original dimensions preserved",
+    "publishedAt": "2026-10-15"
+  },
+  {
+    "category": "entertainment",
+    "output": "assets/guides/entertainment-equipment.webp",
+    "kind": "AI-generated category illustration",
+    "generator": "built-in image_gen",
+    "size": {
+      "width": 1536,
+      "height": 1024
+    },
+    "sourceSha256": "b78da6a3b1012d68470fac2965025d578b4836ec9f4ced6dd0d56350e2e98f5b",
+    "prompt": "A wide editorial still-life illustration for an entertainment equipment shopping guide: unbranded game controller, small projector, over-ear headphones and compact bookshelf speaker, arranged with space between them. Warm cream studio backdrop with an indigo plane, soft sculptural shadows, sophisticated high quality 3D product editorial style, wide 3:2 composition. Generic concept objects, not models of real products. No text, no logos, no watermarks, no fake specification or sale graphics.",
+    "encoding": "WebP, quality 86; original dimensions preserved",
+    "publishedAt": "2026-10-15"
+  },
+  {
+    "category": "desk-setup",
+    "output": "assets/guides/desk-setup-equipment.webp",
+    "kind": "AI-generated category illustration",
+    "generator": "built-in image_gen",
+    "size": {
+      "width": 1536,
+      "height": 1024
+    },
+    "sourceSha256": "299c882cff52b68e057f470de5ee3012b4dc721f3315eb01bf274355fa83244e",
+    "prompt": "A wide editorial still-life illustration for a desk equipment buying guide: generic unbranded compact mechanical keyboard, mouse, small aluminum laptop stand with closed laptop, a USB hub and neat cable clips. Cool white backdrop with a pale blue plane, soft light and gentle shadows, refined high quality 3D product editorial style. Wide 3:2 composition. No people, no text, no logos, no real product designs implied, no labels or price graphics.",
+    "encoding": "WebP, quality 86; original dimensions preserved",
+    "publishedAt": "2026-10-15"
+  },
+  {
+    "category": "home-kitchen",
+    "output": "assets/guides/home-kitchen-equipment.webp",
+    "kind": "AI-generated category illustration",
+    "generator": "built-in image_gen",
+    "size": {
+      "width": 1536,
+      "height": 1024
+    },
+    "sourceSha256": "5abff6e856332775db2be6fdd10b419836a3a103e8e19a356d81d842894183ac",
+    "prompt": "A wide editorial still-life illustration for a home and kitchen equipment shopping guide: an unbranded digital kitchen scale without readable numbers, stackable transparent food containers, a silicone spatula, simple drawer dividers and a small cordless desk light. Arranged neatly on a cream studio backdrop with a pale terracotta plane, natural textures, soft shadows. Sophisticated high quality 3D product editorial style, wide 3:2 composition. Generic concepts, not actual product photographs. No people, no logos, no text, no claims or sale tags.",
+    "encoding": "WebP, quality 86; original dimensions preserved",
+    "publishedAt": "2026-10-15"
+  },
+  {
+    "category": "travel",
+    "output": "assets/guides/travel-accessories.webp",
+    "kind": "AI-generated category illustration",
+    "generator": "built-in image_gen",
+    "size": {
+      "width": 1536,
+      "height": 1024
+    },
+    "sourceSha256": "9eb809222b0e5c7e049a1339de0c6b5c45e7b8242f605a532f596d2864f8fe79",
+    "prompt": "A wide editorial still-life illustration for a travel accessories shopping guide: generic packing cubes partially open, compact carry-on suitcase, passport cover with no writing, zip pouch for cables, slim rain pouch and reusable water bottle. Warm cream and muted sand studio background, gentle shadows, refined high quality 3D editorial product style. Wide 3:2 composition, distinct orderly objects, unbranded concepts. No text, logos, stamps, flags or sale badges.",
+    "encoding": "WebP, quality 86; original dimensions preserved",
+    "publishedAt": "2026-10-15"
+  },
+  {
+    "category": "phone-accessories",
+    "output": "assets/guides/phone-accessories.webp",
+    "kind": "AI-generated category illustration",
+    "generator": "built-in image_gen",
+    "size": {
+      "width": 1536,
+      "height": 1024
+    },
+    "sourceSha256": "4a0881abec60edc63d385602135340c3fb8af079ef68aa538843fa82969daac2",
+    "prompt": "A wide editorial still-life illustration for a phone accessories shopping guide: a generic black-screen smartphone, simple foldable tripod phone holder, USB-C cable coiled neatly, small unbranded portable charger and transparent phone case. Warm cream backdrop with pale sky-blue plane, soft natural studio light, elegant high quality 3D editorial style, wide 3:2 composition. These are illustrative generic gear concepts, not specific product models. No readable text, no brand logos, no numbers, no sales labels, no humans.",
+    "encoding": "WebP, quality 86; original dimensions preserved",
+    "publishedAt": "2026-10-15"
+  }
+]

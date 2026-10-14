@@ -2,8 +2,9 @@ import { DEAL_CATEGORIES, SEASONAL_PAGES, DEAL_HUB_LINKS } from "./lib/deal-seo.
 import { searchEbay } from "./functions/api/deals.js";
 import { syncPromos } from "./lib/promo-sync.js";
 import { AFFILIATE_PRODUCTS, findProduct, featuredCarouselItems, productPath, renderSpotlight, renderInitialCarousel, renderMiniProductTile, renderProductPage, renderProductsIndex, productSitemapEntries } from "./lib/affiliate-products.js";
+import { findGuide, findGuideCategory, guidePath, categoryPath, renderGuidesIndex, renderGuideCategory, renderShoppingGuide, renderShoppingMethodology, renderGuidesSpotlight, guideSitemapEntries } from "./lib/shopping-guides.js";
 
-const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261014-sponsor-once"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261014-sponsor-once" defer></script>';
+const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261014-sponsor-once"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261015-outbound" defer></script>';
 
 function withSponsoredSupport(response) {
   if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) return response;
@@ -14,6 +15,7 @@ async function renderAffiliateHome(request, env) {
   const response = await env.ASSETS.fetch(request);
   if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) return response;
   const rewriter = new HTMLRewriter()
+    .on("#shopping-guides-spotlight", {element(element) {element.setInnerContent(renderGuidesSpotlight(), {html:true});}})
     .on("#affiliate-product-spotlight", {element(element) {element.setInnerContent(renderSpotlight(), {html:true});}})
     .on("#current-listings-track", {element(element) {element.setInnerContent(AFFILIATE_PRODUCTS.map(renderInitialCarousel).join(""), {html:true});}})
     .on("#global-deals", {element(element) {element.setInnerContent('<div data-curated-products>'+AFFILIATE_PRODUCTS.map(renderMiniProductTile).join("")+'</div>', {html:true});}})
@@ -373,7 +375,7 @@ async function renderSitemap(env){
   const urls=staticPaths.map(path=>`<url><loc>https://buysell.best${path}</loc>${path==="/"&&latestAll?`<lastmod>${escapeHtml(latestAll)}</lastmod>`:""}</url>`).join("");
   const cats=categoryPaths.map(path=>`<url><loc>https://buysell.best/category/${path}</loc>${latestByCategory[path]?`<lastmod>${escapeHtml(latestByCategory[path])}</lastmod>`:""}</url>`).join("");
   const products = productSitemapEntries();
-  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${dynamic}</urlset>`;
+  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${dynamic}</urlset>`;
 }
 
 async function serveSeoPage(request,env) {
@@ -383,6 +385,27 @@ async function serveSeoPage(request,env) {
   if (request.method !== "GET" && request.method !== "HEAD") return null;
 
   if (pathname === "/" || pathname === "/index.html") return renderAffiliateHome(request,env);
+  if (pathname === "/guides" || pathname === "/shopping-methodology") return Response.redirect("https://buysell.best"+pathname+"/",301);
+  const guideHeaders = {"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=60, s-maxage=300","x-content-type-options":"nosniff","referrer-policy":"strict-origin-when-cross-origin"};
+  if (pathname === "/guides/") return new Response(renderGuidesIndex(), {headers:guideHeaders});
+  if (pathname === "/shopping-methodology/") return new Response(renderShoppingMethodology(), {headers:guideHeaders});
+  const guideCategoryMatch = pathname.match(/^\/guides\/category\/([^/]+)\/?$/);
+  if (guideCategoryMatch) {
+    const category = findGuideCategory(guideCategoryMatch[1]);
+    if (category) {
+      if (pathname !== categoryPath(category)) return Response.redirect("https://buysell.best"+categoryPath(category),301);
+      return new Response(renderGuideCategory(category), {headers:guideHeaders});
+    }
+  }
+  const guideMatch = pathname.match(/^\/guides\/([^/]+)\/?$/);
+  if (guideMatch) {
+    const guide = findGuide(guideMatch[1]);
+    if (guide) {
+      if (pathname !== guidePath(guide)) return Response.redirect("https://buysell.best"+guidePath(guide),301);
+      return new Response(renderShoppingGuide(guide), {headers:guideHeaders});
+    }
+  }
+  if (pathname.startsWith("/guides/") || pathname.startsWith("/shopping-methodology/")) return new Response("Guide not found", {status:404,headers:{"x-robots-tag":"noindex","content-type":"text/plain; charset=UTF-8"}});
   if (pathname === "/products") return Response.redirect("https://buysell.best/products/",301);
   if (pathname === "/products/") return new Response(renderProductsIndex(), {headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=60, s-maxage=300"}});
   const productMatch = pathname.match(/^\/products\/([^/]+)\/?$/);

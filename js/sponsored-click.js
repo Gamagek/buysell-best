@@ -12,7 +12,9 @@
     try { url = new URL(link.href, location.href); } catch (_) { return null; }
     if (!/^https?:$/.test(url.protocol) || url.href === SMARTLINK) return null;
     const explicit = link.hasAttribute("data-sponsored-navigation") || link.rel.split(/\s+/).includes("sponsored");
-    if (url.origin === location.origin) return explicit || /^\/products\/[^/]+\/?$/.test(url.pathname) ? url.href : null;
+    // Reading a guide or opening a product always stays within the site.
+    // The sponsored step belongs only to the outbound shopping action.
+    if (url.origin === location.origin) return null;
     const affiliate = AFFILIATE_HOSTS.some(host => url.hostname === host || url.hostname.endsWith("." + host));
     return explicit || affiliate ? url.href : null;
   }

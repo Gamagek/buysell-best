@@ -3,7 +3,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "wrangler deploy --dry-run --outdir .test-build && node --test test/affiliate-products.test.mjs"
+    "test": "npm run content:check && wrangler deploy --dry-run --outdir .test-build && node --test test/affiliate-products.test.mjs",
+    "content:check": "node scripts/validate-shopping-catalog.mjs",
+    "content:export": "node scripts/export-shopping-links.mjs"
   },
   "devDependencies": {
     "jsdom": "30.1.2",

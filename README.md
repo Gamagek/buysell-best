@@ -44,10 +44,11 @@ The dynamic `/sitemap.xml` includes the product URL and all ten image URLs.
 ## Sponsored clicks
 
 `js/sponsored-click.js` is included on the existing static pages and rendered
-Worker pages. The first real, unmodified visitor click on a product, Admitad /
-AliExpress, `rel="sponsored"` or `data-sponsored-navigation` link shows one visible
+Worker pages. Internal product, guide, category and carousel links open normally.
+The first real, unmodified outbound shopping click on an Admitad / AliExpress,
+`rel="sponsored"` or `data-sponsored-navigation` link shows one visible
 Adsterra Smartlink frame inside the site's own dialog. The × and the real
-**Continue to product / AliExpress** link stay outside that frame and remain
+**Continue to AliExpress** link stay outside that frame and remain
 accessible while advertiser redirects happen inside it. There are no external
 ad tabs, automatic destination timers or automatic retries.
 
@@ -58,7 +59,7 @@ native dialog cancellation and Back dismiss the panel. Page lifecycle cleanup
 prevents restoring a live ad panel from the browser back-forward cache.
 
 `sessionStorage` records one Smartlink attempt per browsing tab/session. Later
-product and Buy clicks use their normal destination, including after navigating
+outbound Buy clicks use their normal destination, including after navigating
 between pages. If storage is unavailable, the current page still caps attempts.
 Nothing is fetched from the ad network just by visiting a page, and tests never
 contact the ad network. A frame request or load event is not evidence of a valid
@@ -70,6 +71,33 @@ format such as Social Bar when guaranteed embedded creative support is needed.
 Use `data-sponsored-bypass` for the panel's own destination control. Future static
 pages should include the versioned shared CSS/script; Worker HTML responses use
 `withSponsoredSupport()`.
+
+## Shopping guides
+
+The initial editorial batch has 24 substantial buying guides, six category hubs,
+the `/guides/` index and `/shopping-methodology/`. The original smartphone page
+keeps its URL and now links to the related purchasing and accessory guides.
+These pages are rendered in the existing Worker and require no client-side feed,
+new D1 tables, R2 bucket or paid image transformation binding.
+
+Article content, sources and 71 merchant-link candidates are stored in
+`content/shopping-catalog.json`. Six original AI-generated illustrations are
+served from `assets/guides/`; captions distinguish them from actual product
+photos. `content/image-generation.json` records the prompts and image provenance.
+
+Only the already supplied phone link is currently tracked. Other shopping buttons
+use the original merchant URLs until approved Admitad deeplinks are supplied.
+`content/affiliate-links.json` maps stable product IDs to those approved links.
+The public `/shopping-links.csv` export includes IDs, merchant URLs, reference
+URLs, an affiliate-link column and the associated articles. Exact item links and
+marketplace searches are explicitly distinguished. Indexed references do not
+verify live stock, seller authenticity, current price or bestselling status.
+
+Run `npm run content:check` to validate substantive content and references;
+`npm run content:export` refreshes the CSV and fallback sitemap. `npm test` also
+checks the content before the Worker build and route/DOM tests. Source content,
+scripts and documentation are excluded from static asset uploads.
+See [shopping guide maintenance](docs/shopping-guides.md) for the update process.
 
 ## Search Console
 

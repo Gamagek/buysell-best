@@ -8,6 +8,9 @@ worker.js
 .git/
 README.md
 test/
+content/
+scripts/
+docs/
 node_modules/
 package.json
 package-lock.json

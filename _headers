@@ -7,3 +7,8 @@
   Cache-Control: public, max-age=0, must-revalidate
 /css/*
   Cache-Control: public, max-age=0, must-revalidate
+/shopping-links.csv
+  Content-Type: text/csv; charset=UTF-8
+  Content-Disposition: attachment; filename="buysell-shopping-links.csv"
+  X-Robots-Tag: noindex
+  Cache-Control: public, max-age=0, must-revalidate
