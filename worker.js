@@ -3,7 +3,7 @@ import { searchEbay } from "./functions/api/deals.js";
 import { syncPromos } from "./lib/promo-sync.js";
 import { AFFILIATE_PRODUCTS, findProduct, featuredCarouselItems, productPath, renderSpotlight, renderInitialCarousel, renderMiniProductTile, renderProductPage, renderProductsIndex, productSitemapEntries } from "./lib/affiliate-products.js";
 
-const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js" defer></script>';
+const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261014-sponsor-once"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261014-sponsor-once" defer></script>';
 
 function withSponsoredSupport(response) {
   if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) return response;

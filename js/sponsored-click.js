@@ -2,8 +2,9 @@
   "use strict";
   if (window.BuySellSponsoredClicks) return;
   const SMARTLINK = "https://www.profitableratecpmnetwork.com/nugmu8qikp?key=9245fcfc15bbb0d5bb9c7bec0ec186c4";
+  const SESSION_KEY = "bsb_sponsor_attempted_v2";
   const AFFILIATE_HOSTS = ["rzekl.com", "admitad.com", "ad.admitad.com", "admitad.link", "aliexpress.com", "s.click.aliexpress.com"];
-  let active = null;
+  let active = null, attempted = false;
 
   function destinationFor(link) {
     if (!link || link.hasAttribute("data-sponsored-bypass") || link.hasAttribute("download")) return null;
@@ -16,12 +17,35 @@
     return explicit || affiliate ? url.href : null;
   }
 
+  function hasAttempted() {
+    if (attempted) return true;
+    try { return window.sessionStorage.getItem(SESSION_KEY) === "1"; }
+    catch (_) { return false; }
+  }
+  function markAttempted() {
+    attempted = true;
+    try { window.sessionStorage.setItem(SESSION_KEY, "1"); } catch (_) {}
+  }
+  function destinationLabel(destination) {
+    const url = new URL(destination);
+    if (url.origin === location.origin) return "product";
+    if (url.hostname === "rzekl.com") {
+      try {
+        const merchant = new URL(url.searchParams.get("ulp"));
+        if (merchant.hostname === "aliexpress.com" || merchant.hostname.endsWith(".aliexpress.com")) return "AliExpress";
+      } catch (_) {}
+    }
+    if (url.hostname === "aliexpress.com" || url.hostname.endsWith(".aliexpress.com")) return "AliExpress";
+    return url.hostname;
+  }
+
   function finish(continueToDestination) {
     if (!active) return;
     const current = active;
     active = null;
-    clearInterval(current.timer);
-    try { if (current.popup && !current.popup.closed) current.popup.close(); } catch (_) {}
+    // Destroy the advertiser's browsing context before navigating. Its scripts,
+    // child history and redirects cannot remain in a separate foreground tab.
+    current.frame.remove();
     if (current.dialog.open && current.dialog.close) current.dialog.close();
     current.dialog.remove();
     document.body.style.overflow = current.oldOverflow;
@@ -30,63 +54,52 @@
   }
 
   function openSponsoredStep(link, destination) {
-    // Open synchronously inside the visitor's click. No load-time ads, hidden
-    // clicks, blocker workarounds or retry loops. Sever the advertiser's opener.
-    let popup = null;
-    try {
-      popup = window.open("about:blank", "_blank", "popup=yes,width=960,height=720,resizable=yes,scrollbars=yes");
-      if (popup) { popup.opener = null; popup.location.replace(SMARTLINK); }
-    } catch (_) {
-      try { popup?.close(); } catch (_) {}
-      popup = null;
-    }
+    const label = destinationLabel(destination);
     const dialog = document.createElement("dialog");
     dialog.className = "sponsored-step";
     dialog.setAttribute("aria-labelledby", "sponsored-step-title");
     dialog.setAttribute("aria-describedby", "sponsored-step-message");
-    dialog.innerHTML = '<button class="sponsored-step-close" type="button" aria-label="Close advertisement and continue">×</button><span class="sponsored-step-label">ADVERTISEMENT</span><div class="sponsored-step-icon" aria-hidden="true">↗</div><h2 id="sponsored-step-title">A quick sponsored message</h2><p id="sponsored-step-message"></p><p class="sponsored-step-destination"></p><button class="sponsored-step-continue" type="button">Continue to destination →</button><a class="sponsored-step-ad" target="_blank" rel="sponsored noopener noreferrer" data-sponsored-bypass>Open sponsored link ↗</a><label class="sponsored-step-auto"><input type="checkbox" checked> <span>Continue automatically in <b data-sponsored-seconds>6</b>s</span></label><button class="sponsored-step-stay" type="button">Stay on this page</button>';
-    dialog.querySelector("#sponsored-step-message").textContent = popup
-      ? "The sponsor opened in a separate window. Close that window, use ×, or continue whenever you are ready."
-      : "Your browser blocked the ad window. You can continue directly, or open the sponsored link yourself.";
-    dialog.querySelector(".sponsored-step-destination").textContent = "Next: " + (new URL(destination).origin === location.origin ? "BuySell.Best product page" : new URL(destination).hostname);
-    dialog.querySelector(".sponsored-step-ad").href = SMARTLINK;
+    dialog.innerHTML = '<header class="sponsored-step-header"><div><span class="sponsored-step-label">ADVERTISEMENT · ADSTERRA</span><h2 id="sponsored-step-title">One sponsored message</h2></div><button class="sponsored-step-close" type="button">×</button></header><div class="sponsored-step-viewport"></div><footer class="sponsored-step-footer"><p id="sponsored-step-message">Your product button stays here while the ad loads. You can continue at any time.</p><a class="sponsored-step-continue" data-sponsored-bypass rel="sponsored noopener noreferrer"></a><button class="sponsored-step-stay" type="button">Close ad and stay here</button><small class="sponsored-step-help">Can’t see the ad? Continue directly to your product. This message is shown once per browsing session.</small></footer>';
+    const frame = document.createElement("iframe");
+    frame.className = "sponsored-step-frame";
+    frame.title = "Adsterra sponsored content";
+    frame.setAttribute("sandbox", "allow-scripts allow-forms allow-same-origin");
+    frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+    // No allow-top-navigation, allow-popups or external-app escape permissions:
+    // advertiser redirects are confined to this visible frame, below our ×.
+    dialog.querySelector(".sponsored-step-viewport").appendChild(frame);
+    const destinationLink = dialog.querySelector(".sponsored-step-continue");
+    destinationLink.href = destination;
+    destinationLink.textContent = "Continue to " + label + " →";
+    const close = dialog.querySelector(".sponsored-step-close");
+    close.setAttribute("aria-label", "Close advertisement and continue to " + label);
     const oldOverflow = document.body.style.overflow;
     document.body.appendChild(dialog);
     document.body.style.overflow = "hidden";
-    active = {destination, popup, dialog, trigger:link, oldOverflow, timer:null};
-    const continueButton = dialog.querySelector(".sponsored-step-continue");
-    continueButton.addEventListener("click", () => finish(true));
-    dialog.querySelector(".sponsored-step-close").addEventListener("click", () => finish(true));
+    active = {destination, dialog, frame, trigger:link, oldOverflow};
+    destinationLink.addEventListener("click", event => {event.preventDefault(); finish(true);});
+    close.addEventListener("click", () => finish(true));
     dialog.querySelector(".sponsored-step-stay").addEventListener("click", () => finish(false));
-    dialog.addEventListener("cancel", event => { event.preventDefault(); finish(true); });
-    dialog.addEventListener("click", event => {
-      if (event.target !== dialog) return;
-      const rect = dialog.getBoundingClientRect();
-      if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) finish(true);
-    });
+    // Escape / native mobile Back dismiss the ad instead of starting a redirect.
+    dialog.addEventListener("cancel", event => {event.preventDefault(); finish(false);});
+    dialog.addEventListener("close", () => {if (active?.dialog === dialog) finish(false);});
     dialog.addEventListener("keydown", event => {
-      if (event.key === "Escape") { event.preventDefault(); finish(true); return; }
+      if (event.key === "Escape") {event.preventDefault(); finish(false); return;}
       if (event.key !== "Tab") return;
-      const controls = [...dialog.querySelectorAll("button,a[href],input")];
-      if (event.shiftKey && document.activeElement === controls[0]) { event.preventDefault(); controls.at(-1).focus(); }
-      else if (!event.shiftKey && document.activeElement === controls.at(-1)) { event.preventDefault(); controls[0].focus(); }
+      const controls = [...dialog.querySelectorAll("button,a[href],iframe")];
+      if (event.shiftKey && document.activeElement === controls[0]) {event.preventDefault(); controls.at(-1).focus();}
+      else if (!event.shiftKey && document.activeElement === controls.at(-1)) {event.preventDefault(); controls[0].focus();}
     });
-    try { if (dialog.showModal) dialog.showModal(); else dialog.setAttribute("open", ""); }
-    catch (_) { dialog.setAttribute("open", ""); }
-    continueButton.focus();
-    const auto = dialog.querySelector("input");
-    const seconds = dialog.querySelector("[data-sponsored-seconds]");
-    let remaining = 6000, previous = Date.now();
-    active.timer = setInterval(() => {
-      if (!active) return;
-      const now = Date.now();
-      if (auto.checked) remaining -= Math.max(0, now - previous);
-      previous = now;
-      seconds.textContent = String(Math.max(0, Math.ceil(remaining / 1000)));
-      let closed = false;
-      try { closed = !!popup && popup.closed; } catch (_) {}
-      if (closed || (auto.checked && remaining <= 0)) finish(true);
-    }, 250);
+    frame.addEventListener("error", () => {
+      if (active?.frame === frame) dialog.querySelector("#sponsored-step-message").textContent = "The sponsored page could not be displayed. Continue to your product below.";
+    });
+    try {if (dialog.showModal) dialog.showModal(); else dialog.setAttribute("open", "");}
+    catch (_) {dialog.setAttribute("open", "");}
+    destinationLink.focus();
+    // One real visitor activation, one visible request. An iframe load event
+    // does not prove an ad impression or a payable click; Adsterra decides that.
+    markAttempted();
+    frame.src = SMARTLINK;
   }
 
   document.addEventListener("click", event => {
@@ -94,13 +107,13 @@
     const link = event.target.closest?.("a[href]");
     const destination = destinationFor(link);
     if (!destination) return;
+    if (active) {event.preventDefault(); return;}
+    if (hasAttempted()) return; // Following product/Buy clicks use their real href.
     event.preventDefault();
-    if (!active) openSponsoredStep(link, destination);
+    openSponsoredStep(link, destination);
   });
-  window.addEventListener("pagehide", () => {
-    if (!active) return;
-    clearInterval(active.timer);
-    try { active.popup?.close(); } catch (_) {}
-  });
-  window.BuySellSponsoredClicks = Object.freeze({destinationFor, enabled:true});
+  window.addEventListener("popstate", () => finish(false));
+  window.addEventListener("pagehide", () => finish(false));
+  window.addEventListener("pageshow", event => {if (event.persisted) finish(false);});
+  window.BuySellSponsoredClicks = Object.freeze({destinationFor, enabled:true, version:2});
 })();
