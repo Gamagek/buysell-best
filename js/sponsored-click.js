@@ -59,10 +59,10 @@
     dialog.className = "sponsored-step";
     dialog.setAttribute("aria-labelledby", "sponsored-step-title");
     dialog.setAttribute("aria-describedby", "sponsored-step-message");
-    dialog.innerHTML = '<header class="sponsored-step-header"><div><span class="sponsored-step-label">ADVERTISEMENT · ADSTERRA</span><h2 id="sponsored-step-title">One sponsored message</h2></div><button class="sponsored-step-close" type="button">×</button></header><div class="sponsored-step-viewport"></div><footer class="sponsored-step-footer"><p id="sponsored-step-message">Your product button stays here while the ad loads. You can continue at any time.</p><a class="sponsored-step-continue" data-sponsored-bypass rel="sponsored noopener noreferrer"></a><button class="sponsored-step-stay" type="button">Close ad and stay here</button><small class="sponsored-step-help">Can’t see the ad? Continue directly to your product. This message is shown once per browsing session.</small></footer>';
+    dialog.innerHTML = '<header class="sponsored-step-header"><div><span class="sponsored-step-label">ADVERTISEMENT</span><h2 id="sponsored-step-title">One sponsored message</h2></div><button class="sponsored-step-close" type="button">×</button></header><div class="sponsored-step-viewport"></div><footer class="sponsored-step-footer"><p id="sponsored-step-message">Your product button stays here while the ad loads. You can continue at any time.</p><a class="sponsored-step-continue" data-sponsored-bypass rel="sponsored noopener noreferrer"></a><button class="sponsored-step-stay" type="button">Close ad and stay here</button><small class="sponsored-step-help">Can’t see the ad? Continue directly to your product. This message is shown once per browsing session.</small></footer>';
     const frame = document.createElement("iframe");
     frame.className = "sponsored-step-frame";
-    frame.title = "Adsterra sponsored content";
+    frame.title = "Sponsored content";
     frame.setAttribute("sandbox", "allow-scripts allow-forms allow-same-origin");
     frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
     // No allow-top-navigation, allow-popups or external-app escape permissions:
