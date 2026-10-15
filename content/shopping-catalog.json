@@ -4,183 +4,1023 @@
   "products": [
     {
       "id": "st-loop-bands",
-      "name": "Compact resistance band set",
+      "name": "Compact resistance band",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005010067311375.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012986658635.html",
       "linkKind": "item",
-      "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005010067311375",
-      "notes": "Exact item ID and band-set description discovered in an indexed merchant-link record. Live listing availability, resistance, material, and selected variant require seller verification; no strength rating endorsed."
+      "referenceUrl": "https://www.aliexpress.com/item/1005012986658635.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005010067311375.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "compact-resistance-bands",
+      "details": {
+        "intro": "Choose a resistance band by its shape, usable length and stated resistance method. A large headline load is not enough to show whether a band suits your range of motion or intended exercise.",
+        "highlights": [
+          "Identify whether the selected option is a closed loop, tube or flat strip.",
+          "Check dimensions, material and whether one band or a set is supplied.",
+          "Compare the resistance description at the stated stretch, rather than colour alone."
+        ],
+        "sections": [
+          {
+            "heading": "Match the band to the movement",
+            "paragraphs": [
+              "A small loop used around the legs serves a different purpose from a long loop used for assisted pulling movements. Check the full product photos and selected option before treating them as substitutes. Measure the space required for the movement as well as the storage space. If your plan depends on a door anchor, handles or another attachment, confirm whether those parts are supplied and suitable for that use."
+            ]
+          },
+          {
+            "heading": "Care and replacement",
+            "paragraphs": [
+              "Read the material and cleaning guidance, especially if you need to avoid latex. Inspect a band before use for splits, thinning or damage around attachments. Store it as directed, away from heat and sharp edges. A seller image or an advertised resistance range does not establish suitability for rehabilitation or a particular training programme."
+            ]
+          }
+        ],
+        "description": "Compact resistance band: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005010067311375",
+      "listingTitle": "20~230lbs Heavy-Duty Resistance Band Agility Training Workout Gym Equipment Yoga Pilates Accessories Rubber Band Home Gym",
+      "image": {
+        "src": "/assets/products/shopping/compact-resistance-bands-1005012986658635.webp",
+        "alt": "Seller listing image of compact resistance band",
+        "width": 1000,
+        "height": 1000,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S3bc178d222084bcd9cee722a03c4cc49Q.png",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S3bc178d222084bcd9cee722a03c4cc49Q.png_1200x1200q80.png_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005012986658635.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "9b5b04bb6889b607be03de88bac2d8c0d32f3106cd42b8d28297b82508515f74",
+        "sizeBytes": 54276
+      }
     },
     {
       "id": "st-jump-rope",
-      "name": "Adjustable jump rope candidate",
+      "name": "Adjustable jump rope",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005012952711375.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005011639886680.html",
       "linkKind": "item",
-      "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005012952711375",
-      "notes": "Exact item ID discovered in an indexed merchant-link record. Check the current rope construction, length-adjustment method, package contents, and indoor-surface suitability. Live availability not verified."
+      "referenceUrl": "https://www.aliexpress.com/item/1005011639886680.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005012952711375.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "adjustable-jump-rope",
+      "details": {
+        "intro": "Compare an adjustable skipping rope by its usable cable length, adjustment system and suitable practice surface. Compact storage does not mean it will work in a small or crowded room.",
+        "highlights": [
+          "Check usable length against your height and preferred adjustment method.",
+          "Confirm the rope material and whether replacement cable is available.",
+          "Allow clearance around the moving rope, including overhead fixtures."
+        ],
+        "sections": [
+          {
+            "heading": "Check adjustment before cutting",
+            "paragraphs": [
+              "Some ropes clamp excess cable while others require trimming. Look at the handle mechanism and instructions before shortening it, and keep any required tool accessible. Compare handle grip, cable exits and storage arrangement. A listing that describes a bearing or a tangle-free design does not by itself establish smoothness or durability in daily use."
+            ]
+          },
+          {
+            "heading": "Plan the practice surface",
+            "paragraphs": [
+              "Match the rope material to the surface you can use. Rough paving can wear a thin coating, while a shared indoor floor may need protection and consideration for noise. Measure the whole rope path and remove nearby obstacles. Check what is included in the chosen package rather than assuming a storage bag, spare cable or floor mat is supplied."
+            ]
+          }
+        ],
+        "description": "Adjustable jump rope: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005012952711375",
+      "listingTitle": "The New Jump Rope Steel Wire Skipping Exercise Adjustable Jumping Fitness Workout Training Home Sport Equipment Tangle-Free",
+      "image": {
+        "src": "/assets/products/shopping/adjustable-jump-rope-1005011639886680.webp",
+        "alt": "Seller listing image of adjustable jump rope",
+        "width": 800,
+        "height": 800,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sfe8f7331fdbb4820ac19c144c4a0da0d8.jpeg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sfe8f7331fdbb4820ac19c144c4a0da0d8.jpeg_1200x1200q80.jpeg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005011639886680.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "4091342ba2732823637675e451eaad32f1e485e82ae875a71b69d57eb5704a8f",
+        "sizeBytes": 31530
+      }
     },
     {
       "id": "st-folding-mat",
-      "name": "Folding exercise mat candidate",
+      "name": "Folding exercise mat",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005006996024129.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005009871080834.html",
       "linkKind": "item",
-      "referenceUrl": "https://ro.pricearchive.org/aliexpress.com/item/1005006996024129",
-      "notes": "Indexed listing describes a foldable TPE mat; confirm material, actual thickness, folded size, and care instructions in the current seller variant. No grip or durability testing performed."
+      "referenceUrl": "https://www.aliexpress.com/item/1005009871080834.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005006996024129.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "folding-exercise-mat",
+      "details": {
+        "intro": "A folding exercise mat should fit both your practice area and its storage shelf. Compare surface grip, thickness and fold placement for the movements you actually intend to do.",
+        "highlights": [
+          "Measure the open mat and folded package.",
+          "Choose thickness for the activity and your floor.",
+          "Check surface texture, material and cleaning instructions."
+        ],
+        "sections": [
+          {
+            "heading": "Balance cushioning and stability",
+            "paragraphs": [
+              "Extra cushioning can feel comfortable for seated or floor work, but a softer surface can also change stability during standing movements. Fold lines may sit under hands, knees or feet. Compare the mat layout with your usual routine and ask for the dimensions of the exact thickness option. Do not infer slip resistance from a photograph."
+            ]
+          },
+          {
+            "heading": "Check storage and maintenance",
+            "paragraphs": [
+              "Check whether the folded mat will fit your cupboard without crushing or awkward bending. Read the seller instructions about wiping, drying and storage. If material odour or skin sensitivity is a concern, review the stated material and recent feedback for that variant. Keep expectations separate from broad marketing terms such as eco-friendly or professional."
+            ]
+          }
+        ],
+        "description": "Folding exercise mat: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://ro.pricearchive.org/aliexpress.com/item/1005006996024129",
+      "listingTitle": "Black Foldable Yoga Mat Eco Friendly EVA Folding Travel Fitness Exercise Mat 3/4/6mm Thicknesses for Yoga Pilates Workouts",
+      "image": {
+        "src": "/assets/products/shopping/folding-exercise-mat-1005009871080834.webp",
+        "alt": "Seller listing image of folding exercise mat",
+        "width": 1200,
+        "height": 1200,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S9a8212b23bbd460aa2a42f41b8827b57J.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S9a8212b23bbd460aa2a42f41b8827b57J.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005009871080834.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "f82ed3d0c29ec867367167ad38d575c22239a5d5f4f23dc5441fc6449d0a5b62",
+        "sizeBytes": 45650
+      }
     },
     {
       "id": "st-tacky-overgrip",
-      "name": "Smooth racket overgrip candidate",
+      "name": "Smooth tacky racket overgrip",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005009497340138.html",
+      "merchantUrl": "https://www.aliexpress.com/item/4001242156968.html",
       "linkKind": "item",
-      "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005009497340138",
-      "notes": "Exact item ID for a generic badminton/tennis handle overgrip discovered in an indexed record. Verify length, thickness, finish, pack quantity, and finishing tape. No brand authenticity or performance claim."
+      "referenceUrl": "https://www.aliexpress.com/item/4001242156968.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005009497340138.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "smooth-tacky-racket-overgrip",
+      "details": {
+        "intro": "A tacky overgrip changes the feel and size of an existing racket handle. Compare the strip dimensions and finish before choosing a pack by colour or quantity.",
+        "highlights": [
+          "Distinguish an overgrip from a replacement base grip.",
+          "Confirm strip length, width, thickness and pack quantity.",
+          "Check whether finishing tape is included."
+        ],
+        "sections": [
+          {
+            "heading": "Understand the handle build-up",
+            "paragraphs": [
+              "An overgrip normally wraps over the existing handle covering. Extra layers and a thick strip can change the effective grip size and the feel of the bevels. Check that the strip is long enough for your handle and preferred overlap. Keep the direction and finishing method in mind before removing the old covering."
+            ]
+          },
+          {
+            "heading": "Compare feel without treating it as a test",
+            "paragraphs": [
+              "A smooth, tacky description is a seller claim about the finish, not a promise about your grip in heat or perspiration. Recent feedback for the exact material can help you form questions, but cannot predict your preference. Start with a manageable quantity if you are unsure, and compare replacement cost as well as the headline bundle size."
+            ]
+          }
+        ],
+        "description": "Smooth tacky racket overgrip: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005009497340138",
+      "listingTitle": "12Pcs/Pack ZARSIA Quality PU Tennis Overgrip Tacky Feel Badminton Racket Overgrip Smooth Tennis Racket Grips",
+      "image": {
+        "src": "/assets/products/shopping/smooth-tacky-racket-overgrip-4001242156968.webp",
+        "alt": "Seller listing image of smooth tacky racket overgrip",
+        "width": 1200,
+        "height": 1200,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S359ed7fe5011499584f47defc6932b0eQ.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S359ed7fe5011499584f47defc6932b0eQ.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/4001242156968.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "a960dc93f1acb8bfd7cd2f8ad5ed11c71a72ff194ea0373f6f055ab0053a6244",
+        "sizeBytes": 29344
+      }
     },
     {
       "id": "st-dry-overgrip",
-      "name": "Dry-feel racket overgrip candidate",
+      "name": "Dry-feel racket overgrip",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005006877343762.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012132202932.html",
       "linkKind": "item",
-      "referenceUrl": "https://vi.pricearchive.org/aliexpress.com/item/1005006877343762",
-      "notes": "Indexed title describes quick-drying dry-feel overgrip. This remains a seller claim; current material, dimensions, availability, and hand feel are unverified."
+      "referenceUrl": "https://www.aliexpress.com/item/1005012132202932.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005006877343762.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "dry-feel-racket-overgrip",
+      "details": {
+        "intro": "A dry-feel overgrip is an option to compare when a sticky surface is uncomfortable. Verify the actual finish and dimensions because marketplace terminology is not consistent between sellers.",
+        "highlights": [
+          "Ask whether the selected surface is dry, perforated or tacky.",
+          "Match strip dimensions to the racket handle.",
+          "Confirm pack quantity and finishing materials."
+        ],
+        "sections": [
+          {
+            "heading": "Check the surface rather than the label",
+            "paragraphs": [
+              "Dry, absorbent and perforated describe different properties and may be used together in a title. Inspect close-up photos and the option description. A photograph does not establish moisture handling. If the listing mixes several finishes, make sure the selected colour or pack code belongs to the finish you intend to buy."
+            ]
+          },
+          {
+            "heading": "Plan a sensible replacement routine",
+            "paragraphs": [
+              "Thickness and wrapping overlap affect handle size just as much as surface texture. Compare the cost of replacing grips at a practical interval, and check whether individual strips are protected for storage. Keep unused grips clean and follow any material guidance. Claims about professional use do not establish comfort or performance for your own play."
+            ]
+          }
+        ],
+        "description": "Dry-feel racket overgrip: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://vi.pricearchive.org/aliexpress.com/item/1005006877343762",
+      "listingTitle": "5PCS WILSON Packs Tennis Overgrip Tape - Dry Feel, Shock Absorbing & Anti-Slip for Tennis, Badminton, Pickleball Rackets",
+      "image": {
+        "src": "/assets/products/shopping/dry-feel-racket-overgrip-1005012132202932.webp",
+        "alt": "Seller listing image of dry-feel racket overgrip",
+        "width": 800,
+        "height": 800,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Se5ed7df3bddf48d3884c1b11b0d1167ds.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Se5ed7df3bddf48d3884c1b11b0d1167ds.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005012132202932.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "729179ba0acf278ce567f559c9c9881aa73ef7aa6869f9910c3a81f3daea0f76",
+        "sizeBytes": 22422
+      }
     },
     {
       "id": "st-racket-bag",
-      "name": "Single-racket shoulder pouch candidate",
+      "name": "Single-racket shoulder bag",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005005709865736.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012553871658.html",
       "linkKind": "item",
-      "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005005709865736",
-      "notes": "Exact merchant item ID discovered in an indexed racket-pouch record. Measure racket length and head width against the current bag dimensions. Waterproof language in the old title is not independently verified."
+      "referenceUrl": "https://www.aliexpress.com/item/1005012553871658.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005005709865736.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "single-racket-shoulder-bag",
+      "details": {
+        "intro": "Check a racket bag against the full dimensions of your racket and the way you carry it. A slim pouch can protect against everyday scuffs without offering the structure of a larger sports bag.",
+        "highlights": [
+          "Compare the internal length and head width with your racket.",
+          "Check padding, closure and strap adjustment.",
+          "Confirm whether the design holds one racket or additional equipment."
+        ],
+        "sections": [
+          {
+            "heading": "Measure the complete racket",
+            "paragraphs": [
+              "Include the handle, frame head and any cover already fitted. An outside bag dimension can overstate usable space because seams and the zipper opening take up room. Ask for internal measurements if the fit is close. Check whether a handle protrudes from the bag or is enclosed and how that affects carrying in rain."
+            ]
+          },
+          {
+            "heading": "Separate carrying from protection",
+            "paragraphs": [
+              "A soft pouch and a padded structured bag serve different purposes. Look at strap attachment points, zipper access and any small-item pocket. Do not assume waterproofing or impact protection from a generic outdoor description. Think about the route to practice: walking, public transport and cycling place different demands on the strap and the way the bag moves."
+            ]
+          }
+        ],
+        "description": "Single-racket shoulder bag: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005005709865736",
+      "listingTitle": "Oxford Cloth Paddle Racket Bag Black Wear-resistant Tennis Racket Storage Bag Protective Waterproof Racquet Shoulder Bags",
+      "image": {
+        "src": "/assets/products/shopping/single-racket-shoulder-bag-1005012553871658.webp",
+        "alt": "Seller listing image of single-racket shoulder bag",
+        "width": 1000,
+        "height": 1000,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sb35df538230f4d7bab2e1a87e583170aj.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sb35df538230f4d7bab2e1a87e583170aj.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005012553871658.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "0ad756fc3dddce2820846ee28f3a1facf80a220551ea58c5373ac73048a025c2",
+        "sizeBytes": 11590
+      }
     },
     {
       "id": "st-saddle-bag",
-      "name": "ROCKBROS-branded saddle bag candidate",
+      "name": "Cycling saddle bag",
       "merchant": "AliExpress",
       "merchantUrl": "https://www.aliexpress.com/item/1005009735684216.html",
       "linkKind": "item",
-      "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005009735684216",
-      "notes": "Indexed merchant-link record identifies a ROCKBROS-branded rear saddle pouch. Current model, seller authorization, rail attachment, tire clearance, and weather protection must be checked; manufacturer examples in the guide are not asserted to be this exact SKU."
+      "referenceUrl": "https://www.aliexpress.com/item/1005009735684216.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005009735684216.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "cycling-saddle-bag",
+      "details": {
+        "intro": "Compare a saddle bag by mounting clearance and access to the small repair items you carry. The fit under your own saddle matters more than a photograph of a fully packed bag.",
+        "highlights": [
+          "Check saddle-rail and seatpost attachment requirements.",
+          "Allow clearance for the tyre, light and moving saddle components.",
+          "Compare the opening with your actual tools, tube or patch kit."
+        ],
+        "sections": [
+          {
+            "heading": "Check the mounting envelope",
+            "paragraphs": [
+              "Measure beneath the saddle with the bicycle set up as you ride it. A dropper seatpost, suspension movement or a low saddle position can reduce clearance. Check the strap or bracket arrangement and any limit stated by the seller. A bag pictured on one frame is not proof of compatibility with your frame or saddle."
+            ]
+          },
+          {
+            "heading": "Plan access and weather protection",
+            "paragraphs": [
+              "Lay out the items you need to reach during a roadside stop and compare the opening direction. Check zipper position and whether mounting straps interfere with a rear light. Water-resistant fabric does not necessarily mean a waterproof closure. Keep sensitive contents in suitable inner protection if the product has no documented weather rating."
+            ]
+          }
+        ],
+        "description": "Cycling saddle bag: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005009735684216",
+      "listingTitle": "ROCKBROS MTB Bicycle Rear Bag Rainproof Nylon Back Seat Road Bike Saddle Bag MTB Tail Pouch Package for Outdoor Sports Cycling",
+      "image": {
+        "src": "/assets/products/shopping/cycling-saddle-bag-1005009735684216.webp",
+        "alt": "Seller listing image of cycling saddle bag",
+        "width": 1000,
+        "height": 1000,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S5fb074c980f44477a5243126ac5d1c0ar.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S5fb074c980f44477a5243126ac5d1c0ar.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005009735684216.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "41ded24e13496b06fbe6ddd1c2e5a4629b5007a542442ce1fb3a0ef5839f3629",
+        "sizeBytes": 44610
+      }
     },
     {
       "id": "st-top-tube-bag",
-      "name": "ROCKBROS-branded top-tube bag candidate",
+      "name": "Cycling top-tube bag",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005007267491746.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005013031445646.html",
       "linkKind": "item",
-      "referenceUrl": "https://ro.pricearchive.org/aliexpress.com/item/1005007267491746",
-      "notes": "Exact merchant item ID discovered from an indexed top-tube bag record. Confirm current dimensions, mounting style, strap positions, model, and variant. No live stock or waterproof verification."
+      "referenceUrl": "https://www.aliexpress.com/item/1005013031445646.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005007267491746.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "cycling-top-tube-bag",
+      "details": {
+        "intro": "A top-tube bag keeps small items within reach, but should be checked for knee clearance, steering movement and mounting fit. Compare the complete shape with your bicycle and riding position.",
+        "highlights": [
+          "Match strap or bolt mounting to your frame.",
+          "Check bag width against knee movement.",
+          "Allow steering clearance around the head tube and cables."
+        ],
+        "sections": [
+          {
+            "heading": "Check contact points before capacity",
+            "paragraphs": [
+              "Measure the available top-tube length and the space near the stem. Check whether straps can sit without trapping cables or rubbing a frame joint. If a bag uses mounting bolts, confirm the required spacing rather than assuming a universal fit. Protect contact points in line with your frame manufacturer guidance."
+            ]
+          },
+          {
+            "heading": "Choose an opening for the contents",
+            "paragraphs": [
+              "A phone, keys and a small snack place different demands on the opening and internal dividers. Check the largest usable item size and whether a phone compartment fits its case. Do not assume touch-screen operation or rain protection from the appearance of a transparent cover. Compare access when stopped and keep riding safety ahead of convenience."
+            ]
+          }
+        ],
+        "description": "Cycling top-tube bag: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://ro.pricearchive.org/aliexpress.com/item/1005007267491746",
+      "listingTitle": "NEWBOLER 2.5L Bike Frame Front Tube Bag Bike Packing Pouch MTB Road Bike Tool Bag Cycling Top Tube Bag Bicycle Accessories",
+      "image": {
+        "src": "/assets/products/shopping/cycling-top-tube-bag-1005013031445646.webp",
+        "alt": "Seller listing image of cycling top-tube bag",
+        "width": 1000,
+        "height": 1000,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S0abb06855d8e49ef98fa7b78428db656M.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S0abb06855d8e49ef98fa7b78428db656M.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005013031445646.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "ad057b37010b2a7e4031cc3478589bf4fa8a3ec8bcd9ebacb87548084dc441b3",
+        "sizeBytes": 46986
+      }
     },
     {
       "id": "st-frame-bag",
-      "name": "ROCKBROS-branded triangle frame bag candidate",
+      "name": "Triangle bicycle frame bag",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005008374437605.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012226249230.html",
       "linkKind": "item",
-      "referenceUrl": "https://uk.pricearchive.org/aliexpress.com/item/1005008374437605",
-      "notes": "Indexed merchant-link record describes a triangle frame pouch. Check the full side profile against the bicycle, bottle cages, cables, and suspension. Current seller/model relationship not authenticated."
+      "referenceUrl": "https://www.aliexpress.com/item/1005012226249230.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005008374437605.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "triangle-bicycle-frame-bag",
+      "details": {
+        "intro": "A frame bag uses the space inside a bicycle frame. Check its actual shape against bottle cages, cables and suspension components before comparing capacity claims.",
+        "highlights": [
+          "Measure the triangle rather than using the frame size label.",
+          "Check bottle-cage and suspension clearance.",
+          "Compare strap positions and zipper access."
+        ],
+        "sections": [
+          {
+            "heading": "Use a simple fit template",
+            "paragraphs": [
+              "Transfer the seller dimensions to paper or cardboard and place the template in your frame. This can reveal interference that a capacity figure hides. Leave space for straps and the zipper opening. Small frames and compact geometries can have much less usable room than the bicycle used in listing photography."
+            ]
+          },
+          {
+            "heading": "Keep weight and access practical",
+            "paragraphs": [
+              "A long pump or tool roll may fit the main compartment while blocking smaller items. Check dividers and opening direction, and compare the stated carrying guidance if one is supplied. Keep straps away from cables and moving parts. A water-resistant fabric description alone does not establish protection for electronics or a documented waterproof rating."
+            ]
+          }
+        ],
+        "description": "Triangle bicycle frame bag: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://uk.pricearchive.org/aliexpress.com/item/1005008374437605",
+      "listingTitle": "Bicycle Triangle Bag Bike Front Tube Frame Saddle Storage Bags MTB Cycling Pouch Durable Bike Versatile Bag Bicycle Accessories",
+      "image": {
+        "src": "/assets/products/shopping/triangle-bicycle-frame-bag-1005012226249230.webp",
+        "alt": "Seller listing image of triangle bicycle frame bag",
+        "width": 800,
+        "height": 800,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S40421ce039e845f4864795060d9631515.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S40421ce039e845f4864795060d9631515.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005012226249230.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "c5da2dc100b2eec917318012622f9b9aa6f4cdcf7dc84fca869187e7c4e2a738",
+        "sizeBytes": 73276
+      }
     },
     {
       "id": "st-folding-daypack",
-      "name": "Naturehike-branded folding daypack candidate",
+      "name": "Travel toiletry organizer bag",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005006352682543.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005009011176869.html",
       "linkKind": "item",
-      "referenceUrl": "https://ro.pricearchive.org/aliexpress.com/item/1005006352682543",
-      "notes": "Indexed listing identifies a folding Naturehike-branded daypack. Confirm actual model, carrying support, packed size, volume, and seller legitimacy; the manufacturer reference describes the category, not a verified identical SKU."
+      "referenceUrl": "https://www.aliexpress.com/item/1005009011176869.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005006352682543.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "travel-toiletry-organizer-bag",
+      "details": {
+        "intro": "The supplied replacement link is a Naturehike-labelled toiletry organizer, not a folding backpack. Compare it for grouping personal-care items inside your main bag, with close attention to usable space, closure and cleaning.",
+        "highlights": [
+          "Confirm the exact toiletry-bag size and internal compartments.",
+          "Measure bottles and toiletries with their original closures fitted.",
+          "Do not assume a waterproof claim establishes leak containment."
+        ],
+        "sections": [
+          {
+            "heading": "Choose it for an organizer role",
+            "paragraphs": [
+              "A toiletry bag groups smaller personal-care items inside other luggage. It does not replace a shoulder-supported hiking pack or establish carrying support for a full day kit. Lay out the bottles, brush and small accessories you need, then compare usable internal space and the opening. Ask whether the selected variant has a hanging point, divider or separate wet compartment if those details matter to you."
+            ]
+          },
+          {
+            "heading": "Separate moisture management from waterproof claims",
+            "paragraphs": [
+              "Check the lining and cleaning instructions before choosing a pouch for damp items. A water-resistant outer fabric does not necessarily contain a leaking bottle or seal a zipper. Keep liquids in their appropriate original containers and use additional suitable containment when required. Review current carrier rules for liquids directly for your route. The brand wording in a marketplace title is not independent proof of authenticity."
+            ]
+          }
+        ],
+        "description": "Travel toiletry organizer bag: compare compartments, bottle fit, cleaning and moisture limits, with the actual AliExpress listing image and buying checks."
+      },
+      "previousReferenceUrl": "https://ro.pricearchive.org/aliexpress.com/item/1005006352682543",
+      "listingTitle": "Naturehike Camping Hiking Toiletry Bag Travel Cosmetic Bag Beach Pool Surfing Portable Large Capacity Carry Waterproof Bag",
+      "image": {
+        "src": "/assets/products/shopping/travel-toiletry-organizer-bag-1005009011176869.webp",
+        "alt": "Seller listing image of travel toiletry organizer bag",
+        "width": 800,
+        "height": 800,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S4334288583374780aee7b25ba06861076.png",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S4334288583374780aee7b25ba06861076.png_1200x1200q80.png_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005009011176869.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "77df52a220076e0023443e65ab5ed363b5b97451816c85c92afd7dc17f3db182",
+        "sizeBytes": 60034
+      }
     },
     {
       "id": "st-dry-sack",
-      "name": "Naturehike-branded roll-top dry-bag candidate",
+      "name": "Roll-top storage dry bag",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005009087130441.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005009191249052.html",
       "linkKind": "item",
-      "referenceUrl": "https://no.pricearchive.org/aliexpress.com/item/1005009087130441",
-      "notes": "Exact item ID found in an indexed merchant-link record. Current closure, seam construction, volume, care instructions, and intended water exposure require verification. Do not infer submersion protection from the title."
+      "referenceUrl": "https://www.aliexpress.com/item/1005009191249052.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005009087130441.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "roll-top-dry-bag",
+      "details": {
+        "intro": "A roll-top bag can help organize gear and reduce exposure to splashes, but its protection depends on construction and closure. Check the selected size and any documented water-resistance rating.",
+        "highlights": [
+          "Confirm usable capacity after rolling the closure.",
+          "Inspect seam construction and buckle arrangement.",
+          "Separate splash protection from submersion claims."
+        ],
+        "sections": [
+          {
+            "heading": "Allow room for the closure",
+            "paragraphs": [
+              "A roll-top opening needs spare material to close as directed. Packing to the brim can prevent the closure working as intended. Ask for the usable dimensions and the seller instructions for rolling the top. Check whether a carrying strap is supplied and whether any attachment point has a stated intended use."
+            ]
+          },
+          {
+            "heading": "Protect contents according to their importance",
+            "paragraphs": [
+              "A generic waterproof label is not a test report. Look for a specific rating and its conditions if protection from immersion matters. Keep critical electronics and documents in suitable additional protection when the evidence is unclear. A storage bag should not be treated as a flotation device or a substitute for activity-specific safety equipment."
+            ]
+          }
+        ],
+        "description": "Roll-top storage dry bag: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://no.pricearchive.org/aliexpress.com/item/1005009087130441",
+      "listingTitle": "Naturehike Waterproof Compression Bags 2L-8L",
+      "image": {
+        "src": "/assets/products/shopping/roll-top-dry-bag-1005009191249052.webp",
+        "alt": "Seller listing image of roll-top storage dry bag",
+        "width": 800,
+        "height": 800,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S84d1fdf9ae8a4e32983a85abff0dc935O.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S84d1fdf9ae8a4e32983a85abff0dc935O.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005009191249052.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "5c8643f9aa2c5b30419732756efc077564c6f5997b93a929afe9f8e1ac30a84c",
+        "sizeBytes": 19338
+      }
     },
     {
       "id": "st-mesh-stuff-sack",
-      "name": "Outdoor mesh stuff-sack candidate",
+      "name": "Mesh stuff sack",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005005856592741.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005011743782397.html",
       "linkKind": "item",
-      "referenceUrl": "https://cs.pricearchive.org/aliexpress.com/item/1005005856592741",
-      "notes": "Indexed merchant-link record describes an outdoor mesh storage bag. Current size, mesh spacing, closure, and quantity require checking. Mesh storage is not presented as water protection."
+      "referenceUrl": "https://www.aliexpress.com/item/1005011743782397.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005005856592741.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "mesh-stuff-sack",
+      "details": {
+        "intro": "A mesh sack helps group small equipment while keeping the contents visible. Compare its weave, closure and dimensions with the items you want to organize; mesh is not rain protection.",
+        "highlights": [
+          "Check mesh opening size for the smallest contents.",
+          "Measure the sack and its usable opening.",
+          "Check drawcord, toggle and seam construction."
+        ],
+        "sections": [
+          {
+            "heading": "Choose mesh for visibility and separation",
+            "paragraphs": [
+              "A visible, breathable organizer can make it easier to find accessories in a larger pack. It can also let small parts escape through a coarse weave. Compare the mesh opening with the smallest item and consider a separate pouch for sharp or delicate objects. Do not infer drying speed or hygiene performance from the photograph."
+            ]
+          },
+          {
+            "heading": "Check how it will be used",
+            "paragraphs": [
+              "An outdoor stuff sack and a machine-wash laundry bag are not automatically interchangeable. Confirm the intended use, closure and care instructions. A drawcord may need securing so it cannot catch on other contents. Compare the empty packed size and set quantity rather than assuming all pictured sacks are included."
+            ]
+          }
+        ],
+        "description": "Mesh stuff sack: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://cs.pricearchive.org/aliexpress.com/item/1005005856592741",
+      "listingTitle": "Ultralight Mesh Stuff Sack Drawstring Storage Bag High-Density Nylon Organizer Pouch for Camping Hiking Clothes Sleeping Bag",
+      "image": {
+        "src": "/assets/products/shopping/mesh-stuff-sack-1005011743782397.webp",
+        "alt": "Seller listing image of mesh stuff sack",
+        "width": 1200,
+        "height": 1200,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S49bcbd4d17b146379986b297b048d820H.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S49bcbd4d17b146379986b297b048d820H.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005011743782397.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "728d7730cf3e0404072c39254ae7c3ee9438ac32f92b6e63b2f8084b70704028",
+        "sizeBytes": 46618
+      }
     },
     {
       "id": "st-compression-cubes",
-      "name": "Compression packing-cube set candidate",
+      "name": "Travel packing organizer set",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005009267583514.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005007011689536.html",
       "linkKind": "item",
-      "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005009267583514",
-      "notes": "Exact item ID found in an indexed packing-cube record. Confirm which pieces are included and which actually have a separate compression zipper. Current dimensions, materials, availability, and price not verified."
+      "referenceUrl": "https://www.aliexpress.com/item/1005007011689536.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005009267583514.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "same-campaign-deeplink-template",
+      "slug": "travel-packing-organizer-set",
+      "details": {
+        "intro": "Compare the organizer sizes with your suitcase interior and the way you separate clothing. Confirm whether the chosen set has compression zippers; an ordinary packing pouch is not automatically a compression cube.",
+        "highlights": [
+          "Check each piece and its dimensions in the selected set.",
+          "Verify compression construction separately from the title.",
+          "Measure against the usable suitcase interior and wheel housings."
+        ],
+        "sections": [
+          {
+            "heading": "Build a packing layout before ordering",
+            "paragraphs": [
+              "Measure the flat area inside the suitcase and sketch where each organizer will sit. A large bundle can include several sizes you will not use. Compare opening direction, mesh panels and carrying handles. A shoe pouch or wash pouch may serve a different purpose from a clothing cube even when the pieces share a colour."
+            ]
+          },
+          {
+            "heading": "Keep volume and weight separate",
+            "paragraphs": [
+              "Compression can reduce bulk when the design supports it, but it does not reduce luggage weight. Avoid forcing a zipper around overfilled contents. Check seams, cleaning instructions and the return process for an incorrect set. Product photography may show multiple package options together, so match the selected option with the order summary."
+            ]
+          }
+        ],
+        "description": "Travel packing organizer set: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005009267583514",
+      "listingTitle": "7/8/9/10 Pcs Set Travel Organizer Storage Bags Suitcase Packing Cubes Cases Portable Wardrobe Luggage Clothes Shoe Pouch Fold",
+      "image": {
+        "src": "/assets/products/shopping/travel-packing-organizer-set-1005007011689536.webp",
+        "alt": "Seller listing image of travel packing organizer set",
+        "width": 800,
+        "height": 800,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Scbb2b7d864fd43b7aa24931053d9f64a5.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Scbb2b7d864fd43b7aa24931053d9f64a5.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005007011689536.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "c71efe852edbdec742c6718e3d81192887801958e54cb9afb575ac39caa99de0",
+        "sizeBytes": 83892
+      }
     },
     {
       "id": "st-shoe-bag",
-      "name": "Travel shoe-bag candidate",
+      "name": "Travel shoe bag",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005007131827073.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005007548810770.html",
       "linkKind": "item",
-      "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005007131827073",
-      "notes": "Exact item ID discovered in an indexed shoe-organizer record. Check internal dimensions for the intended shoe pair. Do not assume odor sealing or waterproofing from listing wording."
+      "referenceUrl": "https://www.aliexpress.com/item/1005007548810770.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005007131827073.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "travel-shoe-bag",
+      "details": {
+        "intro": "A shoe pouch separates footwear from other luggage. Check the usable dimensions against the actual pair, including bulky soles, and compare the closure with your packing routine.",
+        "highlights": [
+          "Measure your largest pair rather than relying on a size label.",
+          "Check opening size, lining and seam placement.",
+          "Verify whether the listing supplies one bag or a set."
+        ],
+        "sections": [
+          {
+            "heading": "Check fit with the footwear you carry",
+            "paragraphs": [
+              "A bag that fits lightweight trainers may not fit high boots or a second pair. Compare internal length and width and allow room to insert the shoes without stressing the zipper. If the design has separate compartments, check how each compartment is accessed and whether the dimensions apply to the full bag or one section."
+            ]
+          },
+          {
+            "heading": "Think about cleaning and ventilation",
+            "paragraphs": [
+              "A wipe-clean lining and a ventilated panel solve different problems. Read the material and care instructions instead of assuming that a travel bag can be machine washed. Let wet footwear dry appropriately before longer storage. A product image does not establish odour control, waterproofing or protection for the rest of your suitcase."
+            ]
+          }
+        ],
+        "description": "Travel shoe bag: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005007131827073",
+      "listingTitle": "Shoes Storage Bag Portable Travel Shoe Bag Clothes Slipper Underwear Organizer Trolley Case Bar Storage Bag Travel Accessories",
+      "image": {
+        "src": "/assets/products/shopping/travel-shoe-bag-1005007548810770.webp",
+        "alt": "Seller listing image of travel shoe bag",
+        "width": 800,
+        "height": 800,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sf1815fb30151467a971c71e8a4b8a2f9Y.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sf1815fb30151467a971c71e8a4b8a2f9Y.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005007548810770.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "01d251c9e3f1172c5cf15cbddb66ed12917226f2ba46baac15f9094693e7a2c5",
+        "sizeBytes": 71636
+      }
     },
     {
       "id": "st-laundry-mesh",
-      "name": "Mesh travel laundry-sack candidate",
+      "name": "Mesh travel laundry bag",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005013038694651.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005005899330339.html",
       "linkKind": "item",
-      "referenceUrl": "https://ms.pricearchive.org/aliexpress.com/item/1005013038694651",
-      "notes": "Indexed merchant-link record describes a nylon mesh drawstring travel/laundry bag. Confirm size and cleaning instructions. It is a candidate for dry clothing organization, not leakproof wet-clothes storage."
+      "referenceUrl": "https://www.aliexpress.com/item/1005005899330339.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005013038694651.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "mesh-travel-laundry-bag",
+      "details": {
+        "intro": "Use a mesh laundry organizer to separate clothing during travel. Check the closure, weave and care instructions before assuming it is also suitable for a washing machine.",
+        "highlights": [
+          "Confirm whether the stated use includes machine washing.",
+          "Compare mesh opening, size and closure security.",
+          "Check how the empty bag packs into your luggage."
+        ],
+        "sections": [
+          {
+            "heading": "Separate storage from washing",
+            "paragraphs": [
+              "A drawstring travel sack can keep clothing together without being designed for a wash cycle. A wash bag may need a protected zipper and different construction. Match the intended use to the seller instructions for the exact variant. Do not assume all mesh organizers offer the same protection for delicate garments."
+            ]
+          },
+          {
+            "heading": "Plan for the return journey",
+            "paragraphs": [
+              "Allow space for clothing that no longer packs as neatly after use. Compare bag dimensions with your suitcase and decide whether several smaller bags would make sorting easier. Keep damp items separate for an appropriate drying routine. Mesh allows airflow, but it does not establish hygiene treatment or prevent moisture reaching neighbouring contents."
+            ]
+          }
+        ],
+        "description": "Mesh travel laundry bag: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://ms.pricearchive.org/aliexpress.com/item/1005013038694651",
+      "listingTitle": "Big Size Large Washing Laundry Bag Mesh Organizer Net Dirty Bra Socks Underwear Shoe Storag Wash Machine Cover Clothes",
+      "image": {
+        "src": "/assets/products/shopping/mesh-travel-laundry-bag-1005005899330339.webp",
+        "alt": "Seller listing image of mesh travel laundry bag",
+        "width": 800,
+        "height": 800,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sf0a8041bf3b84d129f10229a2ce3eccfr.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sf0a8041bf3b84d129f10229a2ce3eccfr.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005005899330339.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "616c2d0c8b3831fff83f1ca7b6d4f185e16adc80d9724943d898fff462485201",
+        "sizeBytes": 77174
+      }
     },
     {
       "id": "st-hard-tech-case",
-      "name": "UGREEN-branded two-layer electronics case candidate",
+      "name": "Portable hard-drive storage case",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005009873549228.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005007785250910.html",
       "linkKind": "item",
-      "referenceUrl": "https://cs.pricearchive.org/aliexpress.com/item/1005009873549228",
-      "notes": "Exact item ID discovered in an indexed UGREEN-branded organizer record. Verify current model, seller, internal dimensions, and dividers. No assumption of brand authenticity, impact certification, or water rating."
+      "referenceUrl": "https://www.aliexpress.com/item/1005007785250910.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005009873549228.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "portable-hard-drive-storage-case",
+      "details": {
+        "intro": "The supplied UGREEN-labelled listing is a portable hard-drive storage case. Compare the usable interior with your drive, cable and connector clearance; do not assume the two-layer organizer previously referenced is the item supplied.",
+        "highlights": [
+          "Match the internal dimensions to your actual drive and connectors.",
+          "Check internal pockets, padding and closure clearance.",
+          "Confirm the selected case size; the drive is not assumed to be included."
+        ],
+        "sections": [
+          {
+            "heading": "Measure the device and its connector space",
+            "paragraphs": [
+              "A drive described by a nominal size still needs checking against the case interior. Include the enclosure thickness and any protruding connector, then compare the lining and pocket depth. Check whether the drive is intended to be stored with the cable attached or disconnected. A product title mentioning power banks does not establish compatibility with every power bank or charger."
+            ]
+          },
+          {
+            "heading": "Separate organization from impact protection",
+            "paragraphs": [
+              "A structured shell and padding can help keep items organized, but they do not establish a tested drop rating, waterproofing or protection from electrical faults. Read the intended-use and care information for the chosen variant. Check whether demonstration devices are included, and avoid crowding a cable or connector against the closure. This case does not replace the device manufacturer transport and storage guidance."
+            ]
+          }
+        ],
+        "description": "Portable hard-drive storage case: check drive dimensions, padding, cable clearance and the exact selected variant, with the real AliExpress listing image."
+      },
+      "previousReferenceUrl": "https://cs.pricearchive.org/aliexpress.com/item/1005009873549228",
+      "listingTitle": "UGREEN Hard Disk Drive Case for 2.5 inch External Hard Drive Portable HDD SSD Box for Power Bank Storage Case Travel Bag",
+      "image": {
+        "src": "/assets/products/shopping/portable-hard-drive-storage-case-1005007785250910.webp",
+        "alt": "Seller listing image of portable hard-drive storage case",
+        "width": 800,
+        "height": 800,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sbb07a789b97b4ca1a1cb34c5409db8453.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sbb07a789b97b4ca1a1cb34c5409db8453.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005007785250910.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "053ba29b3a374ba1a884f48228ab0c1cfc756b1d889b321512857e2c6d90353f",
+        "sizeBytes": 63946
+      }
     },
     {
       "id": "st-small-tech-case",
-      "name": "UGREEN-branded compact accessory-case candidate",
+      "name": "Compact earphone accessory case",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005012742386104.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005007492337373.html",
       "linkKind": "item",
-      "referenceUrl": "https://pt.pricearchive.org/aliexpress.com/item/1005012742386104",
-      "notes": "Indexed title describes a small UGREEN-branded accessory case. Verify the current listing and actual interior fit. Manufacturer references explain organizer design generally; they do not confirm this merchant SKU."
+      "referenceUrl": "https://www.aliexpress.com/item/1005007492337373.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005012742386104.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "compact-earphone-accessory-case",
+      "details": {
+        "intro": "The supplied UGREEN-labelled listing is a small earphone accessory case. Compare its internal shape with your earphones and charging case rather than assuming it can accommodate a phone charger or a larger electronics kit.",
+        "highlights": [
+          "Measure the earphones and charging case together.",
+          "Check internal depth, pockets and zipper clearance.",
+          "Confirm the selected size and whether the pictured electronics are excluded."
+        ],
+        "sections": [
+          {
+            "heading": "Check the shape of the whole kit",
+            "paragraphs": [
+              "Earphones, a charging case and a spare cable can have a different packed shape from loose wired earbuds. Compare the usable interior with your actual kit and leave room to close the zipper without pressure. A familiar brand name in a compatibility list is not proof of fit for every generation or third-party protective shell."
+            ]
+          },
+          {
+            "heading": "Choose for everyday access",
+            "paragraphs": [
+              "Consider how you will retrieve the earphones and whether a cable can stay separated from the charging case. Check seam, lining and closure photographs and read the care information. A hard-case description does not establish a measured impact rating or water protection. The case organizes accessories; it is not a charger and does not establish electrical or battery safety."
+            ]
+          }
+        ],
+        "description": "Compact earphone accessory case: compare charging-case fit, internal depth, cable space and seller variants, using the actual AliExpress listing image."
+      },
+      "previousReferenceUrl": "https://pt.pricearchive.org/aliexpress.com/item/1005012742386104",
+      "listingTitle": "UGREEN Earphone Case Hard Headphone Bag for Airpods Earpods Sennheiser Ear Pads Wireless Bluetooth Earphone Accessories",
+      "image": {
+        "src": "/assets/products/shopping/compact-earphone-accessory-case-1005007492337373.webp",
+        "alt": "Seller listing image of compact earphone accessory case",
+        "width": 800,
+        "height": 800,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S3905e1ac454141138e42eb4decc6317fa.png",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S3905e1ac454141138e42eb4decc6317fa.png_1200x1200q80.png_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005007492337373.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "bc07ce31b5ba5e0d26bf8c50905a9a3e029e3d9289f54c173a7979692bc8b5d3",
+        "sizeBytes": 19236
+      }
     },
     {
       "id": "st-cable-ties",
-      "name": "Reusable hook-and-loop cable straps candidate",
+      "name": "Reusable hook-and-loop cable straps",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005008751056507.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012422550750.html",
       "linkKind": "item",
-      "referenceUrl": "https://ms.pricearchive.org/aliexpress.com/item/1005008751056507",
-      "notes": "Exact item ID discovered in an indexed reusable cord-strap record. Check fastening material, length, width, quantity, and whether the chosen variant is reusable rather than a one-use zip tie."
+      "referenceUrl": "https://www.aliexpress.com/item/1005012422550750.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005008751056507.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "reusable-hook-loop-cable-straps",
+      "details": {
+        "intro": "Reusable cable straps can organize charging leads and loose accessories. Compare the length, width and fastening style with the cable bundle instead of tightening a short strap around a sharp bend.",
+        "highlights": [
+          "Check strap dimensions and pack quantity.",
+          "Choose a loose bundle that does not strain connectors.",
+          "Check whether straps stay attached to individual cables."
+        ],
+        "sections": [
+          {
+            "heading": "Match the strap to the bundle",
+            "paragraphs": [
+              "A strap for one charging lead may be too short for a larger coil. Compare the usable fastening overlap and the thickness of the bundle. Use a natural cable loop and leave connectors free from tension. The strap organizes a cable; it does not repair a damaged jacket or establish any electrical rating."
+            ]
+          },
+          {
+            "heading": "Keep the kit easy to identify",
+            "paragraphs": [
+              "Separate frequently used leads from spares and consider labels where similar connectors have different capabilities. Check material care and how the fastening surface handles lint. Compare the selected pack with the listing photographs, as mixed-length and single-length sets may share a page. Avoid assuming every colour shown is included."
+            ]
+          }
+        ],
+        "description": "Reusable hook-and-loop cable straps: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://ms.pricearchive.org/aliexpress.com/item/1005008751056507",
+      "listingTitle": "Reusable Cable Ties Fastening Wire Organizer Cord Rope Holder Self Adhesive Adjustable Cord Organizer Straps Desk Management",
+      "image": {
+        "src": "/assets/products/shopping/reusable-hook-loop-cable-straps-1005012422550750.webp",
+        "alt": "Seller listing image of reusable hook-and-loop cable straps",
+        "width": 800,
+        "height": 800,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sacd63d57e8304eb4838ce7c3435adc18h.png",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sacd63d57e8304eb4838ce7c3435adc18h.png_1200x1200q80.png_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005012422550750.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "a7c3b1dae2715c178d5b16ac4a0c9859ce93b56e9c00b7954b912707686325c7",
+        "sizeBytes": 92174
+      }
     },
     {
       "id": "st-luggage-scale",
-      "name": "Handheld luggage-scale candidate",
+      "name": "Handheld luggage scale",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005007915278712.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005009389094683.html",
       "linkKind": "item",
-      "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005007915278712",
-      "notes": "Indexed merchant-link record describes a digital hanging luggage scale. Current battery type, maximum load, units, strap, and instructions require checking. Display resolution is not verified measurement accuracy."
+      "referenceUrl": "https://www.aliexpress.com/item/1005009389094683.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005007915278712.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "handheld-luggage-scale",
+      "details": {
+        "intro": "Compare a luggage scale by its readable display, units and attachment method. It can help with packing decisions, but the reading does not guarantee acceptance under an airline or carrier rule.",
+        "highlights": [
+          "Check units, stated range and display readability.",
+          "Verify battery type and whether a battery is included.",
+          "Compare the strap or hook with your luggage handle."
+        ],
+        "sections": [
+          {
+            "heading": "Read the measurement conditions",
+            "paragraphs": [
+              "Look for the seller instructions about zeroing, lifting and holding the bag steady. Confirm the stated range and resolution without treating them as independently tested accuracy. A large maximum figure does not establish a reliable reading for your suitcase. Check whether the display holds the reading long enough to view safely."
+            ]
+          },
+          {
+            "heading": "Use carrier rules as the reference",
+            "paragraphs": [
+              "Check the current allowance for the specific ticket and route directly with the carrier. Leave a sensible margin for measurement differences and changes to the contents. Also measure luggage dimensions, because a weight reading does not address size restrictions. Review the battery and storage instructions before taking the scale on a trip."
+            ]
+          }
+        ],
+        "description": "Handheld luggage scale: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005007915278712",
+      "listingTitle": "50kg/10g Portable LCD Electronic Hand Scale Travel Hanging Scale with 100cm Long Retractable Measuring Tape",
+      "image": {
+        "src": "/assets/products/shopping/handheld-luggage-scale-1005009389094683.webp",
+        "alt": "Seller listing image of handheld luggage scale",
+        "width": 800,
+        "height": 800,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sec877551c4414259abe4123c4c2508edK.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/Sec877551c4414259abe4123c4c2508edK.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005009389094683.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "5bf0c021c902d07204db20b9f63fce67a51cc5add720b87ddeef1179db17a922",
+        "sizeBytes": 16050
+      }
     },
     {
       "id": "st-luggage-tag",
-      "name": "Privacy-cover luggage-tag candidate",
+      "name": "Privacy-cover luggage tag",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005009638725971.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012084529123.html",
       "linkKind": "item",
-      "referenceUrl": "https://da.pricearchive.org/aliexpress.com/item/1005009638725971",
-      "notes": "Exact item ID discovered in an indexed luggage-tag record. Confirm the selected design includes the privacy cover, card insert, and attachment strap. No anti-loss guarantee implied."
+      "referenceUrl": "https://www.aliexpress.com/item/1005012084529123.html",
+      "notes": "Merchant listing selected in the uploaded document. Listing metadata is checked separately; availability, the exact variant, shipping and commission eligibility are not independently confirmed.",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005009638725971.html",
+      "updatedAt": "2026-10-15",
+      "affiliateSource": "uploaded-document",
+      "slug": "privacy-cover-luggage-tag",
+      "details": {
+        "intro": "A luggage tag should be easy to identify while limiting unnecessary exposure of contact details. Compare its cover, attachment and writing area with the bag you intend to use.",
+        "highlights": [
+          "Check which personal details remain visible with the cover closed.",
+          "Inspect the attachment method and usable loop length.",
+          "Verify tag dimensions, insert and pack quantity."
+        ],
+        "sections": [
+          {
+            "heading": "Balance identification and privacy",
+            "paragraphs": [
+              "Decide what contact information is useful if the bag is misplaced and avoid displaying more personal information than necessary. Check whether the cover stays closed during normal handling and whether the insert can be replaced. A decorative privacy flap is not a lock, a tracking device or protection against all disclosure."
+            ]
+          },
+          {
+            "heading": "Check attachment and everyday handling",
+            "paragraphs": [
+              "Match the loop or fastening to the actual luggage handle and check whether it can loosen or snag. Compare materials and the size of the writing area. Product images may display several colours or accessories that belong to different options. Confirm the selected pack and review the seller return conditions if the supplied tag differs."
+            ]
+          }
+        ],
+        "description": "Privacy-cover luggage tag: compare fit, selected variants, listing images and practical buying checks before visiting the AliExpress seller."
+      },
+      "previousReferenceUrl": "https://da.pricearchive.org/aliexpress.com/item/1005009638725971",
+      "listingTitle": "Colorful PU Luggage Tags with Privacy Cover, 1-10 PCS",
+      "image": {
+        "src": "/assets/products/shopping/privacy-cover-luggage-tag-1005012084529123.webp",
+        "alt": "Seller listing image of privacy-cover luggage tag",
+        "width": 1200,
+        "height": 1200,
+        "sourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S912aab11d68a4336a7dc2340f04f63c1i.jpg",
+        "optimizedSourceUrl": "https://ae-pic-a1.aliexpress-media.com/kf/S912aab11d68a4336a7dc2340f04f63c1i.jpg_1200x1200q80.jpg_.webp",
+        "listingUrl": "https://www.aliexpress.com/item/1005012084529123.html",
+        "retrievedAt": "2026-10-15",
+        "credit": "AliExpress seller listing image",
+        "sha256": "a2a1e94052b0d41f185e0fa8c523c588ff06b88d1d1dc8114c2b457b4fcde426",
+        "sizeBytes": 67788
+      }
     },
     {
       "id": "st-luggage-strap",
@@ -767,16 +1607,16 @@
           "url": "https://www.decathlon.com/blogs/sports-advice/how-to-choose-the-perfect-yoga-mat"
         },
         {
-          "label": "Compact resistance band set — indexed listing reference; current availability unverified",
-          "url": "https://www.pricearchive.org/aliexpress.com/item/1005010067311375"
+          "label": "Compact resistance band — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005012986658635.html"
         },
         {
-          "label": "Adjustable jump rope candidate — indexed listing reference; current availability unverified",
-          "url": "https://www.pricearchive.org/aliexpress.com/item/1005012952711375"
+          "label": "Adjustable jump rope — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005011639886680.html"
         },
         {
-          "label": "Folding exercise mat candidate — indexed listing reference; current availability unverified",
-          "url": "https://ro.pricearchive.org/aliexpress.com/item/1005006996024129"
+          "label": "Folding exercise mat — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005009871080834.html"
         }
       ],
       "related": [
@@ -909,16 +1749,16 @@
           "url": "https://us.yonex.com/products/dry-super-grap-30-wraps"
         },
         {
-          "label": "Smooth racket overgrip candidate — indexed listing reference; current availability unverified",
-          "url": "https://www.pricearchive.org/aliexpress.com/item/1005009497340138"
+          "label": "Smooth tacky racket overgrip — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/4001242156968.html"
         },
         {
-          "label": "Dry-feel racket overgrip candidate — indexed listing reference; current availability unverified",
-          "url": "https://vi.pricearchive.org/aliexpress.com/item/1005006877343762"
+          "label": "Dry-feel racket overgrip — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005012132202932.html"
         },
         {
-          "label": "Single-racket shoulder pouch candidate — indexed listing reference; current availability unverified",
-          "url": "https://www.pricearchive.org/aliexpress.com/item/1005005709865736"
+          "label": "Single-racket shoulder bag — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005012553871658.html"
         }
       ],
       "related": [
@@ -1055,16 +1895,16 @@
           "url": "https://rockbrosbike.us/products/rockbros-water-resistant-triangle-bike-frame-saddle-bag-accessories-for-mtb-road-cycling"
         },
         {
-          "label": "ROCKBROS-branded saddle bag candidate — indexed listing reference; current availability unverified",
-          "url": "https://www.pricearchive.org/aliexpress.com/item/1005009735684216"
+          "label": "Cycling saddle bag — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005009735684216.html"
         },
         {
-          "label": "ROCKBROS-branded top-tube bag candidate — indexed listing reference; current availability unverified",
-          "url": "https://ro.pricearchive.org/aliexpress.com/item/1005007267491746"
+          "label": "Cycling top-tube bag — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005013031445646.html"
         },
         {
-          "label": "ROCKBROS-branded triangle frame bag candidate — indexed listing reference; current availability unverified",
-          "url": "https://uk.pricearchive.org/aliexpress.com/item/1005008374437605"
+          "label": "Triangle bicycle frame bag — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005012226249230.html"
         }
       ],
       "related": [
@@ -1076,23 +1916,23 @@
       "slug": "day-hiking-pack-organization-aliexpress",
       "title": "Day-Hiking Pack Organization: Bags and Pouches to Compare",
       "category": "sports-outdoors",
-      "description": "Plan a day-hike packing system with a folding daypack, an inner dry-bag candidate, and a mesh pouch while checking support and access.",
+      "description": "Compare an inner toiletry organizer, a roll-top dry-bag candidate and a mesh sack for day-pack organization, with practical fit and moisture checks.",
       "eyebrow": "Sports & outdoors · Day-hike organization",
       "lead": [
         "A well-organized daypack should let you find a layer or small accessory without emptying everything onto the ground. More pockets are not automatically the solution. A simple system can separate things that must stay dry, things that should remain visible, and items you need near the opening. Choose those roles before buying a set of matching sacks.",
-        "This guide compares a folding daypack, roll-top inner bag, and mesh sack. Current versions have not been tested; choose the route and load before choosing organizers."
+        "This guide compares an inner toiletry organizer, roll-top bag and mesh sack. The supplied replacement for the former folding-daypack candidate is a toiletry bag; it is shown here for internal organization, not as a backpack. Choose the main pack and route separately, then assign a clear job to each pouch."
       ],
-      "quickAnswer": "Choose the main pack for carrying comfort, an inner container for selected dry belongings, and mesh only where visibility helps. Small folded dimensions do not establish support under load. Give each organizer a clear job before buying several.",
+      "quickAnswer": "Choose the main pack for carrying comfort, then compare these inner organizers by their job: a toiletry pouch for personal-care items, a suitable roll-top bag for a selected dry kit and mesh where visibility helps. None of the linked organizers replaces a supportive main backpack.",
       "selection": [
         {
           "productId": "st-folding-daypack",
-          "verdict": "A candidate when packed size and occasional light carrying matter.",
-          "bestFor": "Travellers who want a separate day bag that can be stored inside their main luggage.",
-          "tradeoff": "A very compact folding design may have limited structure; advertised volume alone says little about comfort with your belongings.",
+          "verdict": "A candidate for grouping personal-care items inside a main bag.",
+          "bestFor": "Separating a small toiletry kit with clearly defined contents and access needs.",
+          "tradeoff": "This replacement listing is a toiletry bag, not the folding backpack previously referenced. A waterproof title does not prove leak containment.",
           "checks": [
-            "Confirm the current model and open and packed dimensions.",
-            "Inspect shoulder straps and back-panel design.",
-            "Check the load guidance and return conditions."
+            "Confirm the exact toiletry-bag size and internal compartments.",
+            "Measure bottles and toiletries with their original closures fitted.",
+            "Do not assume a waterproof claim establishes leak containment."
           ]
         },
         {
@@ -1130,7 +1970,7 @@
           "heading": "Compare support with your actual load",
           "paragraphs": [
             "A packable bag is attractive because it occupies little space between outings. That is different from carrying comfort. Look at strap width, adjustment range, back-panel structure, and the shape of the contents against your back. A folded rain layer creates a different load from a rigid container, even when both fit the same advertised volume.",
-            "Naturehike's folding-daypack page shows the category, while its larger hiking-pack guidance distinguishes exterior rain protection from inner protection for sensitive items. Use those ideas to ask better questions about a listing. Do not assume that a similar brand name means two marketplace and manufacturer pages describe identical packs."
+            "None of the three linked organizers should be treated as a verified replacement for a supportive main hiking pack. Manufacturer guidance about packs is background for understanding the difference between carrying support and internal organization. The current toiletry-bag listing needs its own size, closure and compartment checks. Do not assume that a similar brand name means a marketplace item and a manufacturer reference describe the same model."
           ]
         },
         {
@@ -1149,9 +1989,9 @@
         ],
         "rows": [
           [
-            "Folding daypack",
-            "Carries the full day kit",
-            "Comfort or support from volume alone"
+            "Toiletry organizer",
+            "Groups personal-care items inside a main bag",
+            "Backpack support or verified leak containment"
           ],
           [
             "Inner roll-top bag",
@@ -1175,8 +2015,8 @@
       ],
       "faq": [
         {
-          "q": "Can a folding travel backpack replace any hiking pack?",
-          "a": "No. A folding design prioritizes stored size, but carrying support, fit, and intended load vary. Compare the exact pack with your route and belongings. If the information does not describe the intended use clearly, choose a more suitable option."
+          "q": "Is the first linked bag a folding backpack?",
+          "a": "No. The supplied replacement URL identifies a toiletry organizer. It can be compared for grouping personal-care items inside a main bag. Check its current title and selected variant, and choose the main hiking pack separately for your route, fit and load."
         },
         {
           "q": "Should every item go inside a separate pouch?",
@@ -1201,16 +2041,16 @@
           "url": "https://seatosummit.com/blogs/product-care/just-how-waterproof-is-waterproof"
         },
         {
-          "label": "Naturehike-branded folding daypack candidate — indexed listing reference; current availability unverified",
-          "url": "https://ro.pricearchive.org/aliexpress.com/item/1005006352682543"
+          "label": "Travel toiletry organizer bag — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005009011176869.html"
         },
         {
-          "label": "Naturehike-branded roll-top dry-bag candidate — indexed listing reference; current availability unverified",
-          "url": "https://no.pricearchive.org/aliexpress.com/item/1005009087130441"
+          "label": "Roll-top storage dry bag — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005009191249052.html"
         },
         {
-          "label": "Outdoor mesh stuff-sack candidate — indexed listing reference; current availability unverified",
-          "url": "https://cs.pricearchive.org/aliexpress.com/item/1005005856592741"
+          "label": "Mesh stuff sack — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005011743782397.html"
         }
       ],
       "related": [
@@ -1232,9 +2072,9 @@
       "selection": [
         {
           "productId": "st-compression-cubes",
-          "verdict": "Compare for soft clothing when volume is the real constraint.",
+          "verdict": "A packing-pouch set to compare by its individual sizes; compression construction must be checked.",
           "bestFor": "A traveller who wants a few clothing groups to stay together while using less space.",
-          "tradeoff": "An overfilled cube can bulge beyond its listed dimensions, and a multi-piece set may include ordinary pouches alongside compression pieces.",
+          "tradeoff": "The replacement listing offers several organizer-set variants. Do not assume an ordinary pouch has a second compression zipper.",
           "checks": [
             "Identify which pieces have a separate compression zipper.",
             "Compare filled dimensions with the suitcase interior.",
@@ -1295,9 +2135,9 @@
         ],
         "rows": [
           [
-            "Compression cube",
-            "Keeps compressible clothing grouped",
-            "Second zipper, filled shape, and empty weight"
+            "Packing organizer set",
+            "Groups clothing into defined pouches",
+            "Whether the selected version actually has compression zippers"
           ],
           [
             "Shoe bag",
@@ -1347,16 +2187,16 @@
           "url": "https://www.srilankan.com/en_uk/plan-and-book/luggage"
         },
         {
-          "label": "Compression packing-cube set candidate — indexed listing reference; current availability unverified",
-          "url": "https://www.pricearchive.org/aliexpress.com/item/1005009267583514"
+          "label": "Travel packing organizer set — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005007011689536.html"
         },
         {
-          "label": "Travel shoe-bag candidate — indexed listing reference; current availability unverified",
-          "url": "https://www.pricearchive.org/aliexpress.com/item/1005007131827073"
+          "label": "Travel shoe bag — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005007548810770.html"
         },
         {
-          "label": "Mesh travel laundry-sack candidate — indexed listing reference; current availability unverified",
-          "url": "https://ms.pricearchive.org/aliexpress.com/item/1005013038694651"
+          "label": "Mesh travel laundry bag — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005005899330339.html"
         }
       ],
       "related": [
@@ -1378,24 +2218,24 @@
       "selection": [
         {
           "productId": "st-hard-tech-case",
-          "verdict": "A candidate when you need separate areas for a mixed kit.",
-          "bestFor": "Travellers carrying several cables and accessories who want a consistent place for each item.",
-          "tradeoff": "A shaped case occupies space even when partly empty, and advertised outer dimensions do not establish usable interior depth.",
+          "verdict": "A drive-sized structured case to compare for a specific device and cable.",
+          "bestFor": "Keeping a suitably sized portable drive and its cable together.",
+          "tradeoff": "The replacement is a drive case, not a verified two-layer general organizer. Compare internal dimensions before planning a larger kit.",
           "checks": [
-            "Request interior dimensions and divider photographs.",
-            "Check closure clearance over your thickest accessory.",
-            "Compare empty case weight with the bag you carry daily."
+            "Match the internal dimensions to your actual drive and connectors.",
+            "Check internal pockets, padding and closure clearance.",
+            "Confirm the selected case size; the drive is not assumed to be included."
           ]
         },
         {
           "productId": "st-small-tech-case",
-          "verdict": "Compare for a pared-down everyday travel kit.",
-          "bestFor": "A small group of essential cables and accessories kept together in a day bag.",
-          "tradeoff": "A compact case can become frustrating if a large plug forces every other item into a tight bend.",
+          "verdict": "A small-case option for earphones and a compact cable.",
+          "bestFor": "A minimal earphone kit whose packed dimensions fit the selected case.",
+          "tradeoff": "The replacement is an earphone case. A bulky charger or multi-adapter kit may not fit.",
           "checks": [
-            "Measure the largest plug in its natural packed position.",
-            "Check whether elastic loops are fixed or adjustable.",
-            "Keep frequently used accessories easy to remove."
+            "Measure the earphones and charging case together.",
+            "Check internal depth, pockets and zipper clearance.",
+            "Confirm the selected size and whether the pictured electronics are excluded."
           ]
         },
         {
@@ -1441,14 +2281,14 @@
         ],
         "rows": [
           [
-            "Two-layer case",
-            "Separating a larger mixed accessory kit",
-            "More structure and empty-case bulk"
+            "Portable drive case",
+            "A suitably sized drive and cable",
+            "Internal depth, connector space and unverified protection claims"
           ],
           [
-            "Compact case",
-            "A small everyday set",
-            "Less clearance for bulky plugs"
+            "Earphone case",
+            "A minimal earphone kit",
+            "Exact charging-case dimensions and limited spare space"
           ],
           [
             "Reusable cable straps",
@@ -1493,16 +2333,16 @@
           "url": "https://www.srilankan.com/en_uk/plan-and-book/luggage"
         },
         {
-          "label": "UGREEN-branded two-layer electronics case candidate — indexed listing reference; current availability unverified",
-          "url": "https://cs.pricearchive.org/aliexpress.com/item/1005009873549228"
+          "label": "Portable hard-drive storage case — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005007785250910.html"
         },
         {
-          "label": "UGREEN-branded compact accessory-case candidate — indexed listing reference; current availability unverified",
-          "url": "https://pt.pricearchive.org/aliexpress.com/item/1005012742386104"
+          "label": "Compact earphone accessory case — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005007492337373.html"
         },
         {
-          "label": "Reusable hook-and-loop cable straps candidate — indexed listing reference; current availability unverified",
-          "url": "https://ms.pricearchive.org/aliexpress.com/item/1005008751056507"
+          "label": "Reusable hook-and-loop cable straps — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005012422550750.html"
         }
       ],
       "related": [
@@ -1639,12 +2479,12 @@
           "url": "https://www.srilankan.com/en_uk/plan-and-book/luggage"
         },
         {
-          "label": "Handheld luggage-scale candidate — indexed listing reference; current availability unverified",
-          "url": "https://www.pricearchive.org/aliexpress.com/item/1005007915278712"
+          "label": "Handheld luggage scale — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005009389094683.html"
         },
         {
-          "label": "Privacy-cover luggage-tag candidate — indexed listing reference; current availability unverified",
-          "url": "https://da.pricearchive.org/aliexpress.com/item/1005009638725971"
+          "label": "Privacy-cover luggage tag — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005012084529123.html"
         },
         {
           "label": "Adjustable buckle luggage-strap candidate — indexed listing reference; current availability unverified",
@@ -1789,8 +2629,8 @@
           "url": "https://www.pricearchive.org/aliexpress.com/item/1005006832626721"
         },
         {
-          "label": "Naturehike-branded roll-top dry-bag candidate — indexed listing reference; current availability unverified",
-          "url": "https://no.pricearchive.org/aliexpress.com/item/1005009087130441"
+          "label": "Roll-top storage dry bag — current seller listing; selected variant requires checking",
+          "url": "https://www.aliexpress.com/item/1005009191249052.html"
         },
         {
           "label": "Reusable wet-umbrella sleeve candidate — indexed listing reference; current availability unverified",

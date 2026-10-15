@@ -85,7 +85,7 @@
           (item.expiresAt ? '<span>Until '+esc(formatExpiry(item.expiresAt))+'</span>' : "") +
           '</div>' +
           terms +
-          (item.url ? '<a class="promo-open" href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer">Open source ↗</a>' : "") +
+          (item.url ? '<a class="promo-open" data-sponsored-navigation href="'+esc(item.url)+'" target="_blank" rel="noopener noreferrer">Open source ↗</a>' : "") +
         '</article>';
       }).join("") +
       '</div>';

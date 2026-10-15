@@ -43,34 +43,28 @@ The dynamic `/sitemap.xml` includes the product URL and all ten image URLs.
 
 ## Sponsored clicks
 
-`js/sponsored-click.js` is included on the existing static pages and rendered
-Worker pages. Internal product, guide, category and carousel links open normally.
-The first real, unmodified outbound shopping click on an Admitad / AliExpress,
-`rel="sponsored"` or `data-sponsored-navigation` link shows one visible
-Adsterra Smartlink frame inside the site's own dialog. The × and the real
-**Continue to AliExpress** link stay outside that frame and remain
-accessible while advertiser redirects happen inside it. There are no external
-ad tabs, automatic destination timers or automatic retries.
+`js/sponsored-click.js` is shared by static and Worker-rendered pages. Every
+unmodified, trusted outbound shopping click offers a visible, optional sponsor
+choice. Internal product, guide and carousel links continue
+normally. The merchant href is kept intact and works without JavaScript.
 
-The frame sandbox permits scripts, forms and its own origin, but prevents top
-navigation, popup windows and external-app launches. × / Continue destroys the
-frame and follows the exact original destination once. **Stay here**, Escape,
-native dialog cancellation and Back dismiss the panel. Page lifecycle cleanup
-prevents restoring a live ad panel from the browser back-forward cache.
+The primary control skips the sponsor and follows the exact Admitad deeplink.
+The visitor can instead deliberately click the separately labelled Adsterra
+sponsor link, which uses a normal new-tab anchor with `noopener`. A second normal
+same-tab anchor provides a fallback if the browser blocks new tabs. Closing with
+× skips to the merchant; Cancel, Escape, Back and page lifecycle events
+dismiss the choice. Native dialog fallback, focus containment and storage-independent
+handling retain the controls on browsers without full dialog/storage support.
 
-`sessionStorage` records one Smartlink attempt per browsing tab/session. Later
-outbound Buy clicks use their normal destination, including after navigating
-between pages. If storage is unavailable, the current page still caps attempts.
-Nothing is fetched from the ad network just by visiting a page, and tests never
-contact the ad network. A frame request or load event is not evidence of a valid
-impression or payable click. Advertisers may block framing or require permissions
-not available in this container; no proxy bypasses those restrictions. The
-publisher must verify counted traffic in Adsterra and use a supported in-page ad
-format such as Social Bar when guaranteed embedded creative support is needed.
+No ad is framed, prefetched or opened automatically. Tests never contact the
+ad network. This replaces the old framed destination because the Adsterra
+publisher terms prohibit framing an ad click-through destination and prohibit
+misleading, forced or artificially generated ad traffic. Sponsor engagement is
+not required for shopping and is not used to trigger the Admitad destination.
+Account approval, accepted traffic and commission eligibility remain decisions
+of the respective networks; URL validation is not account-level approval.
 
-Use `data-sponsored-bypass` for the panel's own destination control. Future static
-pages should include the versioned shared CSS/script; Worker HTML responses use
-`withSponsoredSupport()`.
+Use `data-sponsored-bypass` for source references and the dialog's own links.
 
 ## Shopping guides
 
@@ -112,3 +106,24 @@ the page and images; publishing schema or a sitemap does not guarantee ranking.
 Run `npm ci` followed by `npm test` for a Wrangler build check, Worker routing /
 SEO tests in Miniflare and isolated DOM tests of the sponsored click flow. Tests
 stub the ad frame and do not make advertising or affiliate network requests.
+
+## First 20 Admitad product import on 15 October 2026
+
+The uploaded DOCX's second table supplies 19 tracking links and one direct
+AliExpress URL among its first 20 product rows. The 19 tracking URLs are retained
+exactly. Row 13 uses the identical supplied campaign path and its exact supplied
+merchant URL as `ulp`; its constructed origin is recorded in
+`content/affiliate-import-2026-10-15.json`. The previous smartphone mapping remains.
+
+All 20 exact item pages supplied their main image and title through public
+listing metadata. Twenty local WebP assets preserve those visuals, with a total
+size of 977,570 bytes. Source URLs, dimensions, retrieval dates and SHA-256 values
+are recorded in the catalog. No substitute product rendering was generated.
+
+Eight existing guides, their cards, the product index, twenty linked product
+buying-check pages and both image sitemaps use the same catalog and mapping.
+The actual replacements include a toiletry bag, a drive case and an earphone
+case; their names and comparisons reflect those items, while stable product IDs
+are retained. The packing-organizer listing is not described as verified
+compression hardware. See `docs/admitad-integration-2026-10-15.md` for the mapping,
+page and image paths, policy sources, verification and remaining account work.

@@ -6,7 +6,7 @@ import path from "node:path";
 import {JSDOM} from "jsdom";
 import {Miniflare, convertV4MiniflareOptions} from "miniflare";
 import {AFFILIATE_PRODUCTS, productPath, featuredCarouselItems} from "../lib/affiliate-products.js";
-import {SHOPPING_GUIDES,SHOPPING_PRODUCTS,GUIDE_CATEGORIES,guidePath,categoryPath,guideImage,shoppingDestination} from "../lib/shopping-guides.js";
+import {SHOPPING_GUIDES,SHOPPING_PRODUCTS,GUIDE_CATEGORIES,guidePath,categoryPath,guideImage,guidePreviewImage,shoppingDestination,SHOPPING_DETAIL_PRODUCTS,shoppingProductPath} from "../lib/shopping-guides.js";
 
 const origin="https://buysell.best";
 const product=AFFILIATE_PRODUCTS[0];
@@ -33,6 +33,7 @@ test("product HTML contains crawlable content, ten pictures, canonical and truth
   const dom=new JSDOM(await response.text());
   const doc=dom.window.document;
   assert.equal(doc.querySelector("h1").textContent,product.title);
+  assert.equal(doc.querySelector('meta[name="google-adsense-account"]').content,"ca-pub-4485257027995607");
   assert.equal(doc.querySelector('link[rel="canonical"]').href,origin+productPath(product));
   assert.equal(doc.querySelectorAll(".product-image-grid img").length,10);
   assert.equal(doc.querySelectorAll("[data-product-image]").length,10);
@@ -60,8 +61,8 @@ test("homepage serves the product, mini tile and first carousel frame without a 
   assert.ok(doc.querySelector("#global-deals .affiliate-mini-tile"));
   assert.equal(doc.querySelectorAll("#shopping-guides-spotlight .shopping-card").length,GUIDE_CATEGORIES.length);
   for(const selector of ["#affiliate-product-spotlight .offer-button","#current-listings-track .carousel-buy","#global-deals .affiliate-mini-tile .offer-button"]){
-    assert.equal(doc.querySelector(selector).getAttribute("href"),productPath(product));
-    assert.equal(doc.querySelector(selector).hasAttribute("data-sponsored-navigation"),false);
+    assert.equal(doc.querySelector(selector).getAttribute("href"),product.affiliateUrl);
+    assert.equal(doc.querySelector(selector).hasAttribute("data-sponsored-navigation"),true);
   }
   assert.equal(JSON.parse(doc.querySelector("#affiliate-products-data").textContent)[0].id,product.id);
   dom.window.close();
@@ -122,122 +123,98 @@ function adHarness({storage=new Map(),storageFails=false}={}){
   return {dom,window,document,link,requests,navigations,timers,storage,click,tick,get opened(){return opened;}};
 }
 
-test("one visitor click shows a visible sandboxed ad; × follows the exact destination without an external tab",()=>{
+test("shopping click offers an optional separate sponsor and a direct merchant continuation",()=>{
   const h=adHarness();
-  assert.equal(h.requests.length,0);
   assert.equal(h.click().defaultPrevented,true);
-  const frame=h.document.querySelector(".sponsored-step-frame");
-  assert.equal(h.requests.length,1);
-  assert.match(frame.src,/profitableratecpmnetwork\.com\/nugmu8qikp/);
-  assert.ok(frame.closest("dialog[open]"));
-  const sandbox=frame.getAttribute("sandbox").split(" ");
-  assert.ok(sandbox.includes("allow-scripts"));
-  for(const unsafe of ["allow-top-navigation","allow-top-navigation-by-user-activation","allow-popups","allow-popups-to-escape-sandbox","allow-top-navigation-to-custom-protocols"])assert.equal(sandbox.includes(unsafe),false);
-  assert.equal(h.document.querySelector(".sponsored-step-continue").textContent,"Continue to AliExpress →");
-  assert.equal(h.document.querySelector(".sponsored-step-continue").href,product.affiliateUrl);
-  assert.deepEqual(h.navigations,[]);
-  h.document.querySelector(".sponsored-step-close").click();
+  const doc=h.document, sponsor=doc.querySelector(".sponsored-step-sponsor");
+  assert.ok(doc.querySelector("dialog[open]"));
+  assert.equal(doc.querySelector("iframe"),null);
+  assert.match(sponsor.href,/profitableratecpmnetwork\.com\/nugmu8qikp/);
+  assert.equal(sponsor.target,"_blank");
+  assert.ok(sponsor.rel.includes("noopener")&&sponsor.rel.includes("sponsored"));
+  assert.equal(doc.querySelector(".sponsored-step-continue").href,product.affiliateUrl);
+  assert.match(doc.querySelector("#sponsored-step-message").textContent,/not the merchant/);
+  assert.equal(doc.querySelector(".sponsored-step-label").textContent,"OPTIONAL ADVERTISEMENT");
+  assert.equal(h.opened,0);assert.equal(h.requests.length,0);
+  doc.querySelector(".sponsored-step-close").click();
   assert.deepEqual(h.navigations,[product.affiliateUrl]);
-  assert.equal(h.document.querySelector("iframe"),null);
-  assert.equal(h.opened,0);
-  assert.equal(h.timers.size,0);
+  assert.equal(doc.querySelector(".sponsored-step-backdrop"),null);
   h.dom.window.close();
 });
 
-test("repeated ad load/error events keep × and the destination available without retries or automatic redirects",()=>{
+test("a normal same-tab sponsor link is available when a new tab is blocked, with no automatic requests",()=>{
   const h=adHarness();h.click();
-  const frame=h.document.querySelector("iframe"),destination=h.document.querySelector(".sponsored-step-continue");
-  for(let i=0;i<12;i++)frame.dispatchEvent(new h.window.Event("load"));
-  frame.dispatchEvent(new h.window.Event("error"));
-  assert.match(h.document.querySelector("#sponsored-step-message").textContent,/could not be displayed/);
-  assert.ok(h.document.querySelector(".sponsored-step-close"));
-  assert.ok(destination.isConnected);
-  assert.equal(destination.href,product.affiliateUrl);
-  assert.equal(h.requests.length,1);
+  const sponsor=h.document.querySelector(".sponsored-step-sponsor");
+  const fallback=h.document.querySelector(".sponsored-step-same-tab");
+  assert.equal(fallback.href,sponsor.href);assert.equal(fallback.target,"");
+  assert.equal(h.window.BuySellSponsoredClicks.destinationFor(fallback),null);
+  assert.equal(h.window.BuySellSponsoredClicks.destinationFor(sponsor),null);
   h.tick(120000);
-  assert.deepEqual(h.navigations,[]);
-  destination.click();
+  assert.deepEqual(h.requests,[]);assert.deepEqual(h.navigations,[]);assert.equal(h.opened,0);
+  h.document.querySelector(".sponsored-step-continue").click();
   assert.deepEqual(h.navigations,[product.affiliateUrl]);
-  assert.equal(h.requests.length,1);
-  assert.equal(h.opened,0);
-  h.dom.window.close();
+  assert.equal(h.timers.size,0);h.dom.window.close();
 });
 
-test("one session spans product navigation and Buy clicks without reopening the Smartlink",()=>{
+test("every shopping click offers the sponsor choice, including later products in the same session",()=>{
   const h=adHarness();h.click();
   h.document.querySelector(".sponsored-step-stay").click();
   assert.equal(h.document.activeElement,h.link);
-  assert.equal(h.click().defaultPrevented,false);
-  assert.equal(h.requests.length,1);
-  const nextPage=adHarness({storage:h.storage});
-  assert.equal(nextPage.click().defaultPrevented,false);
-  assert.equal(nextPage.requests.length,0);
-  assert.equal(nextPage.document.querySelector("dialog"),null);
-  assert.equal(nextPage.link.href,product.affiliateUrl);
-  h.dom.window.close();nextPage.dom.window.close();
+  h.link.href="https://www.aliexpress.com/item/1005012986658635.html";
+  assert.equal(h.click().defaultPrevented,true);
+  assert.equal(h.document.querySelector(".sponsored-step-continue").href,h.link.href);
+  assert.equal(h.document.querySelectorAll("dialog").length,1);
+  assert.equal(h.click().defaultPrevented,true);
+  assert.equal(h.document.querySelectorAll("dialog").length,1);
+  h.document.querySelector(".sponsored-step-stay").click();
+  const next=adHarness({storage:h.storage});
+  assert.equal(next.click().defaultPrevented,true);
+  assert.ok(next.document.querySelector("dialog[open]"));
+  assert.deepEqual(h.requests,[]);assert.equal(h.opened,0);
+  h.dom.window.close();next.dom.window.close();
 });
 
-test("Escape, Back and restored pages dismiss the ad without navigating or reopening it",()=>{
+test("Escape, Back and restored pages dismiss the choice without a redirect",()=>{
   for(const eventType of ["cancel","popstate","pagehide","pageshow"]){
     const h=adHarness();h.click();
     if(eventType==="cancel")h.document.querySelector("dialog").dispatchEvent(new h.window.Event("cancel",{cancelable:true}));
-    else{
-      const event=new h.window.Event(eventType);
-      if(eventType==="pageshow")Object.defineProperty(event,"persisted",{value:true});
-      h.window.dispatchEvent(event);
-    }
+    else {const event=new h.window.Event(eventType);if(eventType==="pageshow")Object.defineProperty(event,"persisted",{value:true});h.window.dispatchEvent(event);}
     assert.equal(h.document.querySelector("dialog"),null,eventType);
-    assert.equal(h.document.querySelector("iframe"),null,eventType);
-    assert.deepEqual(h.navigations,[],eventType);
-    assert.equal(h.click().defaultPrevented,false,eventType);
-    assert.equal(h.requests.length,1,eventType);
+    assert.equal(h.document.querySelector(".sponsored-step-backdrop"),null,eventType);
+    assert.deepEqual(h.navigations,[],eventType);assert.equal(h.click().defaultPrevented,true,eventType);
     h.dom.window.close();
   }
 });
 
-test("blocked session storage preserves destination controls and still caps the current page",()=>{
-  const h=adHarness({storageFails:true});h.click();
-  assert.ok(h.document.querySelector(".sponsored-step-continue"));
-  h.document.querySelector(".sponsored-step-stay").click();
-  assert.equal(h.click().defaultPrevented,false);
-  assert.equal(h.requests.length,1);
-  assert.equal(h.opened,0);
-  h.dom.window.close();
-});
-
-test("external shopping links use the default flow; internal, modified and unsafe links do not",()=>{
-  const h=adHarness();const classify=h.window.BuySellSponsoredClicks.destinationFor;
-  h.link.rel="";h.link.href="/products/future-product/";assert.equal(classify(h.link),null);
-  h.link.href="https://rzekl.com/g/future/";assert.equal(classify(h.link),h.link.href);
-  h.link.href="/about.html";assert.equal(classify(h.link),null);
-  h.link.href="https://rzekl.com.evil.test/";assert.equal(classify(h.link),null);
-  h.link.rel="sponsored";h.link.href="javascript:alert(1)";assert.equal(classify(h.link),null);
-  h.link.href=product.affiliateUrl;h.click({ctrlKey:true});h.click({isTrusted:false});assert.equal(h.requests.length,0);
+test("blocked storage and missing native dialog support retain accessible skip and close controls",()=>{
+  const h=adHarness({storageFails:true});
+  h.window.HTMLDialogElement.prototype.showModal=undefined;
   h.click();
-  assert.equal(classify(h.document.querySelector(".sponsored-step-continue")),null);
+  assert.equal(h.document.querySelector("dialog").getAttribute("aria-modal"),"true");
+  const first=h.document.querySelector(".sponsored-step-close"),last=h.document.querySelector(".sponsored-step-stay");
+  first.focus();first.dispatchEvent(new h.window.KeyboardEvent("keydown",{key:"Tab",shiftKey:true,bubbles:true,cancelable:true}));
+  assert.equal(h.document.activeElement,last);
+  last.click();assert.equal(h.click().defaultPrevented,true);assert.deepEqual(h.requests,[]);
   h.document.querySelector(".sponsored-step-stay").click();
-  h.dom.window.close();
+  assert.equal(h.document.body.style.overflow,"");h.dom.window.close();
 });
 
-test("internal guides and product tiles do not consume the sponsored step before an outbound shopping click",()=>{
-  const h=adHarness();
+test("internal, source, modified, synthetic and unsafe links keep normal navigation",()=>{
+  const h=adHarness(),classify=h.window.BuySellSponsoredClicks.destinationFor;
   for(const path of ["/", "/guides/",guidePath(SHOPPING_GUIDES[0]),categoryPath(GUIDE_CATEGORIES[0]),productPath(product)]){
     h.link.href=path;h.link.rel="sponsored";h.link.setAttribute("data-sponsored-navigation","");
-    assert.equal(h.click().defaultPrevented,false,path);
-    assert.equal(h.requests.length,0,path);
-    assert.equal(h.storage.size,0,path);
+    assert.equal(h.click().defaultPrevented,false,path);assert.equal(h.storage.size,0,path);
   }
-  const destination=shoppingDestination(SHOPPING_PRODUCTS[0]);
-  h.link.href=destination;
-  assert.equal(h.click().defaultPrevented,true);
-  assert.equal(h.requests.length,1);
-  assert.equal(h.document.querySelector(".sponsored-step-continue").href,destination);
-  assert.equal(h.document.querySelector(".sponsored-step-label").textContent,"ADVERTISEMENT");
-  assert.equal(h.document.querySelector("iframe").title,"Sponsored content");
-  h.document.querySelector(".sponsored-step-close").click();
-  assert.deepEqual(h.navigations,[destination]);
-  assert.equal(h.opened,0);
-  h.dom.window.close();
+  h.link.removeAttribute("data-sponsored-navigation");h.link.rel="";
+  h.link.href="https://rzekl.com.evil.test/";assert.equal(classify(h.link),null);
+  h.link.rel="sponsored";h.link.href="javascript:alert(1)";assert.equal(classify(h.link),null);
+  h.link.href="https://user:pass@www.aliexpress.com/";assert.equal(classify(h.link),null);
+  h.link.href=product.affiliateUrl;
+  for(const extra of [{ctrlKey:true},{metaKey:true},{shiftKey:true},{button:1},{isTrusted:false}])assert.equal(h.click(extra).defaultPrevented,false);
+  h.link.setAttribute("data-sponsored-bypass","");assert.equal(h.click().defaultPrevented,false);
+  h.link.removeAttribute("data-sponsored-bypass");assert.equal(h.click().defaultPrevented,true);
+  assert.equal(classify(h.document.querySelector(".sponsored-step-continue")),null);
+  h.document.querySelector(".sponsored-step-stay").click();h.dom.window.close();
 });
 
 test("every shopping guide serves substantive crawlable content, source links, accurate destinations and metadata",async()=>{
@@ -273,8 +250,8 @@ test("every shopping guide serves substantive crawlable content, source links, a
     assert.equal(article.offers,undefined);assert.equal(article.aggregateRating,undefined);
     const image=doc.querySelector(".shopping-article-image img");
     assert.equal(image.src,doc.querySelector('meta[property="og:image"]').content);
-    assert.equal(image.getAttribute("width"),"1536");
-    assert.match(doc.querySelector(".shopping-article-image figcaption").textContent,/AI-generated/);
+    assert.equal(image.getAttribute("width"),String(guidePreviewImage(guide).width));
+    assert.match(doc.querySelector(".shopping-article-image figcaption").textContent,guidePreviewImage(guide).sourceUrl?/Seller listing/:/AI-generated/);
     dom.window.close();
   }
 });
@@ -302,7 +279,8 @@ test("guide navigation, category hubs, image bytes and sitemap preserve all arti
   for(const guide of SHOPPING_GUIDES){
     const entry=entries.find(entry=>entry.querySelector("loc").textContent===origin+guidePath(guide));
     assert.ok(entry,guide.slug);
-    assert.equal(entry.getElementsByTagNameNS("http://www.google.com/schemas/sitemap-image/1.1","loc").length,1);
+    const expectedImages=new Set([guidePreviewImage(guide).src,...guide.selection.map(c=>SHOPPING_PRODUCTS.find(p=>p.id===c.productId)?.image?.src).filter(Boolean)]);
+    assert.equal(entry.getElementsByTagNameNS("http://www.google.com/schemas/sitemap-image/1.1","loc").length,expectedImages.size);
   }
   assert.ok(locations.includes(origin+productPath(product)));
   assert.ok(locations.includes(origin+"/shopping-methodology/"));
@@ -348,8 +326,77 @@ test("carousel refresh cleans previous controls and keeps the shared price out o
   document.querySelector(".carousel-next").click();
   assert.equal(document.querySelector(".carousel-card.is-active").dataset.carouselIndex,"1");
   assert.equal(document.querySelector(".affiliate-carousel-card .carousel-price").classList.contains("smart-price"),false);
-  assert.equal(document.querySelector(".affiliate-carousel-card .carousel-buy").getAttribute("href"),productPath(product));
-  assert.equal(document.querySelector(".affiliate-carousel-card .carousel-buy").hasAttribute("data-sponsored-navigation"),false);
+  assert.equal(document.querySelector(".affiliate-carousel-card .carousel-buy").getAttribute("href"),product.affiliateUrl);
+  assert.equal(document.querySelector(".affiliate-carousel-card .carousel-buy").hasAttribute("data-sponsored-navigation"),true);
   document.querySelector("#current-listings-carousel").__carouselCleanup();
   dom.window.close();
+});
+
+test("the first 20 document rows preserve product IDs and resolve to their exact replacement merchant items",async()=>{
+  const batch=JSON.parse(await readFile("content/affiliate-import-2026-10-15.json","utf8"));
+  assert.equal(batch.products.length,20);assert.equal(batch.suppliedTrackingLinks,19);assert.equal(batch.constructedTrackingLinks,1);
+  assert.equal(SHOPPING_DETAIL_PRODUCTS.length,20);
+  for(const [i,row] of batch.products.entries()){
+    assert.equal(row.row,i+1);
+    const item=SHOPPING_PRODUCTS.find(item=>item.id===row.productId);
+    const tracked=new URL(shoppingDestination(item));
+    assert.equal(tracked.hostname,"rzekl.com");
+    assert.equal(tracked.pathname,"/g/1e8d1144948a33a283af16525dc3e8/");
+    assert.equal(new URL(tracked.searchParams.get("ulp")).pathname,"/item/"+row.merchantItemId+".html");
+    assert.equal(new URL(item.merchantUrl).pathname,"/item/"+row.merchantItemId+".html");
+    assert.equal(row.productPage,shoppingProductPath(item));
+  }
+  assert.equal(batch.products[12].source,"same-campaign-deeplink-template");
+  assert.equal(product.affiliateUrl,shoppingDestination(SHOPPING_PRODUCTS.find(p=>p.id==="hp-android-listing")));
+});
+
+test("all 20 product pages expose real images, useful buying checks, correct canonical URLs and truthful schema",async()=>{
+  for(const item of SHOPPING_DETAIL_PRODUCTS){
+    const path=shoppingProductPath(item);
+    const response=await worker.dispatchFetch(origin+path);assert.equal(response.status,200,item.id);
+    const dom=new JSDOM(await response.text(),{url:origin+path}),doc=dom.window.document;
+    assert.equal(doc.querySelectorAll("h1").length,1);assert.equal(doc.querySelector("h1").textContent,item.name);
+    assert.equal(doc.querySelector('link[rel="canonical"]').href,origin+path);
+    assert.match(doc.querySelector('meta[name="robots"]').content,/index,follow/);
+    assert.equal(doc.querySelector("[data-shopping-product]").href,shoppingDestination(item));
+    assert.equal(doc.querySelector(".shopping-detail-image img").src,doc.querySelector('meta[property="og:image"]').content);
+    assert.match(doc.querySelector(".shopping-detail-image figcaption").textContent,/Seller listing image/);
+    assert.equal(doc.querySelector('meta[property="og:image:width"]').content,String(item.image.width));
+    assert.ok(doc.querySelector("#buying-details").textContent.split(/\s+/).length>350,item.id);
+    assert.ok(doc.querySelectorAll(".shopping-detail-prose a[href^='/guides/']").length>=1);
+    const schemas=[...doc.querySelectorAll('script[type="application/ld+json"]')].map(n=>JSON.parse(n.textContent));
+    assert.ok(schemas.some(n=>n["@type"]==="Article"));assert.ok(schemas.some(n=>n["@type"]==="BreadcrumbList"));
+    assert.ok(!schemas.some(n=>n.aggregateRating||n.offers||n.review));
+    const image=await worker.dispatchFetch(origin+item.image.src);assert.equal(image.status,200);
+    const bytes=Buffer.from(await image.arrayBuffer());assert.equal(bytes.subarray(0,4).toString(),"RIFF");assert.equal(bytes.subarray(8,12).toString(),"WEBP");
+    assert.ok(bytes.length<300000);assert.equal(bytes.length,item.image.sizeBytes);
+    const head=await worker.dispatchFetch(origin+path,{method:"HEAD"});assert.equal(head.status,200);assert.equal(await head.text(),"");
+    const redirect=await worker.dispatchFetch(origin+path.slice(0,-1),{redirect:"manual"});assert.equal(redirect.status,301);assert.equal(redirect.headers.get("location"),origin+path);
+    dom.window.close();
+  }
+});
+
+test("products index, guide cards and both sitemaps expose the new product pages and original seller image assets",async()=>{
+  const response=await worker.dispatchFetch(origin+"/products/");const dom=new JSDOM(await response.text());
+  assert.equal(dom.window.document.querySelectorAll(".shopping-product-index .shopping-card").length,20);
+  for(const item of SHOPPING_DETAIL_PRODUCTS){
+    assert.ok(dom.window.document.querySelector('a[href="'+shoppingProductPath(item)+'"]'));
+    const buy=dom.window.document.querySelector('[data-shopping-product="'+item.id+'"]');
+    assert.equal(buy.href,shoppingDestination(item));assert.ok(buy.hasAttribute("data-sponsored-navigation"));
+  }
+  dom.window.close();
+  const live=await worker.dispatchFetch(origin+"/sitemap.xml");
+  for(const text of [await live.text(),await readFile("sitemap.xml","utf8")]){
+    const xml=new JSDOM(text,{contentType:"application/xml"});
+    for(const item of SHOPPING_DETAIL_PRODUCTS){
+      const entry=[...xml.window.document.querySelectorAll("url")].find(n=>n.querySelector("loc")?.textContent===origin+shoppingProductPath(item));
+      assert.ok(entry,item.id);
+      assert.equal(entry.getElementsByTagNameNS("http://www.google.com/schemas/sitemap-image/1.1","loc")[0].textContent,origin+item.image.src);
+    }
+    xml.window.close();
+  }
+  const home=await worker.dispatchFetch(origin+"/");const homeDoc=new JSDOM(await home.text()).window.document;
+  assert.equal(homeDoc.querySelector('meta[name="google-adsense-account"]').content,"ca-pub-4485257027995607");
+  assert.equal(homeDoc.querySelector('meta[name="admaven-placement"]').content,"BpdU5rTkH");
+  assert.equal(homeDoc.querySelector('meta[name="mitgo-verification"]').content,"ed877f45-041a-44ad-b458-4f1265704c13");
 });

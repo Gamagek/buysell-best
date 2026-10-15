@@ -1,0 +1,309 @@
+{
+  "document": "BuySell_Best_71_Shopping_Links_Admitad_Template.docx",
+  "documentSha256": "b87f424402245f428d5331cb3aa1fc0b818916e8d2f4184dd07a3bc19c1e6d7c",
+  "scope": "First 20 product rows in the second table, in document order",
+  "suppliedTrackingLinks": 19,
+  "constructedTrackingLinks": 1,
+  "trackingVerification": "URL structure and decoded merchant destinations checked. Advertiser approval and commissions require the publisher account.",
+  "products": [
+    {
+      "row": 1,
+      "productId": "st-loop-bands",
+      "merchantItemId": "1005012986658635",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005010067311375.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012986658635.html",
+      "relatedGuides": [
+        "/guides/small-space-home-workout-aliexpress/"
+      ],
+      "productPage": "/products/compact-resistance-bands/",
+      "imagePath": "/assets/products/shopping/compact-resistance-bands-1005012986658635.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 2,
+      "productId": "st-jump-rope",
+      "merchantItemId": "1005011639886680",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005012952711375.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005011639886680.html",
+      "relatedGuides": [
+        "/guides/small-space-home-workout-aliexpress/"
+      ],
+      "productPage": "/products/adjustable-jump-rope/",
+      "imagePath": "/assets/products/shopping/adjustable-jump-rope-1005011639886680.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 3,
+      "productId": "st-folding-mat",
+      "merchantItemId": "1005009871080834",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005006996024129.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005009871080834.html",
+      "relatedGuides": [
+        "/guides/small-space-home-workout-aliexpress/"
+      ],
+      "productPage": "/products/folding-exercise-mat/",
+      "imagePath": "/assets/products/shopping/folding-exercise-mat-1005009871080834.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 4,
+      "productId": "st-tacky-overgrip",
+      "merchantItemId": "4001242156968",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005009497340138.html",
+      "merchantUrl": "https://www.aliexpress.com/item/4001242156968.html",
+      "relatedGuides": [
+        "/guides/badminton-grips-and-bags-aliexpress/"
+      ],
+      "productPage": "/products/smooth-tacky-racket-overgrip/",
+      "imagePath": "/assets/products/shopping/smooth-tacky-racket-overgrip-4001242156968.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 5,
+      "productId": "st-dry-overgrip",
+      "merchantItemId": "1005012132202932",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005006877343762.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012132202932.html",
+      "relatedGuides": [
+        "/guides/badminton-grips-and-bags-aliexpress/"
+      ],
+      "productPage": "/products/dry-feel-racket-overgrip/",
+      "imagePath": "/assets/products/shopping/dry-feel-racket-overgrip-1005012132202932.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 6,
+      "productId": "st-racket-bag",
+      "merchantItemId": "1005012553871658",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005005709865736.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012553871658.html",
+      "relatedGuides": [
+        "/guides/badminton-grips-and-bags-aliexpress/"
+      ],
+      "productPage": "/products/single-racket-shoulder-bag/",
+      "imagePath": "/assets/products/shopping/single-racket-shoulder-bag-1005012553871658.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 7,
+      "productId": "st-saddle-bag",
+      "merchantItemId": "1005009735684216",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005009735684216.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005009735684216.html",
+      "relatedGuides": [
+        "/guides/cycling-bags-commute-aliexpress/"
+      ],
+      "productPage": "/products/cycling-saddle-bag/",
+      "imagePath": "/assets/products/shopping/cycling-saddle-bag-1005009735684216.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 8,
+      "productId": "st-top-tube-bag",
+      "merchantItemId": "1005013031445646",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005007267491746.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005013031445646.html",
+      "relatedGuides": [
+        "/guides/cycling-bags-commute-aliexpress/"
+      ],
+      "productPage": "/products/cycling-top-tube-bag/",
+      "imagePath": "/assets/products/shopping/cycling-top-tube-bag-1005013031445646.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 9,
+      "productId": "st-frame-bag",
+      "merchantItemId": "1005012226249230",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005008374437605.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012226249230.html",
+      "relatedGuides": [
+        "/guides/cycling-bags-commute-aliexpress/"
+      ],
+      "productPage": "/products/triangle-bicycle-frame-bag/",
+      "imagePath": "/assets/products/shopping/triangle-bicycle-frame-bag-1005012226249230.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 10,
+      "productId": "st-folding-daypack",
+      "merchantItemId": "1005009011176869",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005006352682543.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005009011176869.html",
+      "relatedGuides": [
+        "/guides/day-hiking-pack-organization-aliexpress/"
+      ],
+      "productPage": "/products/travel-toiletry-organizer-bag/",
+      "imagePath": "/assets/products/shopping/travel-toiletry-organizer-bag-1005009011176869.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 11,
+      "productId": "st-dry-sack",
+      "merchantItemId": "1005009191249052",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005009087130441.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005009191249052.html",
+      "relatedGuides": [
+        "/guides/day-hiking-pack-organization-aliexpress/",
+        "/guides/rainy-day-travel-bags-aliexpress/"
+      ],
+      "productPage": "/products/roll-top-dry-bag/",
+      "imagePath": "/assets/products/shopping/roll-top-dry-bag-1005009191249052.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 12,
+      "productId": "st-mesh-stuff-sack",
+      "merchantItemId": "1005011743782397",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005005856592741.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005011743782397.html",
+      "relatedGuides": [
+        "/guides/day-hiking-pack-organization-aliexpress/"
+      ],
+      "productPage": "/products/mesh-stuff-sack/",
+      "imagePath": "/assets/products/shopping/mesh-stuff-sack-1005011743782397.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 13,
+      "productId": "st-compression-cubes",
+      "merchantItemId": "1005007011689536",
+      "source": "same-campaign-deeplink-template",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005009267583514.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005007011689536.html",
+      "relatedGuides": [
+        "/guides/packing-cubes-carry-on-aliexpress/"
+      ],
+      "productPage": "/products/travel-packing-organizer-set/",
+      "imagePath": "/assets/products/shopping/travel-packing-organizer-set-1005007011689536.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 14,
+      "productId": "st-shoe-bag",
+      "merchantItemId": "1005007548810770",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005007131827073.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005007548810770.html",
+      "relatedGuides": [
+        "/guides/packing-cubes-carry-on-aliexpress/"
+      ],
+      "productPage": "/products/travel-shoe-bag/",
+      "imagePath": "/assets/products/shopping/travel-shoe-bag-1005007548810770.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 15,
+      "productId": "st-laundry-mesh",
+      "merchantItemId": "1005005899330339",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005013038694651.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005005899330339.html",
+      "relatedGuides": [
+        "/guides/packing-cubes-carry-on-aliexpress/"
+      ],
+      "productPage": "/products/mesh-travel-laundry-bag/",
+      "imagePath": "/assets/products/shopping/mesh-travel-laundry-bag-1005005899330339.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 16,
+      "productId": "st-hard-tech-case",
+      "merchantItemId": "1005007785250910",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005009873549228.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005007785250910.html",
+      "relatedGuides": [
+        "/guides/travel-cable-organizers-aliexpress/"
+      ],
+      "productPage": "/products/portable-hard-drive-storage-case/",
+      "imagePath": "/assets/products/shopping/portable-hard-drive-storage-case-1005007785250910.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 17,
+      "productId": "st-small-tech-case",
+      "merchantItemId": "1005007492337373",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005012742386104.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005007492337373.html",
+      "relatedGuides": [
+        "/guides/travel-cable-organizers-aliexpress/"
+      ],
+      "productPage": "/products/compact-earphone-accessory-case/",
+      "imagePath": "/assets/products/shopping/compact-earphone-accessory-case-1005007492337373.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 18,
+      "productId": "st-cable-ties",
+      "merchantItemId": "1005012422550750",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005008751056507.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012422550750.html",
+      "relatedGuides": [
+        "/guides/travel-cable-organizers-aliexpress/"
+      ],
+      "productPage": "/products/reusable-hook-loop-cable-straps/",
+      "imagePath": "/assets/products/shopping/reusable-hook-loop-cable-straps-1005012422550750.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 19,
+      "productId": "st-luggage-scale",
+      "merchantItemId": "1005009389094683",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005007915278712.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005009389094683.html",
+      "relatedGuides": [
+        "/guides/luggage-scales-tags-straps-aliexpress/"
+      ],
+      "productPage": "/products/handheld-luggage-scale/",
+      "imagePath": "/assets/products/shopping/handheld-luggage-scale-1005009389094683.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    },
+    {
+      "row": 20,
+      "productId": "st-luggage-tag",
+      "merchantItemId": "1005012084529123",
+      "source": "uploaded-document",
+      "originalMerchantUrl": "https://www.aliexpress.com/item/1005009638725971.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012084529123.html",
+      "relatedGuides": [
+        "/guides/luggage-scales-tags-straps-aliexpress/"
+      ],
+      "productPage": "/products/privacy-cover-luggage-tag/",
+      "imagePath": "/assets/products/shopping/privacy-cover-luggage-tag-1005012084529123.webp",
+      "listingMetadataRetrieved": "2026-10-15"
+    }
+  ],
+  "scopeAdjustments": [
+    {
+      "productId": "st-folding-daypack",
+      "actualListingType": "Toiletry organizer, not a folding backpack"
+    },
+    {
+      "productId": "st-hard-tech-case",
+      "actualListingType": "Portable drive case, not a verified two-layer organizer"
+    },
+    {
+      "productId": "st-small-tech-case",
+      "actualListingType": "Earphone case, not a large general tech organizer"
+    },
+    {
+      "productId": "st-compression-cubes",
+      "actualListingType": "Packing organizer set; compression construction is not independently established"
+    }
+  ]
+}

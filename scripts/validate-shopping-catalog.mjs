@@ -13,7 +13,28 @@ for(const product of catalog.products) {
   if(product.linkKind==="item") assert.match(url.pathname,/^\/item\/\d+\.html$/);
   validHttps(product.referenceUrl);
 }
-for(const [id,value] of Object.entries(overrides)) { assert.ok(ids.has(id),"Unknown affiliate product id: "+id); validHttps(value); }
+for(const [id,value] of Object.entries(overrides)) {
+  assert.ok(ids.has(id),"Unknown affiliate product id: "+id);
+  const tracked=validHttps(value);
+  assert.equal(tracked.hostname,"rzekl.com","Unexpected tracking host: "+id);
+  assert.equal(tracked.pathname,"/g/1e8d1144948a33a283af16525dc3e8/","Unexpected campaign: "+id);
+  const destination=validHttps(tracked.searchParams.get("ulp"));
+  assert.equal(destination.hostname,"www.aliexpress.com");
+  const product=catalog.products.find(product=>product.id===id);
+  assert.equal(destination.pathname,new URL(product.merchantUrl).pathname,"Affiliate destination mismatch: "+id);
+}
+const detailSlugs=new Set();
+for(const product of catalog.products.filter(product=>product.details)) {
+  assert.ok(!detailSlugs.has(product.slug),"Duplicate product page: "+product.slug);detailSlugs.add(product.slug);
+  assert.ok(product.details.description.length>=80&&product.details.description.length<=240);
+  assert.ok(product.details.highlights.length>=3&&product.details.sections.length>=2);
+  assert.ok(product.listingTitle,"Missing listing provenance: "+product.id);
+  assert.match(product.image?.src||"",/^\/assets\/products\/shopping\/[a-z0-9-]+\.webp$/);
+  assert.ok(product.image.width>=200&&product.image.height>=200);
+  assert.equal(product.image.listingUrl,product.merchantUrl);
+  assert.ok(product.image.sizeBytes<300000,"Product image is too large: "+product.id);
+  await readFile(new URL(".."+product.image.src,import.meta.url));
+}
 for(const guide of catalog.guides) {
   assert.match(guide.slug,/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
   assert.ok(!slugs.has(guide.slug),"Duplicate guide: "+guide.slug); slugs.add(guide.slug);

@@ -27,25 +27,26 @@ marketplace seller supplies an identical product.
 7. Publish through the existing GitHub main → Cloudflare Worker deployment.
 
 No unverified tracking URL is manufactured from a guessed account or campaign.
-The supplied phone's exact tracked URL is preserved. Other buttons deliberately
-use merchant URLs while their approved links are pending. The same product ID
+The supplied phone's exact tracked URL is preserved. Other unmapped buttons retain merchant fallbacks. The first twenty document
+rows are recorded in the import manifest; the one constructed deeplink uses the
+actual supplied campaign, and is not described as account-approved. The same product ID
 can be used in multiple guides; changing its mapping updates every associated
 button. If a merchant URL changes, first verify the model and rewrite affected
 selection text rather than silently substituting an unrelated item.
 
 ## Reader flow
 
-- Home tile / carousel → internal product or article page, with no sponsored step.
-- First outbound shopping action in a tab/session → one visible sponsored dialog.
-- × or Continue → exact original destination, after destroying the ad iframe.
-- Close ad and stay here / Escape / Back → dismiss the frame.
-- Subsequent shopping actions in the same tab/session → the normal destination.
+- Home tile images and detail links open product pages. Their shop buttons use the shared sponsor choice.
+- Every outbound shopping button offers a visible optional sponsor choice.
+- Skip or × follows the exact Admitad destination immediately.
+- The separate sponsor anchor opens an advertisement only after its own click.
+- A normal same-tab sponsor anchor is available if a new tab is blocked.
+- Cancel, Escape, Back and page lifecycle changes dismiss the choice.
+- Later shopping clicks offer the same choice; no per-session suppression applies.
 
-The sandbox continues to exclude popup windows, top navigation and external-app
-escape permissions. No automatic destination timer, retry, hidden ad frame or
-synthetic advertising request was added. The ad network decides whether a real
-request is a valid counted impression or click. Tests stub both the ad frame and
-navigation; they generate no advertising or affiliate traffic.
+There is no ad iframe, automatic advertising request, retry or destination timer.
+Tests inspect the links and stub navigation without contacting the ad network or
+creating affiliate clicks. See the current integration report for policy sources.
 
 ## Content and search metadata
 
@@ -104,3 +105,18 @@ tests exercise every article, category navigation, image signatures, sitemap,
 canonical redirects, HEAD, 404s, the existing gallery/carousel and sponsored flow.
 Browser screenshot QA was unavailable in this environment; no browser-visual
 verification is claimed.
+
+## Updated affiliate import and sponsor behavior
+
+The first twenty product entries now use the supplied document replacements.
+Nineteen supplied Admitad URLs are preserved verbatim; row thirteen's direct
+merchant URL was wrapped in the same supplied campaign template and remains
+explicitly recorded as constructed. Network/account approval is not claimed.
+The exact new listings provide twenty real images and linked product buying
+checks. Corrected item types replace the obsolete daypack/two-layer-case labels.
+
+The previous Smartlink iframe implementation is superseded. The shared module
+now presents an optional, labelled sponsor anchor and a direct merchant skip.
+No advertisement loads merely because the shopping choice is displayed. New-tab
+and same-tab sponsor anchors are separate from the exact Admitad destination.
+Consult the current README and integration report for behavior and policy sources.
