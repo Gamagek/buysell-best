@@ -5,10 +5,11 @@ import { AFFILIATE_PRODUCTS, findProduct, featuredCarouselItems, productPath, re
 import { findGuide, findGuideCategory, guidePath, categoryPath, renderGuidesIndex, renderGuideCategory, renderShoppingGuide, renderShoppingMethodology, renderGuidesSpotlight, guideSitemapEntries } from "./lib/shopping-guides.js";
 
 const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261014-sponsor-once"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261015-outbound" defer></script>';
+const adsenseAccountMeta = '<meta name="google-adsense-account" content="ca-pub-4485257027995607">';
 
 function withSponsoredSupport(response) {
   if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) return response;
-  return new HTMLRewriter().on("head", {element(element) {element.append(sponsoredHead, {html:true});}}).transform(response);
+  return new HTMLRewriter().on("head", {element(element) {element.append(sponsoredHead + adsenseAccountMeta, {html:true});}}).transform(response);
 }
 
 async function renderAffiliateHome(request, env) {
