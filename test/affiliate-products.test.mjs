@@ -7,6 +7,7 @@ import {JSDOM} from "jsdom";
 import {Miniflare, convertV4MiniflareOptions} from "miniflare";
 import {AFFILIATE_PRODUCTS, productPath, featuredCarouselItems} from "../lib/affiliate-products.js";
 import {SHOPPING_GUIDES,SHOPPING_PRODUCTS,GUIDE_CATEGORIES,guidePath,categoryPath,guideImage,guidePreviewImage,shoppingDestination,SHOPPING_DETAIL_PRODUCTS,shoppingProductPath} from "../lib/shopping-guides.js";
+import {TRAVEL_COUNTRIES,HOTEL_PROVIDERS,PROMO_SOURCES,normalizeTrip,providerDestination} from "../lib/travel-guides.js";
 
 const origin="https://buysell.best";
 const product=AFFILIATE_PRODUCTS[0];
@@ -123,36 +124,39 @@ function adHarness({storage=new Map(),storageFails=false}={}){
   return {dom,window,document,link,requests,navigations,timers,storage,click,tick,get opened(){return opened;}};
 }
 
-test("shopping click offers an optional separate sponsor and a direct merchant continuation",()=>{
+test("shopping click shows one visible sandboxed Smartlink frame with immediate merchant controls",()=>{
   const h=adHarness();
+  assert.equal(h.requests.length,0);
   assert.equal(h.click().defaultPrevented,true);
-  const doc=h.document, sponsor=doc.querySelector(".sponsored-step-sponsor");
+  const doc=h.document, frame=doc.querySelector(".sponsored-step-frame");
   assert.ok(doc.querySelector("dialog[open]"));
-  assert.equal(doc.querySelector("iframe"),null);
-  assert.match(sponsor.href,/profitableratecpmnetwork\.com\/nugmu8qikp/);
-  assert.equal(sponsor.target,"_blank");
-  assert.ok(sponsor.rel.includes("noopener")&&sponsor.rel.includes("sponsored"));
+  assert.equal(doc.querySelectorAll("iframe").length,1);
+  assert.match(frame.src,/profitableratecpmnetwork\.com\/nugmu8qikp/);
+  assert.equal(frame.getAttribute("sandbox"),"allow-scripts allow-forms allow-same-origin");
+  assert.equal(frame.parentElement.className,"sponsored-step-viewport");
   assert.equal(doc.querySelector(".sponsored-step-continue").href,product.affiliateUrl);
-  assert.match(doc.querySelector("#sponsored-step-message").textContent,/not the merchant/);
-  assert.equal(doc.querySelector(".sponsored-step-label").textContent,"OPTIONAL ADVERTISEMENT");
-  assert.equal(h.opened,0);assert.equal(h.requests.length,0);
+  assert.match(doc.querySelector("#sponsored-step-message").textContent,/separate from the merchant/);
+  assert.equal(doc.querySelector(".sponsored-step-label").textContent,"ADVERTISEMENT · ADSTERRA");
+  assert.equal(h.opened,0);assert.equal(h.requests.length,1);
+  frame.dispatchEvent(new h.window.Event("load"));
+  assert.deepEqual(h.navigations,[]);
   doc.querySelector(".sponsored-step-close").click();
   assert.deepEqual(h.navigations,[product.affiliateUrl]);
+  assert.equal(frame.isConnected,false);
   assert.equal(doc.querySelector(".sponsored-step-backdrop"),null);
   h.dom.window.close();
 });
 
-test("a normal same-tab sponsor link is available when a new tab is blocked, with no automatic requests",()=>{
+test("a blocked or unavailable advertisement never delays the shop or causes retries and popups",()=>{
   const h=adHarness();h.click();
-  const sponsor=h.document.querySelector(".sponsored-step-sponsor");
-  const fallback=h.document.querySelector(".sponsored-step-same-tab");
-  assert.equal(fallback.href,sponsor.href);assert.equal(fallback.target,"");
-  assert.equal(h.window.BuySellSponsoredClicks.destinationFor(fallback),null);
-  assert.equal(h.window.BuySellSponsoredClicks.destinationFor(sponsor),null);
+  const frame=h.document.querySelector("iframe");
+  frame.dispatchEvent(new h.window.Event("error"));
+  assert.match(h.document.querySelector("#sponsored-step-message").textContent,/could not be displayed/);
   h.tick(120000);
-  assert.deepEqual(h.requests,[]);assert.deepEqual(h.navigations,[]);assert.equal(h.opened,0);
+  assert.equal(h.requests.length,1);assert.deepEqual(h.navigations,[]);assert.equal(h.opened,0);
   h.document.querySelector(".sponsored-step-continue").click();
   assert.deepEqual(h.navigations,[product.affiliateUrl]);
+  assert.equal(frame.isConnected,false);
   assert.equal(h.timers.size,0);h.dom.window.close();
 });
 
@@ -170,7 +174,7 @@ test("every shopping click offers the sponsor choice, including later products i
   const next=adHarness({storage:h.storage});
   assert.equal(next.click().defaultPrevented,true);
   assert.ok(next.document.querySelector("dialog[open]"));
-  assert.deepEqual(h.requests,[]);assert.equal(h.opened,0);
+  assert.equal(h.requests.length,2);assert.equal(next.requests.length,1);assert.equal(h.opened,0);
   h.dom.window.close();next.dom.window.close();
 });
 
@@ -194,7 +198,7 @@ test("blocked storage and missing native dialog support retain accessible skip a
   const first=h.document.querySelector(".sponsored-step-close"),last=h.document.querySelector(".sponsored-step-stay");
   first.focus();first.dispatchEvent(new h.window.KeyboardEvent("keydown",{key:"Tab",shiftKey:true,bubbles:true,cancelable:true}));
   assert.equal(h.document.activeElement,last);
-  last.click();assert.equal(h.click().defaultPrevented,true);assert.deepEqual(h.requests,[]);
+  last.click();assert.equal(h.click().defaultPrevented,true);assert.equal(h.requests.length,2);
   h.document.querySelector(".sponsored-step-stay").click();
   assert.equal(h.document.body.style.overflow,"");h.dom.window.close();
 });
@@ -215,6 +219,116 @@ test("internal, source, modified, synthetic and unsafe links keep normal navigat
   h.link.removeAttribute("data-sponsored-bypass");assert.equal(h.click().defaultPrevented,true);
   assert.equal(classify(h.document.querySelector(".sponsored-step-continue")),null);
   h.document.querySelector(".sponsored-step-stay").click();h.dom.window.close();
+});
+
+test("the same popup covers all hotel/coupon providers and only explicitly opted-in internal travel entries",()=>{
+  const h=adHarness(),classify=h.window.BuySellSponsoredClicks.destinationFor;
+  h.link.rel="";h.link.setAttribute("data-sponsored-navigation","");
+  for(const item of [...HOTEL_PROVIDERS,...PROMO_SOURCES]) {
+    h.link.href=item.url;
+    assert.equal(h.click().defaultPrevented,true,item.name);
+    assert.equal(h.document.querySelector(".sponsored-step-continue").href,item.url);
+    h.document.querySelector(".sponsored-step-stay").click();
+  }
+  for(const [pathname,label] of [["/hotels/","hotel comparison"],["/promo-codes/","promo-code sources"]]) {
+    h.link.href=pathname+"?country=LK&city=Kandy";
+    h.link.setAttribute("data-sponsored-navigation","");assert.equal(classify(h.link),null);
+    h.link.setAttribute("data-sponsored-navigation","internal");
+    assert.equal(h.click().defaultPrevented,true);
+    assert.equal(h.document.querySelector(".sponsored-step-continue").href,h.link.href);
+    assert.match(h.document.querySelector(".sponsored-step-continue").textContent,new RegExp(label));
+    h.document.querySelector(".sponsored-step-close").click();
+    assert.equal(h.navigations.at(-1),h.link.href);
+  }
+  h.link.href="/api/health";assert.equal(classify(h.link),null);
+  assert.equal(h.opened,0);h.dom.window.close();
+});
+
+test("worldwide hotel selector, search details and truthful source pages render through the Worker",async()=>{
+  assert.equal(TRAVEL_COUNTRIES.length,249);
+  assert.equal(new Set(TRAVEL_COUNTRIES.map(c=>c.code)).size,249);
+  assert.ok(TRAVEL_COUNTRIES.some(c=>c.code==="LK"));
+  const query=new URLSearchParams({country:"LK",city:'Kandy <script>alert(1)</script>',checkin:"2030-11-10",checkout:"2030-11-12",adults:"3",rooms:"2"});
+  const response=await worker.dispatchFetch(origin+"/hotels/?"+query);
+  assert.equal(response.status,200);
+  const dom=new JSDOM(await response.text()),doc=dom.window.document;
+  assert.equal(doc.querySelectorAll("#hotel-country option[value]:not([value=''])").length,249);
+  assert.equal(doc.querySelector("#hotel-city").value,query.get("city"));
+  assert.equal(doc.querySelectorAll("script:not([src]):not([type='application/ld+json'])").length,0);
+  assert.equal(doc.querySelector('link[rel="canonical"]').href,origin+"/hotels/");
+  assert.equal(doc.querySelector('meta[name="google-adsense-account"]').content,"ca-pub-4485257027995607");
+  const providerLinks=[...doc.querySelectorAll("[data-hotel-provider]")];
+  assert.equal(providerLinks.length,HOTEL_PROVIDERS.length);
+  for(const link of providerLinks)assert.ok(link.hasAttribute("data-sponsored-navigation"));
+  const booking=new URL(doc.querySelector('[data-hotel-provider="booking"]').href);
+  assert.equal(booking.searchParams.get("ss"),query.get("city")+", Sri Lanka");
+  assert.equal(booking.searchParams.get("checkin"),"2030-11-10");
+  assert.equal(booking.searchParams.get("group_adults"),"3");
+  assert.equal(booking.searchParams.get("no_rooms"),"2");
+  assert.equal(doc.querySelectorAll("[data-quote-id]").length,8);
+  assert.ok([...doc.querySelectorAll("[data-quote-id]")].every(input=>input.value===""));
+  assert.match(doc.body.textContent,/no live hotel-rate feed/);
+  const schema=[...doc.querySelectorAll('script[type="application/ld+json"]')].map(x=>JSON.parse(x.textContent));
+  assert.ok(schema.some(x=>x["@type"]==="CollectionPage"));
+  assert.equal(schema.find(x=>x["@type"]==="ItemList").numberOfItems,7);
+  assert.ok(!JSON.stringify(schema).includes('"offers"'));
+  dom.window.close();
+  const promo=await worker.dispatchFetch(origin+"/promo-codes/");
+  assert.equal(promo.status,200);
+  const promoDom=new JSDOM(await promo.text()),promoDoc=promoDom.window.document;
+  assert.equal(promoDoc.querySelectorAll(".travel-provider a[data-sponsored-navigation]").length,PROMO_SOURCES.length);
+  assert.match(promoDoc.body.textContent,/not independently tested/);
+  assert.equal(promoDoc.querySelector('link[rel="canonical"]').href,origin+"/promo-codes/");
+  promoDom.window.close();
+});
+
+test("travel redirects, HEAD, missing routes, navigation and both sitemap copies are consistent",async()=>{
+  for(const pathname of ["/hotels/","/promo-codes/"]) {
+    const redirect=await worker.dispatchFetch(origin+pathname.slice(0,-1)+"?country=LK",{redirect:"manual"});
+    assert.equal(redirect.status,301);assert.equal(redirect.headers.get("location"),origin+pathname+"?country=LK");
+    const head=await worker.dispatchFetch(origin+pathname,{method:"HEAD"});assert.equal(head.status,200);assert.equal(await head.text(),"");
+    const missing=await worker.dispatchFetch(origin+pathname+"invented/");assert.equal(missing.status,404);assert.equal(missing.headers.get("x-robots-tag"),"noindex");
+  }
+  const homepage=new JSDOM(await (await worker.dispatchFetch(origin+"/")).text());
+  assert.equal(homepage.window.document.querySelectorAll(".travel-home-card a[data-sponsored-navigation='internal']").length,2);
+  homepage.window.close();
+  const liveXml=await (await worker.dispatchFetch(origin+"/sitemap.xml")).text(), fallback=await readFile("sitemap.xml","utf8");
+  for(const source of [liveXml,fallback]) {
+    const dom=new JSDOM(source,{contentType:"application/xml"});
+    const locations=[...dom.window.document.querySelectorAll("url > loc")].map(x=>x.textContent);
+    for(const pathname of ["/hotels/","/promo-codes/"])assert.equal(locations.filter(url=>url===origin+pathname).length,1);
+    assert.equal(new Set(locations).size,locations.length);
+    dom.window.close();
+  }
+  const config=await readFile("wrangler.toml","utf8");for(const route of ["/hotels/*","/promo-codes/*"])assert.ok(config.includes('"'+route+'"'));
+});
+
+test("trip validation rejects invalid dates and occupancy without inventing provider inventory",()=>{
+  const trip=normalizeTrip(new URLSearchParams({country:"INVALID",city:" A\u0000B ",checkin:"2026-02-30",checkout:"2026-01-01",adults:"-2",rooms:"100"}),"2026-10-16");
+  assert.equal(trip.country,"");assert.equal(trip.city,"AB");assert.equal(trip.checkin,"");assert.equal(trip.checkout,"");
+  assert.equal(trip.adults,2);assert.equal(trip.rooms,1);assert.equal(trip.issues.length,2);
+  const valid=normalizeTrip(new URLSearchParams({country:"JP",city:"Tokyo",checkin:"2026-11-10",checkout:"2026-11-12"}),"2026-10-16");
+  assert.equal(valid.issues.length,0);
+  for(const provider of HOTEL_PROVIDERS)assert.equal(new URL(providerDestination(provider,valid)).protocol,"https:");
+  assert.equal(providerDestination(HOTEL_PROVIDERS.find(p=>p.id==="agoda"),valid),"https://www.agoda.com/");
+});
+
+test("hotel quote comparison handles empty values, ties, changes, reset and currency without sending requests",async()=>{
+  const response=await worker.dispatchFetch(origin+"/hotels/");
+  const dom=new JSDOM(await response.text(),{url:origin+"/hotels/",runScripts:"outside-only"});
+  const win=dom.window,doc=win.document,form=doc.querySelector("#hotel-quote-form"),result=doc.querySelector("#quote-result");
+  win.fetch=()=>{throw new Error("Quotes must not be sent to a server");};
+  win.eval(await readFile("js/hotel-comparison.js","utf8"));
+  const submit=()=>form.dispatchEvent(new win.Event("submit",{bubbles:true,cancelable:true}));
+  submit();assert.match(result.textContent,/at least two/);
+  doc.querySelector("#quote-booking").value="110";doc.querySelector("#quote-agoda").value="100";doc.querySelector("#quote-direct").value="100";
+  submit();assert.match(result.textContent,/Agoda and Hotel’s own site/);assert.match(result.textContent,/\$100\.00/);assert.match(result.textContent,/\$10\.00/);
+  doc.querySelector("#quote-booking").dispatchEvent(new win.Event("input",{bubbles:true}));assert.match(result.textContent,/Quotes changed/);
+  const currency=doc.querySelector("#quote-currency");currency.value="LKR";currency.dispatchEvent(new win.Event("change"));
+  assert.ok([...doc.querySelectorAll("[data-quote-id]")].every(input=>input.value===""));assert.match(result.textContent,/amounts cleared/);
+  doc.querySelector("#quote-booking").value="-1";doc.querySelector("#quote-agoda").value="100";submit();assert.match(result.textContent,/valid non-negative/);
+  form.reset();assert.match(result.textContent,/at least two/);assert.equal(doc.querySelector("#quote-agoda").value,"");
+  dom.window.close();
 });
 
 test("every shopping guide serves substantive crawlable content, source links, accurate destinations and metadata",async()=>{

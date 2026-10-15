@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "npm run content:check && wrangler deploy --dry-run --outdir .test-build && node --test test/affiliate-products.test.mjs",
+    "test": "npm run content:check && wrangler deploy --dry-run --outdir .test-build && node --test test/*.test.mjs",
     "content:check": "node scripts/validate-shopping-catalog.mjs",
     "content:export": "node scripts/export-shopping-links.mjs"
   },

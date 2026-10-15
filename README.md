@@ -43,28 +43,45 @@ The dynamic `/sitemap.xml` includes the product URL and all ten image URLs.
 
 ## Sponsored clicks
 
-`js/sponsored-click.js` is shared by static and Worker-rendered pages. Every
-unmodified, trusted outbound shopping click offers a visible, optional sponsor
-choice. Internal product, guide and carousel links continue
-normally. The merchant href is kept intact and works without JavaScript.
+`js/sponsored-click.js` v5 is shared by static and Worker-rendered pages. Every
+unmodified, trusted outbound shopping, booking or promo-source click displays
+the reference-style Adsterra popup. The two travel entry pages also opt in with
+`data-sponsored-navigation="internal"`. Ordinary internal product/guide reading
+and carousel gallery links continue normally. Original hrefs work without JavaScript.
 
-The primary control skips the sponsor and follows the exact Admitad deeplink.
-The visitor can instead deliberately click the separately labelled Adsterra
-sponsor link, which uses a normal new-tab anchor with `noopener`. A second normal
-same-tab anchor provides a fallback if the browser blocks new tabs. Closing with
-× skips to the merchant; Cancel, Escape, Back and page lifecycle events
-dismiss the choice. Native dialog fallback, focus containment and storage-independent
-handling retain the controls on browsers without full dialog/storage support.
+The popup loads the supplied Smartlink once in a visible sandboxed iframe, only
+after a visitor click opens it. Continue and × destroy the frame and navigate to
+the exact destination immediately. “Close ad and stay here”, Escape, Back and page
+lifecycle events dismiss without a redirect. No countdown, session suppression,
+automatic new tabs, retries, hidden frames or background prefetch are used.
+The sandbox allows scripts/forms and same-origin resources, but not top navigation,
+popups or downloads. Native-dialog fallback and focus containment preserve controls.
 
-No ad is framed, prefetched or opened automatically. Tests never contact the
-ad network. This replaces the old framed destination because the Adsterra
-publisher terms prohibit framing an ad click-through destination and prohibit
-misleading, forced or artificially generated ad traffic. Sponsor engagement is
-not required for shopping and is not used to trigger the Admitad destination.
-Account approval, accepted traffic and commission eligibility remain decisions
-of the respective networks; URL validation is not account-level approval.
+This restores the requested legacy preview layout; it does not establish network
+approval. Adsterra publisher terms restrict framing click-through destinations,
+and an advertiser can block embedding with CSP or X-Frame-Options. Those controls
+are never bypassed. Cross-origin load events do not prove that an ad was displayed.
+The outside Continue/× controls remain usable even for a blank or blocked frame.
+Accepted traffic, impressions, affiliate eligibility and payouts remain network
+decisions. Automated tests stub the frame and never contact the ad network.
 
 Use `data-sponsored-bypass` for source references and the dialog's own links.
+
+## Worldwide hotels and promo-code sources
+
+`/hotels/` provides a 249-entry ISO country/territory selector, a trip brief,
+seven official booking/metasearch entry points and an empty comparison table for
+real final quotes entered by the visitor. Google and Booking.com links carry
+destination search details; other providers open their official search pages and
+explicitly ask the visitor to re-enter the trip. All details must be confirmed there.
+No live rates, hotel inventory, currency conversion or cheapest-market claim is made.
+
+`/promo-codes/` explains five official hotel-offer sources and three coupon-discovery
+sources. It does not publish invented codes or adopt a third party’s “verified” label.
+Data, source URLs and reviewed date live in `content/travel-services.json`; ISO data
+provenance is in `content/travel-countries.json`. `lib/travel-guides.js` renders both
+pages in the existing Worker; `js/hotel-comparison.js` compares visitor-entered totals
+locally and clears amounts when currency changes. These pages need no new binding.
 
 ## Shopping guides
 

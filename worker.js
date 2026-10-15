@@ -3,8 +3,9 @@ import { searchEbay } from "./functions/api/deals.js";
 import { syncPromos } from "./lib/promo-sync.js";
 import { AFFILIATE_PRODUCTS, findProduct, featuredCarouselItems, productPath, renderSpotlight, renderInitialCarousel, renderMiniProductTile, renderProductPage, renderProductsIndex, productSitemapEntries } from "./lib/affiliate-products.js";
 import { findShoppingProduct, renderShoppingProductPage, shoppingProductPath, findGuide, findGuideCategory, guidePath, categoryPath, renderGuidesIndex, renderGuideCategory, renderShoppingGuide, renderShoppingMethodology, renderGuidesSpotlight, guideSitemapEntries } from "./lib/shopping-guides.js";
+import { renderHotelComparison, renderPromoCodes, travelSitemapEntries } from "./lib/travel-guides.js";
 
-const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261016-every-shopping-click-v4"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261016-every-shopping-click-v4" defer></script>';
+const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261016-inline-smartlink-v5"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261016-inline-smartlink-v5" defer></script>';
 const adsenseAccountMeta = '<meta name="google-adsense-account" content="ca-pub-4485257027995607">';
 
 function withSponsoredSupport(response) {
@@ -376,7 +377,7 @@ async function renderSitemap(env){
   const urls=staticPaths.map(path=>`<url><loc>https://buysell.best${path}</loc>${path==="/"&&latestAll?`<lastmod>${escapeHtml(latestAll)}</lastmod>`:""}</url>`).join("");
   const cats=categoryPaths.map(path=>`<url><loc>https://buysell.best/category/${path}</loc>${latestByCategory[path]?`<lastmod>${escapeHtml(latestByCategory[path])}</lastmod>`:""}</url>`).join("");
   const products = productSitemapEntries();
-  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${dynamic}</urlset>`;
+  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${travelSitemapEntries()}${dynamic}</urlset>`;
 }
 
 async function serveSeoPage(request,env) {
@@ -388,6 +389,10 @@ async function serveSeoPage(request,env) {
   if (pathname === "/" || pathname === "/index.html") return renderAffiliateHome(request,env);
   if (pathname === "/guides" || pathname === "/shopping-methodology") return Response.redirect("https://buysell.best"+pathname+"/",301);
   const guideHeaders = {"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=60, s-maxage=300","x-content-type-options":"nosniff","referrer-policy":"strict-origin-when-cross-origin"};
+  if (["/hotels","/promo-codes"].includes(pathname)) return Response.redirect("https://buysell.best"+pathname+"/"+url.search,301);
+  if (pathname === "/hotels/") return new Response(renderHotelComparison(url.searchParams), {headers:guideHeaders});
+  if (pathname === "/promo-codes/") return new Response(renderPromoCodes(), {headers:guideHeaders});
+  if (pathname.startsWith("/hotels/") || pathname.startsWith("/promo-codes/")) return new Response("Travel guide not found", {status:404,headers:{"x-robots-tag":"noindex","content-type":"text/plain; charset=UTF-8"}});
   if (pathname === "/guides/") return new Response(renderGuidesIndex(), {headers:guideHeaders});
   if (pathname === "/shopping-methodology/") return new Response(renderShoppingMethodology(), {headers:guideHeaders});
   const guideCategoryMatch = pathname.match(/^\/guides\/category\/([^/]+)\/?$/);
