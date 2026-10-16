@@ -6,7 +6,7 @@ import { findShoppingProduct, renderShoppingProductPage, shoppingProductPath, fi
 import { renderHotelComparison, renderPromoCodes, travelSitemapEntries } from "./lib/travel-guides.js";
 import { withDisplayAdvertising } from "./lib/display-ads.js";
 
-const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261016-native-smartlink-v6"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261016-native-smartlink-v6" defer></script>';
+const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261017-native-ad-v7"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261017-native-ad-v7" defer></script>';
 const adsenseAccountMeta = '<meta name="google-adsense-account" content="ca-pub-4485257027995607">';
 
 function withSponsoredSupport(response) {

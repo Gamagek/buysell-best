@@ -8,7 +8,7 @@ import {Miniflare, convertV4MiniflareOptions} from "miniflare";
 import {AFFILIATE_PRODUCTS, productPath, featuredCarouselItems} from "../lib/affiliate-products.js";
 import {SHOPPING_GUIDES,SHOPPING_PRODUCTS,GUIDE_CATEGORIES,guidePath,categoryPath,guideImage,guidePreviewImage,shoppingDestination,SHOPPING_DETAIL_PRODUCTS,shoppingProductPath} from "../lib/shopping-guides.js";
 import {TRAVEL_COUNTRIES,HOTEL_PROVIDERS,PROMO_SOURCES,normalizeTrip,providerDestination} from "../lib/travel-guides.js";
-import {DISPLAY_AD_KEY,DISPLAY_AD_SCRIPT} from "../lib/display-ads.js";
+import {DISPLAY_AD_KEY,DISPLAY_AD_SCRIPT,DISPLAY_AD_UNITS} from "../lib/display-ads.js";
 
 const origin="https://buysell.best";
 const product=AFFILIATE_PRODUCTS[0];
@@ -91,7 +91,7 @@ test("canonical redirects, HEAD, unknown products and image sitemap are correct"
   xml.window.close();
 });
 
-test("one native-sized display banner covers static and generated HTML without advertising on errors or APIs",async()=>{
+test("distinct native-sized banners cover rich pages and leave forms, errors and APIs unobstructed",async()=>{
   const paths=["/","/index.html","/about.html","/contact.html","/categories.html","/search.html","/privacy.html","/terms.html","/ad.html","/post-ad.html","/guides/",guidePath(SHOPPING_GUIDES[0]),productPath(product),"/hotels/","/promo-codes/"];
   for(const pathname of paths) {
     const response=await worker.dispatchFetch(origin+pathname);
@@ -108,6 +108,23 @@ test("one native-sized display banner covers static and generated HTML without a
     assert.equal(slot.querySelector("script[src]").hasAttribute("async"),false);
     assert.equal(doc.querySelectorAll("#bsb-display-ad-style").length,1);
     assert.equal(doc.querySelectorAll("#bsb-display-ad iframe").length,0,"No custom nested frame; the vendor tag renders its own ad");
+    const bottom=doc.querySelector("#bsb-display-ad-bottom");
+    assert.ok(bottom,pathname);
+    assert.equal(bottom.nextElementSibling.classList.contains("site-footer"),true,pathname);
+    assert.ok(bottom.querySelector(".display-ad-offer[data-sponsored-bypass]"));
+    const rich=["/","/index.html","/guides/",guidePath(SHOPPING_GUIDES[0]),productPath(product),"/hotels/","/promo-codes/"].includes(pathname);
+    assert.equal(doc.querySelectorAll(".display-ad").length,rich?3:2,pathname);
+    assert.equal(doc.querySelectorAll("#bsb-display-ad-sidebar").length,rich?1:0,pathname);
+    for(const [position,unit] of Object.entries(DISPLAY_AD_UNITS)) {
+      if(position==="sidebar"&&!rich)continue;
+      const script=doc.querySelector('script[src="https://www.highrevenueformat.com/'+unit.key+'/invoke.js"]');
+      assert.ok(script,pathname+" "+position);
+      assert.equal(doc.querySelectorAll('script[src="'+script.src+'"]').length,1);
+      assert.equal(script.hasAttribute("async"),false);
+      const size=script.closest(".display-ad-slot").style;
+      assert.equal(size.width,unit.width+"px");assert.equal(size.height,unit.height+"px");
+    }
+    assert.equal(doc.querySelectorAll('script[src*="pl31870182"]').length,0,"The native ad loads only after a real shopping click");
     dom.window.close();
   }
   for(const pathname of ["/products/does-not-exist/","/404.html","/not-a-real-page","/api/listings","/sitemap.xml","/js/sponsored-click.js"]) {
@@ -132,7 +149,7 @@ function adHarness({storage=new Map(),storageFails=false}={}){
   const nativeCreate=document.createElement.bind(document);
   document.createElement=(tag,...args)=>{
     const element=nativeCreate(tag,...args);
-    if(tag==="iframe") Object.defineProperty(element,"src",{
+    if(tag==="iframe"||tag==="script") Object.defineProperty(element,"src",{
       get:()=>element.getAttribute("src")||"",
       set:value=>{requests.push(value);element.setAttribute("src",value);}
     });
@@ -152,7 +169,7 @@ function adHarness({storage=new Map(),storageFails=false}={}){
   return {dom,window,document,link,requests,navigations,timers,storage,click,tick,get opened(){return opened;}};
 }
 
-test("shopping step offers an explicit Smartlink without framing it or requesting an ad on open",()=>{
+test("shopping step displays one official native ad and keeps Smartlink an explicit unframed choice",()=>{
   const h=adHarness();
   assert.equal(h.requests.length,0);
   assert.equal(h.click().defaultPrevented,true);
@@ -168,7 +185,14 @@ test("shopping step offers an explicit Smartlink without framing it or requestin
   assert.equal(doc.querySelector(".sponsored-step-continue").href,product.affiliateUrl);
   assert.match(doc.querySelector("#sponsored-step-message").textContent,/separate from the merchant/);
   assert.equal(doc.querySelector(".sponsored-step-label").textContent,"ADVERTISEMENT · ADSTERRA");
-  assert.equal(h.opened,0);assert.equal(h.requests.length,0);
+  assert.equal(h.opened,0);assert.equal(h.requests.length,1);
+  assert.match(h.requests[0],/pl31870182\.profitableratecpmnetwork\.com\/491ff9ac8d2f4ff0854518e9c0713f69\/invoke\.js/);
+  const native=doc.querySelector(".sponsored-step-native script");
+  assert.equal(native.getAttribute("async"),"async");assert.equal(native.getAttribute("data-cfasync"),"false");
+  assert.ok(doc.querySelector("#container-491ff9ac8d2f4ff0854518e9c0713f69"));
+  const creative=doc.createElement("a");creative.href="https://advertiser.example/";creative.rel="sponsored";
+  doc.querySelector(".sponsored-step-native div").append(creative);
+  assert.equal(h.window.BuySellSponsoredClicks.destinationFor(creative),null,"Actual ad links must keep native navigation");
   assert.deepEqual(h.navigations,[]);
   doc.querySelector(".sponsored-step-close").click();
   assert.deepEqual(h.navigations,[product.affiliateUrl]);
@@ -180,28 +204,39 @@ test("shopping never waits for a sponsor or uses retries and programmatic popups
   const h=adHarness();h.click();
   assert.match(h.document.querySelector("#sponsored-step-message").textContent,/never need to open or click an ad/);
   h.tick(120000);
-  assert.equal(h.requests.length,0);assert.deepEqual(h.navigations,[]);assert.equal(h.opened,0);
+  assert.equal(h.requests.length,1);assert.deepEqual(h.navigations,[]);assert.equal(h.opened,0);
   h.document.querySelector(".sponsored-step-continue").click();
   assert.deepEqual(h.navigations,[product.affiliateUrl]);
   assert.equal(h.timers.size,0);h.dom.window.close();
 });
 
-test("every shopping click offers the sponsor choice, including later products in the same session",()=>{
+test("repeat shopping clicks and new pages respect the ten-minute prompt limit",()=>{
   const h=adHarness();h.click();
+  assert.equal(h.click().defaultPrevented,true,"An active dialog is not duplicated");
+  assert.equal(h.document.querySelectorAll("dialog").length,1);
   h.document.querySelector(".sponsored-step-stay").click();
   assert.equal(h.document.activeElement,h.link);
   h.link.href="https://www.aliexpress.com/item/1005012986658635.html";
-  assert.equal(h.click().defaultPrevented,true);
-  assert.equal(h.document.querySelector(".sponsored-step-continue").href,h.link.href);
-  assert.equal(h.document.querySelectorAll("dialog").length,1);
-  assert.equal(h.click().defaultPrevented,true);
-  assert.equal(h.document.querySelectorAll("dialog").length,1);
-  h.document.querySelector(".sponsored-step-stay").click();
+  assert.equal(h.click().defaultPrevented,false,"Further clicks on this page navigate normally");
+  assert.equal(h.requests.length,1);
   const next=adHarness({storage:h.storage});
-  assert.equal(next.click().defaultPrevented,true);
-  assert.ok(next.document.querySelector("dialog[open]"));
-  assert.equal(h.requests.length,0);assert.equal(next.requests.length,0);assert.equal(h.opened,0);
-  h.dom.window.close();next.dom.window.close();
+  assert.equal(next.click().defaultPrevented,false,"The session limit follows navigation");
+  assert.equal(next.requests.length,0);
+  next.tick(10*60*1000);
+  assert.equal(next.click().defaultPrevented,true,"A later page visit may show another message");
+  assert.equal(next.requests.length,1);
+  next.document.querySelector(".sponsored-step-stay").click();
+  assert.equal(next.opened,0);h.dom.window.close();next.dom.window.close();
+});
+
+test("native ad load failure never prevents the original affiliate destination",()=>{
+  const h=adHarness();h.click();
+  h.document.querySelector(".sponsored-step-native script").dispatchEvent(new h.window.Event("error"));
+  assert.match(h.document.querySelector(".sponsored-step-ad-status").textContent,/unavailable/);
+  assert.equal(h.requests.length,1);
+  h.document.querySelector(".sponsored-step-continue").click();
+  assert.deepEqual(h.navigations,[product.affiliateUrl]);assert.equal(h.timers.size,0);
+  h.dom.window.close();
 });
 
 test("Escape, Back and restored pages dismiss the choice without a redirect",()=>{
@@ -211,7 +246,7 @@ test("Escape, Back and restored pages dismiss the choice without a redirect",()=
     else {const event=new h.window.Event(eventType);if(eventType==="pageshow")Object.defineProperty(event,"persisted",{value:true});h.window.dispatchEvent(event);}
     assert.equal(h.document.querySelector("dialog"),null,eventType);
     assert.equal(h.document.querySelector(".sponsored-step-backdrop"),null,eventType);
-    assert.deepEqual(h.navigations,[],eventType);assert.equal(h.click().defaultPrevented,true,eventType);
+    assert.deepEqual(h.navigations,[],eventType);assert.equal(h.click().defaultPrevented,false,eventType);
     h.dom.window.close();
   }
 });
@@ -224,8 +259,7 @@ test("blocked storage and missing native dialog support retain accessible skip a
   const first=h.document.querySelector(".sponsored-step-close"),last=h.document.querySelector(".sponsored-step-stay");
   first.focus();first.dispatchEvent(new h.window.KeyboardEvent("keydown",{key:"Tab",shiftKey:true,bubbles:true,cancelable:true}));
   assert.equal(h.document.activeElement,last);
-  last.click();assert.equal(h.click().defaultPrevented,true);assert.equal(h.requests.length,0);
-  h.document.querySelector(".sponsored-step-stay").click();
+  last.click();assert.equal(h.click().defaultPrevented,false);assert.equal(h.requests.length,1);
   assert.equal(h.document.body.style.overflow,"");h.dom.window.close();
 });
 
@@ -247,16 +281,15 @@ test("internal, source, modified, synthetic and unsafe links keep normal navigat
   h.document.querySelector(".sponsored-step-stay").click();h.dom.window.close();
 });
 
-test("the same popup covers all hotel/coupon providers and only explicitly opted-in internal travel entries",()=>{
-  const h=adHarness(),classify=h.window.BuySellSponsoredClicks.destinationFor;
-  h.link.rel="";h.link.setAttribute("data-sponsored-navigation","");
+test("the popup supports all providers and explicitly opted-in travel entries",()=>{
   for(const item of [...HOTEL_PROVIDERS,...PROMO_SOURCES]) {
-    h.link.href=item.url;
+    const h=adHarness();h.link.rel="";h.link.setAttribute("data-sponsored-navigation","");h.link.href=item.url;
     assert.equal(h.click().defaultPrevented,true,item.name);
     assert.equal(h.document.querySelector(".sponsored-step-continue").href,item.url);
-    h.document.querySelector(".sponsored-step-stay").click();
+    h.document.querySelector(".sponsored-step-stay").click();h.dom.window.close();
   }
   for(const [pathname,label] of [["/hotels/","hotel comparison"],["/promo-codes/","promo-code sources"]]) {
+    const h=adHarness(),classify=h.window.BuySellSponsoredClicks.destinationFor;
     h.link.href=pathname+"?country=LK&city=Kandy";
     h.link.setAttribute("data-sponsored-navigation","");assert.equal(classify(h.link),null);
     h.link.setAttribute("data-sponsored-navigation","internal");
@@ -265,9 +298,9 @@ test("the same popup covers all hotel/coupon providers and only explicitly opted
     assert.match(h.document.querySelector(".sponsored-step-continue").textContent,new RegExp(label));
     h.document.querySelector(".sponsored-step-close").click();
     assert.equal(h.navigations.at(-1),h.link.href);
+    h.link.href="/api/health";assert.equal(classify(h.link),null);
+    assert.equal(h.opened,0);h.dom.window.close();
   }
-  h.link.href="/api/health";assert.equal(classify(h.link),null);
-  assert.equal(h.opened,0);h.dom.window.close();
 });
 
 test("worldwide hotel selector, search details and truthful source pages render through the Worker",async()=>{
@@ -280,7 +313,7 @@ test("worldwide hotel selector, search details and truthful source pages render 
   const dom=new JSDOM(await response.text()),doc=dom.window.document;
   assert.equal(doc.querySelectorAll("#hotel-country option[value]:not([value=''])").length,249);
   assert.equal(doc.querySelector("#hotel-city").value,query.get("city"));
-  const extraInlineScripts=[...doc.querySelectorAll("script:not([src]):not([type='application/ld+json'])")].filter(script=>!script.closest("#bsb-display-ad"));
+  const extraInlineScripts=[...doc.querySelectorAll("script:not([src]):not([type='application/ld+json'])")].filter(script=>!script.closest(".display-ad"));
   assert.equal(extraInlineScripts.length,0);
   assert.equal(doc.querySelector('link[rel="canonical"]').href,origin+"/hotels/");
   assert.equal(doc.querySelector('meta[name="google-adsense-account"]').content,"ca-pub-4485257027995607");

@@ -1,6 +1,6 @@
 # BuySell Best Admitad integration report
 
-> Current implementation update — 2026-10-16: shared display advertising now uses one native 320×50 banner per successful HTML page. Smartlink uses explicitly selected native sponsor links with a same-tab fallback (module v6); the custom Smartlink iframe described in the historical implementation below has been removed. Continue/× still preserve the original destination. See README, “Sponsored clicks”, for the current behavior. The hotel comparison-brief display was separately removed in commit 6372ea9.
+> Current implementation update — 2026-10-17: see [the current ad configuration](ad-configuration-2026-10-17.md). Shared pages now have distinct top, secondary and bottom units where appropriate; v7 displays an official one-card Native Banner inside the closable shopping dialog, with a ten-minute prompt limit. Smartlink remains an explicit sponsor link, never a framed landing page. Adult ads are OFF. The older inline Smartlink approach below is historical; the hotel comparison-brief display remains removed.
 
 Implementation date: 15 October 2026. This batch covers the first twenty product rows in the uploaded document and preserves the existing Cloudflare Worker, Static Assets and D1 architecture.
 
