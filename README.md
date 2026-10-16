@@ -130,3 +130,25 @@ case; their names and comparisons reflect those items, while stable product IDs
 are retained. The packing-organizer listing is not described as verified
 compression hardware. See `docs/admitad-integration-2026-10-15.md` for the mapping,
 page and image paths, policy sources, verification and remaining account work.
+
+## High-value buyer decision research (17 October 2026)
+
+`/insights/` is an editorial hub linking 50 individual researched decision
+checklists in ten clusters. Each article has a distinct title, introduction,
+four comparison checks, a scenario, risk to avoid, comparison worksheet and
+contextual reference link. These are educational articles, not live prices,
+provider rankings, verified financial claims, paid recommendations or
+first-hand reviews. Financial, insurance and legal decisions remain subject
+to local rules and professional verification.
+
+The existing Worker dynamically renders the pages using
+`lib/high-intent-guides.js` and two versioned JSON catalogues. All 50 articles
+and the index appear in the runtime sitemap and static fallback sitemap.
+`npm run content:export` keeps them synchronized. Pages reuse existing
+Adsterra top, sidebar and bottom placements through middleware (adult ads OFF);
+the explicitly selected footer Smartlink and click-triggered Native Banner
+remain unchanged. No new ad tags, forced popunders, synthetic impressions,
+refresh timers, or redirects were added.
+
+Run `npm test` and verify production URLs plus Search Console's indexing
+reports after deployment. Neither ad eCPM nor indexing can be guaranteed.

@@ -2,6 +2,7 @@ import {readFile,writeFile} from "node:fs/promises";
 import {SHOPPING_GUIDES,SHOPPING_PRODUCTS,shoppingDestination,guideSitemapEntries} from "../lib/shopping-guides.js";
 import {AFFILIATE_PRODUCTS,productSitemapEntries} from "../lib/affiliate-products.js";
 import {travelSitemapEntries} from "../lib/travel-guides.js";
+import {highIntentSitemapEntries} from "../lib/high-intent-guides.js";
 const quote = value => '"'+String(value??"").replace(/"/g,'""')+'"';
 const rows = [["Product ID","Product","Link type","Merchant URL","Reference URL","Admitad affiliate URL (add here)","Related guides"]];
 for(const product of SHOPPING_PRODUCTS) rows.push([product.id,product.name,product.linkKind,product.merchantUrl,product.referenceUrl,shoppingDestination(product)!==product.merchantUrl?shoppingDestination(product):"",SHOPPING_GUIDES.filter(g=>g.selection.some(c=>c.productId===product.id)).map(g=>"https://buysell.best/guides/"+g.slug+"/").join(" | ")]);
@@ -39,6 +40,6 @@ await writeFile(reviewPath,'\ufeff'+review.map(row=>row.map(quote).join(",")).jo
 console.log("Synced the first 20 review rows; account-level verification remains NO.");
 const sitemapPath=new URL("../sitemap.xml",import.meta.url);
 const old=await readFile(sitemapPath,"utf8");
-const preserved=old.replace(/<url>\s*<loc>https:\/\/buysell\.best\/(?:guides|shopping-methodology|products|hotels|promo-codes)(?:\/|<)[\s\S]*?<\/url>/g,"");
-await writeFile(sitemapPath,preserved.replace("</urlset>",productSitemapEntries()+guideSitemapEntries()+travelSitemapEntries()+"</urlset>"));
+const preserved=old.replace(/<url>\s*<loc>https:\/\/buysell\.best\/(?:guides|shopping-methodology|products|hotels|promo-codes|insights)(?:\/|<)[\s\S]*?<\/url>/g,"");
+await writeFile(sitemapPath,preserved.replace("</urlset>",productSitemapEntries()+guideSitemapEntries()+travelSitemapEntries()+highIntentSitemapEntries()+"</urlset>"));
 console.log("Updated the static fallback sitemap without removing existing marketplace URLs.");
