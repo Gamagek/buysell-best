@@ -19,7 +19,8 @@ async function renderAffiliateHome(request, env) {
   const response = await env.ASSETS.fetch(request);
   if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) return response;
   const rewriter = new HTMLRewriter()
-    .on("#shopping-guides-spotlight", {element(element) {element.setInnerContent(renderGuidesSpotlight()+renderHighIntentSpotlight(), {html:true});}})
+    .on("#shopping-guides-spotlight", {element(element) {element.setInnerContent(renderGuidesSpotlight(), {html:true});}})
+    .on(".shopping-home-section", {element(element) {element.after(renderHighIntentSpotlight(), {html:true});}})
     .on("#affiliate-product-spotlight", {element(element) {element.setInnerContent(renderSpotlight(), {html:true});}})
     .on("#current-listings-track", {element(element) {element.setInnerContent(AFFILIATE_PRODUCTS.map(renderInitialCarousel).join(""), {html:true});}})
     .on("#global-deals", {element(element) {element.setInnerContent('<div data-curated-products>'+AFFILIATE_PRODUCTS.map(renderMiniProductTile).join("")+'</div>', {html:true});}})
