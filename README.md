@@ -43,33 +43,19 @@ The dynamic `/sitemap.xml` includes the product URL and all ten image URLs.
 
 ## Sponsored clicks
 
-`js/sponsored-click.js` v5 is shared by static and Worker-rendered pages. Every
-unmodified, trusted outbound shopping, booking or promo-source click displays
-the reference-style Adsterra popup. The two travel entry pages also opt in with
-`data-sponsored-navigation="internal"`. Ordinary internal product/guide reading
-and carousel gallery links continue normally. Original hrefs work without JavaScript.
+`js/sponsored-click.js` v6 is shared by static and Worker-rendered pages. Every trusted, ordinary shopping/booking/promo click opens an optional sponsored-offer dialog. Continue and × immediately follow the exact original destination; stay, Escape and page lifecycle actions dismiss it. Modified clicks and JavaScript-free hrefs retain normal navigation.
 
-The popup loads the supplied Smartlink once in a visible sandboxed iframe, only
-after a visitor click opens it. Continue and × destroy the frame and navigate to
-the exact destination immediately. “Close ad and stay here”, Escape, Back and page
-lifecycle events dismiss without a redirect. No countdown, session suppression,
-automatic new tabs, retries, hidden frames or background prefetch are used.
-The sandbox allows scripts/forms and same-origin resources, but not top navigation,
-popups or downloads. Native-dialog fallback and focus containment preserve controls.
+Smartlink is a normal, explicitly selected sponsor anchor with a native new-tab action and a same-tab fallback. It is never loaded in a custom iframe or requested when the dialog opens. Adsterra terms require consent for framing ad tags and restrict framing click-through destinations; the old preview was not evidence of an accepted impression. Sponsor engagement is never required to shop. Tests do not contact the ad network.
 
-This restores the requested legacy preview layout; it does not establish network
-approval. Adsterra publisher terms restrict framing click-through destinations,
-and an advertiser can block embedding with CSP or X-Frame-Options. Those controls
-are never bypassed. Cross-origin load events do not prove that an ad was displayed.
-The outside Continue/× controls remain usable even for a blank or blocked frame.
-Accepted traffic, impressions, affiliate eligibility and payouts remain network
-decisions. Automated tests stub the frame and never contact the ad network.
+`lib/display-ads.js` renders one existing 320×50 vendor banner tag after the site header on successful HTML pages. The banner stays in normal flow, labelled Advertisement, with reserved dimensions and no scaling, clipping, overlays, refreshes or retries. Shared Worker middleware covers generated pages and static HTML/clean aliases selected in `wrangler.toml`. APIs, assets, redirects, 404s and other error responses receive no ads. The homepage’s repeated 160×300 units and old scaled slot styles were removed.
+
+The banner unit key is `91208914dcc24988701a618a55adc6f0`; its native vendor tag is retained. Website/placement approval, ad fill, accepted impressions and payouts remain Adsterra account decisions. In Adsterra Statistics, choose All domains or the actual website and its banner placement to inspect banner statistics; the separate Smartlink domain filter does not show all display placements. Match dates and UTC timezone before comparing reports. Cloudflare edge requests and IP-based uniques include non-page traffic, while pageviews and accepted ad impressions use different definitions. No script/iframe load event is labelled as a paid impression.
 
 Use `data-sponsored-bypass` for source references and the dialog's own links.
 
 ## Worldwide hotels and promo-code sources
 
-`/hotels/` provides a 249-entry ISO country/territory selector, a trip brief,
+`/hotels/` provides a 249-entry ISO country/territory selector, a destination/date form,
 seven official booking/metasearch entry points and an empty comparison table for
 real final quotes entered by the visitor. Google and Booking.com links carry
 destination search details; other providers open their official search pages and

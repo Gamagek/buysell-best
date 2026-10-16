@@ -1,5 +1,7 @@
 # Worldwide hotels, promo-code sources and inline Smartlink preview
 
+> Current implementation update — 2026-10-16: shared display advertising now uses one native 320×50 banner per successful HTML page. Smartlink uses explicitly selected native sponsor links with a same-tab fallback (module v6); the custom Smartlink iframe described in the historical implementation below has been removed. Continue/× still preserve the original destination. See README, “Sponsored clicks”, for the current behavior. The hotel comparison-brief display was separately removed in commit 6372ea9.
+
 ## Published behavior
 
 - `/hotels/`: 249 ISO country/territory entries, city/hotel search brief, dates and occupancy; seven booking/metasearch services with practical comparison notes; a local calculator for final full-stay quotes entered by the visitor; buying, fees, cancellation and location guidance.

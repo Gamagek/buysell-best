@@ -4,8 +4,9 @@ import { syncPromos } from "./lib/promo-sync.js";
 import { AFFILIATE_PRODUCTS, findProduct, featuredCarouselItems, productPath, renderSpotlight, renderInitialCarousel, renderMiniProductTile, renderProductPage, renderProductsIndex, productSitemapEntries } from "./lib/affiliate-products.js";
 import { findShoppingProduct, renderShoppingProductPage, shoppingProductPath, findGuide, findGuideCategory, guidePath, categoryPath, renderGuidesIndex, renderGuideCategory, renderShoppingGuide, renderShoppingMethodology, renderGuidesSpotlight, guideSitemapEntries } from "./lib/shopping-guides.js";
 import { renderHotelComparison, renderPromoCodes, travelSitemapEntries } from "./lib/travel-guides.js";
+import { withDisplayAdvertising } from "./lib/display-ads.js";
 
-const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261016-inline-smartlink-v5"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261016-inline-smartlink-v5" defer></script>';
+const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261016-native-smartlink-v6"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261016-native-smartlink-v6" defer></script>';
 const adsenseAccountMeta = '<meta name="google-adsense-account" content="ca-pub-4485257027995607">';
 
 function withSponsoredSupport(response) {
@@ -532,12 +533,12 @@ export default {
     if(seoResponse){
       if(request.method === "HEAD") return new Response(null, {status:seoResponse.status,headers:seoResponse.headers});
       const path = new URL(request.url).pathname;
-      return path === "/" || path === "/index.html" ? seoResponse : withSponsoredSupport(seoResponse);
+      return withDisplayAdvertising(request, path === "/" || path === "/index.html" ? seoResponse : withSponsoredSupport(seoResponse));
     }
 
     const url = new URL(request.url);
     const name = route(url.pathname);
-    if (!name) return serveAsset(request, env);
+    if (!name) return withDisplayAdvertising(request, await serveAsset(request, env));
 
     const mod = await handlers[name]();
     const action = methodName(request);

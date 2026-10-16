@@ -31,8 +31,6 @@
     if (!active) return;
     const current = active;
     active = null;
-    // Destroy the advertiser context before closing or visiting the shop.
-    current.frame.remove();
     if (current.dialog.open && current.dialog.close) current.dialog.close();
     current.overlay.remove();
     document.body.style.overflow = current.oldOverflow;
@@ -49,16 +47,11 @@
     dialog.setAttribute("aria-modal", "true");
     dialog.setAttribute("aria-labelledby", "sponsored-step-title");
     dialog.setAttribute("aria-describedby", "sponsored-step-message");
-    dialog.innerHTML = '<header class="sponsored-step-header"><div><span class="sponsored-step-label">ADVERTISEMENT · ADSTERRA</span><h2 id="sponsored-step-title">One sponsored message</h2></div><button class="sponsored-step-close" type="button">×</button></header><div class="sponsored-step-viewport" aria-label="Advertisement preview"></div><footer class="sponsored-step-footer"><p id="sponsored-step-message" role="status" aria-live="polite">Your destination button stays here while the ad loads. You can continue at any time. The advertisement is separate from the merchant or destination page.</p><a class="sponsored-step-continue" data-sponsored-bypass rel="sponsored nofollow noopener noreferrer"></a><button class="sponsored-step-stay" type="button">Close ad and stay here</button><small class="sponsored-step-help">Can’t see the ad? Continue directly to your destination. Use Continue or × at any time; no waiting is required.</small></footer>';
-    const frame = document.createElement("iframe");
-    frame.className = "sponsored-step-frame";
-    frame.title = "Adsterra sponsored advertisement";
-    frame.setAttribute("sandbox", "allow-scripts allow-forms allow-same-origin");
-    frame.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
-    frame.setAttribute("loading", "eager");
-    // Keep advertiser redirects inside the visible frame. No top navigation,
-    // popups, downloads or external-app escape permissions are granted.
-    dialog.querySelector(".sponsored-step-viewport").appendChild(frame);
+    dialog.innerHTML = '<header class="sponsored-step-header"><div><span class="sponsored-step-label">ADVERTISEMENT · ADSTERRA</span><h2 id="sponsored-step-title">Optional sponsored offer</h2></div><button class="sponsored-step-close" type="button">×</button></header><div class="sponsored-step-offer"><p>Choose to view an Adsterra sponsored offer, or continue straight to your destination.</p><a class="sponsored-step-ad" target="_blank" data-sponsored-bypass rel="sponsored nofollow noopener noreferrer">Open sponsored offer in a new tab ↗</a><a class="sponsored-step-ad-fallback" data-sponsored-bypass rel="sponsored nofollow noopener noreferrer">New tab blocked? Open the offer in this tab ↗</a></div><footer class="sponsored-step-footer"><p id="sponsored-step-message">The advertisement is separate from the merchant or destination page. You never need to open or click an ad to continue.</p><a class="sponsored-step-continue" data-sponsored-bypass rel="sponsored nofollow noopener noreferrer"></a><button class="sponsored-step-stay" type="button">Close ad and stay here</button><small class="sponsored-step-help">Use Continue or × at any time; no waiting is required.</small></footer>';
+    // Smartlink is a real user-selected link, not a framed landing page.
+    // Vendor banner tags are rendered once on the page by the Worker.
+    dialog.querySelector(".sponsored-step-ad").href = SMARTLINK;
+    dialog.querySelector(".sponsored-step-ad-fallback").href = SMARTLINK;
     const destinationLink = dialog.querySelector(".sponsored-step-continue");
     destinationLink.href = destination;
     destinationLink.textContent = "Continue to " + label + " →";
@@ -67,7 +60,7 @@
     const oldOverflow = document.body.style.overflow;
     overlay.appendChild(dialog);
     document.body.appendChild(overlay);
-    active = {destination, dialog, overlay, frame, trigger:link, oldOverflow};
+    active = {destination, dialog, overlay, trigger:link, oldOverflow};
     document.body.style.overflow = "hidden";
     destinationLink.addEventListener("click", event => {
       if (event.button !== 0 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
@@ -80,21 +73,14 @@
     dialog.addEventListener("keydown", event => {
       if (event.key === "Escape") {event.preventDefault(); finish(false); return;}
       if (event.key !== "Tab") return;
-      const controls = Array.from(dialog.querySelectorAll("button,a[href],iframe"));
+      const controls = Array.from(dialog.querySelectorAll("button,a[href]"));
       const first = controls[0], last = controls[controls.length - 1];
       if (event.shiftKey && document.activeElement === first) {event.preventDefault(); last.focus();}
       else if (!event.shiftKey && document.activeElement === last) {event.preventDefault(); first.focus();}
     });
-    frame.addEventListener("error", () => {
-      if (active && active.frame === frame) dialog.querySelector("#sponsored-step-message").textContent = "The advertisement could not be displayed. Continue to your destination below, or use ×.";
-    });
     try {if (dialog.showModal) dialog.showModal(); else dialog.setAttribute("open", "");}
     catch (_) {dialog.setAttribute("open", "");}
     destinationLink.focus();
-    // Exactly one visible frame per visitor activation, after the popup opens.
-    // Frame load/error events cannot establish ad impressions or commission.
-    // Framing restrictions and blocked third-party content are not bypassed.
-    frame.src = SMARTLINK;
   }
   document.addEventListener("click", event => {
     if (!event.isTrusted || event.defaultPrevented || event.button !== 0 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
@@ -109,5 +95,5 @@
   window.addEventListener("popstate", () => finish(false));
   window.addEventListener("pagehide", () => finish(false));
   window.addEventListener("pageshow", event => {if (event.persisted) finish(false);});
-  window.BuySellSponsoredClicks = Object.freeze({destinationFor, enabled:true, version:5});
+  window.BuySellSponsoredClicks = Object.freeze({destinationFor, enabled:true, version:6});
 })();
