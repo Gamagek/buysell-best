@@ -1,0 +1,480 @@
+{
+  "reviewed": "2026-10-17",
+  "articles": [
+    {
+      "slug": "password-manager-selection",
+      "title": "Password Managers: Security, Recovery and Family Sharing",
+      "intro": "A password manager is valuable when it helps people maintain unique credentials and recover access safely. A long feature list is less important than the trust and recovery model.",
+      "criteria": [
+        "Compare how vaults encrypt data and whether independent security assessments are published.",
+        "Check supported devices, browser extensions and passkey handling.",
+        "Review recovery options, shared vault controls and the consequence of losing the master password.",
+        "Test export, import and cancellation before migrating your entire vault."
+      ],
+      "scenario": "A family sharing emergency contacts needs different administration from a solo freelancer using several operating systems.",
+      "pitfall": "Relying on claims such as 'military-grade security' without examining recovery or breach-response processes.",
+      "category": "Cybersecurity and Privacy",
+      "categorySlug": "cybersecurity",
+      "reference": {
+        "label": "CISA Secure Our World",
+        "url": "https://www.cisa.gov/secure-our-world"
+      }
+    },
+    {
+      "slug": "vpn-privacy-claims-checklist",
+      "title": "VPN Services: What a VPN Hides—and What It Does Not",
+      "intro": "A VPN changes who sees some network traffic, but it does not automatically stop tracking by logged-in websites or malicious browser extensions.",
+      "criteria": [
+        "Check which jurisdictions and independent audits are associated with the provider's policies.",
+        "Compare supported devices, connection limits and protocol options.",
+        "Test whether critical banking, work or streaming services function under typical connections.",
+        "Review cancellation terms, renewal prices and incident transparency."
+      ],
+      "scenario": "A remote worker using a company-managed VPN needs a different answer from a traveler who wants protection on public Wi-Fi.",
+      "pitfall": "Believing that a VPN alone makes browsing anonymous or prevents phishing.",
+      "category": "Cybersecurity and Privacy",
+      "categorySlug": "cybersecurity",
+      "reference": {
+        "label": "CISA Secure Our World",
+        "url": "https://www.cisa.gov/secure-our-world"
+      }
+    },
+    {
+      "slug": "home-security-camera-privacy",
+      "title": "Smart Security Cameras: Video Storage and Privacy Tradeoffs",
+      "intro": "Security-camera comparisons should account for subscription costs and data handling as carefully as image quality. A device may change privacy exposure inside a home.",
+      "criteria": [
+        "Compare local versus cloud recording and how long files remain available.",
+        "Check multifactor authentication, firmware updates and guest permissions.",
+        "Verify continuous power needs, weather resistance, Wi-Fi coverage and placement laws.",
+        "Add the subscription renewal and replacement battery costs to the device price."
+      ],
+      "scenario": "A renter needing only a doorbell recording should not assume a whole-home cloud camera package is necessary.",
+      "pitfall": "Installing cameras in private areas without checking consent, applicable law and account-sharing controls.",
+      "category": "Cybersecurity and Privacy",
+      "categorySlug": "cybersecurity",
+      "reference": {
+        "label": "CISA Secure Our World",
+        "url": "https://www.cisa.gov/secure-our-world"
+      }
+    },
+    {
+      "slug": "small-business-backup-plan",
+      "title": "Business Backup Software: Recovery Time Versus Storage Price",
+      "intro": "Backups are valuable only when restoration is possible within a useful time. Compare recovery workflows, version retention and how independent copies are protected.",
+      "criteria": [
+        "Define maximum tolerable data loss and the time needed to restore each critical system.",
+        "Check encryption, immutable copies and protection against administrator-account compromise.",
+        "Run a small actual restoration test from a backup, not just a successful status message.",
+        "Price restore traffic, storage growth, retention and support responses."
+      ],
+      "scenario": "A small shop losing its order database for a weekend has a different recovery priority from an archive of finished photos.",
+      "pitfall": "Buying cheap backup storage without budgeting for recovery testing or documenting who can restore it.",
+      "category": "Cybersecurity and Privacy",
+      "categorySlug": "cybersecurity",
+      "reference": {
+        "label": "CISA Secure Our World",
+        "url": "https://www.cisa.gov/secure-our-world"
+      }
+    },
+    {
+      "slug": "identity-theft-monitoring-services",
+      "title": "Identity Monitoring Services: Alerts Versus Real Protection",
+      "intro": "Monitoring can notify about certain exposures, but cannot guarantee identity theft prevention. Many protective actions also have free official routes.",
+      "criteria": [
+        "List what data sources and types of events the monitoring service actually checks.",
+        "Compare alert speed, support quality and any limits on identity-restoration assistance.",
+        "Check whether your country offers free credit freezes or fraud alerts and how to activate them.",
+        "Read auto-renewal, cancellation and reimbursement insurance exclusions."
+      ],
+      "scenario": "Someone affected by a confirmed breach should prioritize account recovery and appropriate freezes over buying the widest alert package.",
+      "pitfall": "Treating identity monitoring as a substitute for securing accounts and reading financial statements.",
+      "category": "Cybersecurity and Privacy",
+      "categorySlug": "cybersecurity",
+      "reference": {
+        "label": "CISA Secure Our World",
+        "url": "https://www.cisa.gov/secure-our-world"
+      }
+    },
+    {
+      "slug": "shared-vps-managed-hosting",
+      "title": "Shared, VPS or Managed Hosting: Find the Right Fit",
+      "intro": "Hosting labels often obscure administration responsibilities. The correct choice depends on traffic, maintenance skills and acceptable downtime.",
+      "criteria": [
+        "Define the app stack and minimum supported runtimes before price shopping.",
+        "Compare backups, patching, security monitoring and who restores outages.",
+        "Understand CPU, memory and storage limits as well as unexpected bandwidth charges.",
+        "Verify migration, staging, domain and support terms during renewal."
+      ],
+      "scenario": "A brochure site can use simple hosting while a store with unusual server extensions may require more control.",
+      "pitfall": "Comparing a managed service's monthly rate against an unmanaged server without accounting for operational labor.",
+      "category": "Hosting and Cloud Infrastructure",
+      "categorySlug": "hosting",
+      "reference": {
+        "label": "Cloudflare Learning Center",
+        "url": "https://www.cloudflare.com/learning/"
+      }
+    },
+    {
+      "slug": "domain-registrar-renewal-costs",
+      "title": "Domain Registrars: Renewal, Transfer and Ownership Checks",
+      "intro": "A first-year domain promotion is only one part of domain ownership. Renewal terms, DNS tools and access security matter over many years.",
+      "criteria": [
+        "Record renewal, transfer and redemption fees separately from an introductory coupon.",
+        "Confirm the registrant holds administrative control and can export transfer codes.",
+        "Check two-factor authentication, DNSSEC support and record management tools.",
+        "Verify bundled email or privacy features are not required paid add-ons."
+      ],
+      "scenario": "A small company with critical email needs predictable domain control more than a one-dollar first-year bargain.",
+      "pitfall": "Letting a web designer or agency register the brand's primary domain in their own name.",
+      "category": "Hosting and Cloud Infrastructure",
+      "categorySlug": "hosting",
+      "reference": {
+        "label": "Cloudflare Learning Center",
+        "url": "https://www.cloudflare.com/learning/"
+      }
+    },
+    {
+      "slug": "cloud-storage-team-pricing",
+      "title": "Business Cloud Storage: Seats, Sync and Data Recovery",
+      "intro": "Cloud storage can include backups, team collaboration and file sharing, but those are distinct capabilities. Compare real workloads and permission needs.",
+      "criteria": [
+        "Price paid users, guest collaborators and retention features over a year.",
+        "Test large-file syncing, conflict resolution and offline changes across devices.",
+        "Inspect sharing permissions, audit logs, regional storage and data export.",
+        "Check whether ransomware recovery uses version history, external backup or both."
+      ],
+      "scenario": "A video team exchanging large assets may experience a different bottleneck from an office sharing small documents.",
+      "pitfall": "Assuming that automatic sync is equivalent to an independent, tamper-resistant backup.",
+      "category": "Hosting and Cloud Infrastructure",
+      "categorySlug": "hosting",
+      "reference": {
+        "label": "Cloudflare Learning Center",
+        "url": "https://www.cloudflare.com/learning/"
+      }
+    },
+    {
+      "slug": "cdn-website-speed-checks",
+      "title": "Content Delivery Networks: Choose by Cache Behavior",
+      "intro": "A CDN can reduce latency for suitable resources, but it cannot fix every slow server or unoptimized frontend. Test actual traffic patterns before buying upgrades.",
+      "criteria": [
+        "Measure page latency and cache-hit rates for static and dynamic responses separately.",
+        "Understand cache-control, purging and authenticated-content exclusions.",
+        "Compare TLS, HTTP features, DDoS protection and regional performance options.",
+        "Check paid bandwidth, request-based billing and image processing limits."
+      ],
+      "scenario": "An image-heavy static catalogue may gain more from efficient formats and browser caching than expensive dynamic acceleration.",
+      "pitfall": "Caching personalized responses or private data because a default rule appears faster.",
+      "category": "Hosting and Cloud Infrastructure",
+      "categorySlug": "hosting",
+      "reference": {
+        "label": "Cloudflare Learning Center",
+        "url": "https://www.cloudflare.com/learning/"
+      }
+    },
+    {
+      "slug": "email-hosting-business-comparison",
+      "title": "Business Email Hosting: Deliverability and Migration Risks",
+      "intro": "Professional email involves mailbox storage, identity control, authentication and reliable delivery. A brand domain alone does not ensure messages reach inboxes.",
+      "criteria": [
+        "Compare per-mailbox charges, aliases, retention and shared inbox support.",
+        "Check SPF, DKIM and DMARC setup guidance and administrative recovery procedures.",
+        "Plan IMAP or supported migration, including calendars and contact lists.",
+        "Verify device compatibility, phishing defenses and data export rights."
+      ],
+      "scenario": "A business with several shared support addresses may need a different licensing model from a solo founder.",
+      "pitfall": "Changing MX records before old mail is backed up and new sender authentication is tested.",
+      "category": "Hosting and Cloud Infrastructure",
+      "categorySlug": "hosting",
+      "reference": {
+        "label": "Cloudflare Learning Center",
+        "url": "https://www.cloudflare.com/learning/"
+      }
+    },
+    {
+      "slug": "hotel-total-price-checklist",
+      "title": "Hotel Booking Prices: Compare the Final Stay Total",
+      "intro": "Two nightly rates are not comparable unless taxes, property fees and booking conditions are included. Compare the same room and cancellation terms.",
+      "criteria": [
+        "Use the same dates, number of guests, room type and meal plan across sites.",
+        "Add mandatory resort, city or cleaning fees and pay-at-property charges.",
+        "Compare cancellation deadlines, deposit rules and whether local taxes change.",
+        "Save the final checkout terms before placing the reservation."
+      ],
+      "scenario": "A cheap nonrefundable hotel outside the city center may cost more after taxis than a slightly dearer central room.",
+      "pitfall": "Ranking hotels by the first search-result price without examining the full checkout breakdown.",
+      "category": "Travel Spending",
+      "categorySlug": "travel-spending",
+      "reference": {
+        "label": "US State Department international travel guidance",
+        "url": "https://travel.state.gov/content/travel/en/international-travel.html"
+      }
+    },
+    {
+      "slug": "airport-transfer-vs-rental-car",
+      "title": "Airport Transfer, Ride-Hail or Rental Car? Cost Comparison",
+      "intro": "Ground transport value depends on the number of trips, luggage, parking and local access. A single airport transfer can be simpler than renting.",
+      "criteria": [
+        "List expected journeys rather than comparing only the arrival transfer.",
+        "Add rental fuel, insurance excess, tolls, parking and security deposits.",
+        "Check late-arrival operating hours and whether the destination supports ride-hail pickups.",
+        "Compare child-seat availability and luggage capacity for your party."
+      ],
+      "scenario": "Visitors staying in a walkable city center may need only two airport trips; rural visitors may need a car daily.",
+      "pitfall": "Assuming a rental price includes all required protection, taxes or drop-off fees.",
+      "category": "Travel Spending",
+      "categorySlug": "travel-spending",
+      "reference": {
+        "label": "US State Department international travel guidance",
+        "url": "https://travel.state.gov/content/travel/en/international-travel.html"
+      }
+    },
+    {
+      "slug": "travel-esim-roaming-price",
+      "title": "Travel eSIM Versus Roaming: Cost and Compatibility",
+      "intro": "An eSIM package may offer data without replacing calls, SMS or emergency communication. Compare coverage, activation and trip length together.",
+      "criteria": [
+        "Confirm that your handset is unlocked and supports the destination eSIM profile.",
+        "Compare true data allowances, fair-use policies and hotspot permissions.",
+        "Understand activation windows, top-up options and expiration dates.",
+        "Preserve access to banking verification messages and emergency calling where needed."
+      ],
+      "scenario": "A short city trip with frequent Wi-Fi use differs from a road trip requiring dependable maps in remote areas.",
+      "pitfall": "Buying an advertised unlimited package without checking speed throttling or coverage.",
+      "category": "Travel Spending",
+      "categorySlug": "travel-spending",
+      "reference": {
+        "label": "US State Department international travel guidance",
+        "url": "https://travel.state.gov/content/travel/en/international-travel.html"
+      }
+    },
+    {
+      "slug": "flight-baggage-fees-comparison",
+      "title": "Flight Fare Comparison: Add Baggage, Seats and Connections",
+      "intro": "A low base fare may be more expensive after baggage and transfer risks. Compare the complete itinerary on the same date and passenger conditions.",
+      "criteria": [
+        "Add cabin and checked-bag limits including size and weight rules.",
+        "Check seat selection, airport changes and separate-ticket connection exposure.",
+        "Read cancellation, schedule-change and credit-expiration terms.",
+        "Compare arrival airport transport and total travel duration."
+      ],
+      "scenario": "A traveler with only a backpack may favor a basic fare while a family checking luggage may prefer bundled baggage.",
+      "pitfall": "Treating a self-transfer itinerary as though one airline protects every connection.",
+      "category": "Travel Spending",
+      "categorySlug": "travel-spending",
+      "reference": {
+        "label": "US State Department international travel guidance",
+        "url": "https://travel.state.gov/content/travel/en/international-travel.html"
+      }
+    },
+    {
+      "slug": "travel-adapter-vs-voltage-converter",
+      "title": "Travel Adapter or Voltage Converter? Device Safety Basics",
+      "intro": "An adapter changes plug shape, while a converter changes voltage. Confusing them can damage appliances or create a safety hazard.",
+      "criteria": [
+        "Read each appliance's input-voltage range printed on its own power supply.",
+        "Identify the destination plug types and electrical frequency.",
+        "Choose a certified adapter rated for the actual wattage and grounded-device needs.",
+        "Avoid using unsuitable converters with high-power heating devices."
+      ],
+      "scenario": "A phone charger labeled 100–240 V usually needs only an appropriate plug adapter, unlike some single-voltage appliances.",
+      "pitfall": "Assuming any small travel adapter safely converts the electrical voltage.",
+      "category": "Travel Spending",
+      "categorySlug": "travel-spending",
+      "reference": {
+        "label": "US State Department international travel guidance",
+        "url": "https://travel.state.gov/content/travel/en/international-travel.html"
+      }
+    },
+    {
+      "slug": "gaming-monitor-refresh-vs-resolution",
+      "title": "Gaming Monitors: Refresh Rate, Resolution and Real Inputs",
+      "intro": "A monitor advertised as 4K and 144 Hz may require specific cables, graphics hardware and port modes to run both. Check the complete chain.",
+      "criteria": [
+        "Match target resolution and frame rate to the console or graphics card output.",
+        "Verify HDMI and DisplayPort capabilities at the exact model and input.",
+        "Compare measured response behavior, variable refresh rate and motion handling.",
+        "Check text clarity, desk distance, stand adjustment and warranty."
+      ],
+      "scenario": "A competitive player prioritizing frame rate may choose differently from a creator editing detailed 4K footage.",
+      "pitfall": "Buying solely from a claimed one-millisecond response time without independent testing.",
+      "category": "Gaming and Streaming Gear",
+      "categorySlug": "gaming-tech",
+      "reference": {
+        "label": "US Federal Trade Commission consumer advice",
+        "url": "https://consumer.ftc.gov/"
+      }
+    },
+    {
+      "slug": "gaming-headset-latency-microphone",
+      "title": "Gaming Headsets: Latency, Voice Quality and Compatibility",
+      "intro": "Wireless convenience, directional sound and microphone clarity often trade off. Compare how the headset performs on the actual console or computer.",
+      "criteria": [
+        "Check console support for 2.4 GHz dongles, Bluetooth and wired connections.",
+        "Compare battery life with microphone and lighting enabled.",
+        "Look for real microphone samples and replacement ear-pad availability.",
+        "Assess clamp pressure, glasses comfort and chat mix controls."
+      ],
+      "scenario": "A multiplayer console user needs dependable team-chat compatibility more than a long list of desktop-only audio effects.",
+      "pitfall": "Assuming any Bluetooth headset supports low-latency console voice chat.",
+      "category": "Gaming and Streaming Gear",
+      "categorySlug": "gaming-tech",
+      "reference": {
+        "label": "US Federal Trade Commission consumer advice",
+        "url": "https://consumer.ftc.gov/"
+      }
+    },
+    {
+      "slug": "streaming-microphone-usb-xlr",
+      "title": "USB Versus XLR Microphones for Streaming",
+      "intro": "Microphone type matters less than room acoustics, placement and the supporting audio chain. An XLR upgrade can add significant interface costs.",
+      "criteria": [
+        "Check whether the microphone needs an interface, phantom power or gain-hungry preamp.",
+        "Compare polar pattern, plosive handling and background noise at realistic distance.",
+        "Budget for boom arm, pop filter, monitoring and cable routing.",
+        "Test recording software compatibility and whether direct headphone monitoring is needed."
+      ],
+      "scenario": "A solo creator in a quiet room may be better served by a reliable USB microphone than a complex multi-input studio system.",
+      "pitfall": "Spending on a broadcast-looking microphone without treating echo and mechanical desk noise.",
+      "category": "Gaming and Streaming Gear",
+      "categorySlug": "gaming-tech",
+      "reference": {
+        "label": "US Federal Trade Commission consumer advice",
+        "url": "https://consumer.ftc.gov/"
+      }
+    },
+    {
+      "slug": "portable-projector-native-resolution",
+      "title": "Portable Projectors: Native Resolution Versus Marketing Claims",
+      "intro": "A projector's supported input signal is not its native image resolution. Brightness and throw distance determine usability in a real room.",
+      "criteria": [
+        "Verify native display resolution rather than accepted video-input format.",
+        "Compare independently defined light-output metrics and required ambient darkness.",
+        "Calculate image size and throw distance for your actual wall or screen.",
+        "Check focus, fan noise, speaker quality and return terms."
+      ],
+      "scenario": "A camping projector used after sunset has different requirements from a living-room projector used with lights on.",
+      "pitfall": "Mistaking a headline 'supports 4K' claim for a true 4K imaging panel.",
+      "category": "Gaming and Streaming Gear",
+      "categorySlug": "gaming-tech",
+      "reference": {
+        "label": "US Federal Trade Commission consumer advice",
+        "url": "https://consumer.ftc.gov/"
+      }
+    },
+    {
+      "slug": "gaming-laptop-upgrade-tradeoffs",
+      "title": "Gaming Laptop Buying: GPU Power, Cooling and Upgradeability",
+      "intro": "Two laptops with the same GPU name may deliver different performance because cooling and power configuration vary. Compare the full machine.",
+      "criteria": [
+        "Look for sustained game benchmarks with the exact GPU power target.",
+        "Check screen refresh and color alongside thermal and fan noise results.",
+        "Verify RAM and storage upgrade paths and accessible replacement parts.",
+        "Include charger weight, battery runtime and warranty support."
+      ],
+      "scenario": "A desk-bound competitive gamer may prioritize sustained cooling while a commuting student needs portability and practical battery life.",
+      "pitfall": "Assuming a newer GPU badge always beats a better-cooled configuration from the previous generation.",
+      "category": "Gaming and Streaming Gear",
+      "categorySlug": "gaming-tech",
+      "reference": {
+        "label": "US Federal Trade Commission consumer advice",
+        "url": "https://consumer.ftc.gov/"
+      }
+    },
+    {
+      "slug": "usb-c-dock-monitor-support",
+      "title": "USB-C Docks: Display Support, Power and Bandwidth",
+      "intro": "USB-C describes a connector shape, not one universal feature set. Docking results depend on the computer port, cable and chosen display setup.",
+      "criteria": [
+        "Confirm USB4, Thunderbolt or DisplayPort Alt Mode support on the actual laptop port.",
+        "Check required external monitor resolutions and refresh rates simultaneously.",
+        "Compare charger pass-through capacity with the laptop's required power.",
+        "Verify Ethernet, SD, audio and USB port speeds under the intended monitor load."
+      ],
+      "scenario": "A dock driving two high-resolution displays may leave less bandwidth for fast external drives than a single-display setup.",
+      "pitfall": "Assuming every USB-C cable and port supports video output and full charging power.",
+      "category": "Creator and Work Equipment",
+      "categorySlug": "creator-gear",
+      "reference": {
+        "label": "USB Implementers Forum",
+        "url": "https://www.usb.org/"
+      }
+    },
+    {
+      "slug": "external-ssd-photo-video-editing",
+      "title": "External SSDs for Video Editing: Sustained Speed and Backup",
+      "intro": "Peak advertised transfer speed is not the same as sustained editing performance. Thermal throttling and cable compatibility can limit real workflows.",
+      "criteria": [
+        "Compare sustained sequential write behavior with large project files.",
+        "Check the USB or Thunderbolt connection supported at both ends.",
+        "Consider endurance, encryption, physical handling and heat dissipation.",
+        "Keep a separate backup instead of treating a portable editing drive as the only copy."
+      ],
+      "scenario": "A photographer transferring short image batches may not need the same sustained throughput as an editor moving long video captures.",
+      "pitfall": "Buying by headline gigabytes-per-second figures when the laptop port is the bottleneck.",
+      "category": "Creator and Work Equipment",
+      "categorySlug": "creator-gear",
+      "reference": {
+        "label": "USB Implementers Forum",
+        "url": "https://www.usb.org/"
+      }
+    },
+    {
+      "slug": "camera-lens-used-market-checks",
+      "title": "Buying a Used Camera Lens: Inspection and Return Questions",
+      "intro": "Used lenses can be good value, but glass condition and mechanical issues affect repairs and resale. Test the exact copy when possible.",
+      "criteria": [
+        "Inspect focus and zoom rings, mounts, contacts and aperture behavior.",
+        "Check for haze, fungus, impact damage and unusual internal dust under good light.",
+        "Test autofocus accuracy and image stabilization on a compatible camera body.",
+        "Confirm return rights, serial markings and whether grey-market warranty limits apply."
+      ],
+      "scenario": "A low-priced lens with haze or an intermittent focus motor may cost more after service than a cleaner used copy.",
+      "pitfall": "Calling all visible dust a failure while overlooking functional damage to controls or optical coatings.",
+      "category": "Creator and Work Equipment",
+      "categorySlug": "creator-gear",
+      "reference": {
+        "label": "USB Implementers Forum",
+        "url": "https://www.usb.org/"
+      }
+    },
+    {
+      "slug": "desk-chair-ergonomic-fit",
+      "title": "Office Chairs: Fit, Adjustments and Total Ownership Cost",
+      "intro": "Ergonomics is about matching a chair to a person's posture and work pattern, not the number of adjustment levers. Fit testing is more useful than appearance.",
+      "criteria": [
+        "Check seat height, usable depth and armrest range for your body dimensions.",
+        "Compare lumbar adjustability, recline behavior and edge pressure.",
+        "Investigate replacement parts, warranty exclusions and return shipping.",
+        "Try the chair during actual keyboard and monitor use if possible."
+      ],
+      "scenario": "A shorter worker may need a shallower seat and foot support even when a highly rated chair fits taller reviewers.",
+      "pitfall": "Assuming that a premium chair replaces movement breaks or solves every source of discomfort.",
+      "category": "Creator and Work Equipment",
+      "categorySlug": "creator-gear",
+      "reference": {
+        "label": "USB Implementers Forum",
+        "url": "https://www.usb.org/"
+      }
+    },
+    {
+      "slug": "home-video-lighting-kit",
+      "title": "Video Lighting Kits: Color Accuracy, Safety and Room Setup",
+      "intro": "Good lighting often comes from placement and controllable softness rather than maximum brightness. Consider electrical safety and compact-room constraints.",
+      "criteria": [
+        "Compare measured color rendering and flicker performance at your camera's frame rate.",
+        "Assess softbox size, stand footprint and ventilation requirements.",
+        "Check power draw, adapter safety and whether light output is adjustable without color shifts.",
+        "Test spill control and reflections before buying multiple fixtures."
+      ],
+      "scenario": "A small interview corner may benefit from one large diffused key light and reflector rather than three harsh bare lamps.",
+      "pitfall": "Trusting unspecified lumen claims without examining lighting distance and modifier losses.",
+      "category": "Creator and Work Equipment",
+      "categorySlug": "creator-gear",
+      "reference": {
+        "label": "USB Implementers Forum",
+        "url": "https://www.usb.org/"
+      }
+    }
+  ]
+}
