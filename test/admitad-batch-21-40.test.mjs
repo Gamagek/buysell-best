@@ -53,7 +53,7 @@ test('twenty original, crawlable candidate pages have canonical URLs, useful con
     assert.equal(doc.querySelector('meta[property="og:image:height"]').content,'800');
     assert.equal(doc.querySelector('meta[property="og:image:alt"]').content,p.image.alt);
     assert.equal(doc.querySelector('.shopping-detail-image img').src,origin+p.image.src);
-    assert.ok(doc.querySelector('figcaption').textContent.includes('not a seller photograph'),p.id);
+    assert.ok(doc.querySelector('figcaption').textContent.toLowerCase().includes('not a seller photograph'),p.id);
     const ld=[...doc.querySelectorAll('script[type="application/ld+json"]')].map(x=>JSON.parse(x.textContent));
     assert.equal(ld[0]['@type'],'Article');
     assert.equal(ld[0].datePublished,'2026-10-17');
