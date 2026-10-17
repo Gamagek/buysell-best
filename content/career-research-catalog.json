@@ -1,0 +1,293 @@
+{
+  "employers": [
+    {
+      "id": "microsoft",
+      "name": "Microsoft",
+      "url": "https://careers.microsoft.com/v2/global/en/home.html",
+      "note": "Search job title and location; verify business unit and work arrangement."
+    },
+    {
+      "id": "amazon",
+      "name": "Amazon",
+      "url": "https://www.amazon.jobs/en/search",
+      "note": "Filter the employer's global job database by country and role family."
+    },
+    {
+      "id": "salesforce",
+      "name": "Salesforce",
+      "url": "https://careers.salesforce.com/en/jobs/",
+      "note": "Use the official jobs search; confirm location and employment eligibility."
+    },
+    {
+      "id": "citi",
+      "name": "Citi",
+      "url": "https://jobs.citi.com/category/finance-jobs/287/19609/1",
+      "note": "Check finance, regulatory and banking teams within the official careers portal."
+    },
+    {
+      "id": "hsbc",
+      "name": "HSBC",
+      "url": "https://www.hsbc.com/careers/find-a-job",
+      "note": "Select the country or territory before reviewing live vacancies."
+    },
+    {
+      "id": "deloitte",
+      "name": "Deloitte",
+      "url": "https://www.deloitte.com/global/en/careers/job-search.html",
+      "note": "Select the local member firm and country for available opportunities."
+    },
+    {
+      "id": "roche",
+      "name": "Roche",
+      "url": "https://careers.roche.com/global/en",
+      "note": "Search the official life-sciences job portal by function and location."
+    },
+    {
+      "id": "siemens",
+      "name": "Siemens",
+      "url": "https://www.siemens.com/en-us/company/jobs/",
+      "note": "Browse the official engineering and technology career portal."
+    },
+    {
+      "id": "accenture",
+      "name": "Accenture",
+      "url": "https://www.accenture.com/us-en/careers/jobsearch",
+      "note": "Use employer filters for consulting, technology and location; portal may default to US."
+    }
+  ],
+  "sectors": [
+    {
+      "id": "cybersecurity",
+      "name": "Cybersecurity & Risk",
+      "keywords": "security analyst, cloud security, threat detection, GRC",
+      "employers": [
+        "microsoft",
+        "amazon",
+        "salesforce"
+      ],
+      "focus": "identity engineering, incident response, cloud configuration audits and defensible risk controls",
+      "checks": [
+        "Differentiate continuous SOC shifts from project-based threat engineering before you commit to hours.",
+        "Ask whether risk roles require policy work, technical implementation or both.",
+        "Explain a threat model, escalation path and one measurable control you helped improve.",
+        "Confirm incident on-call expectations, data handling permissions and security clearance requirements."
+      ],
+      "evaluation": "A good security application shows the judgment behind a mitigation, not only a list of tools. Document the scope, threat assumptions, test evidence and what changed after review."
+    },
+    {
+      "id": "cloud-platform",
+      "name": "Cloud Engineering & AI Infrastructure",
+      "keywords": "cloud engineer, site reliability, data platform, AI infrastructure",
+      "employers": [
+        "microsoft",
+        "amazon",
+        "salesforce"
+      ],
+      "focus": "production reliability, cloud cost controls, platform automation and safe AI system operations",
+      "checks": [
+        "Separate site-reliability roles from platform implementation and data engineering in the vacancy description.",
+        "Document cloud services, deployment ownership, incident response and measurable reliability impact.",
+        "Discuss cost optimization with availability, latency and data retention constraints explicitly.",
+        "Confirm work-arrangement details and whether engineering on-call time is compensated."
+      ],
+      "evaluation": "A strong project story compares deployment choices, rollback design and a production incident. Avoid presenting an experimental AI demo as proof of operating a regulated, resilient system."
+    },
+    {
+      "id": "banking-compliance",
+      "name": "Banking, Insurance & Financial Compliance",
+      "keywords": "financial analyst, risk manager, AML, insurance compliance",
+      "employers": [
+        "citi",
+        "hsbc",
+        "deloitte"
+      ],
+      "focus": "regulatory reporting, financial controls, AML reviews and quantitative decision support",
+      "checks": [
+        "Read the vacancy for the exact financial function: front office, operations, audit or oversight.",
+        "Ask whether accounting, risk or regulated advisory credentials are mandatory for the jurisdiction.",
+        "Describe controls, reconciliations and the audit trail of one financial decision without disclosing confidential data.",
+        "Verify licensing, confidentiality duties, background screening and reporting-line independence."
+      ],
+      "evaluation": "An application is more convincing when it connects a technical skill to an auditable financial outcome. Never claim regulated credentials or professional authorization that you do not hold."
+    },
+    {
+      "id": "health-biotech",
+      "name": "Life Sciences, Medical Technology & Pharma",
+      "keywords": "biotech research, clinical operations, quality systems, medical devices",
+      "employers": [
+        "roche",
+        "siemens",
+        "deloitte"
+      ],
+      "focus": "regulated documentation, laboratory workflows, clinical operations, quality assurance and medical technology",
+      "checks": [
+        "Distinguish patient-facing licensed roles from technical, research and business roles.",
+        "Verify applicable professional registration, laboratory training or quality-system experience.",
+        "Describe how you recorded deviations and corrected a process while protecting personal health data.",
+        "Check research ethics, relocation terms and any locally required language competency."
+      ],
+      "evaluation": "Medical and biotech employers may value traceable procedure, reproducibility and patient safety more than an impressive project description. Describe what you verified and where your authority stopped."
+    },
+    {
+      "id": "energy-engineering",
+      "name": "Engineering, Energy Systems & Industrial Technology",
+      "keywords": "electrical engineer, grid systems, industrial automation, renewables",
+      "employers": [
+        "siemens",
+        "accenture",
+        "amazon"
+      ],
+      "focus": "industrial controls, energy efficiency, systems integration, operational safety and project delivery",
+      "checks": [
+        "Confirm the engineering discipline and whether site travel or shift work is required.",
+        "Check professional registration, safety certification and drawing-standard requirements in the destination country.",
+        "Prepare one engineering trade-off with data about cost, reliability and maintenance.",
+        "Verify commissioning obligations, contractor status and the real workplace location."
+      ],
+      "evaluation": "Engineering employers need evidence of a design choice surviving real constraints. Show calculations and verification methods without overstating safety approval or professional registration."
+    }
+  ],
+  "countries": [
+    {
+      "id": "united-states",
+      "name": "United States",
+      "locations": "New York, Seattle, Austin, Boston and remote-eligible US roles",
+      "visa": "US work authorization, visa sponsorship and employer-specific location eligibility are separate questions. A remote label does not authorize working from another country.",
+      "screen": "Compare state-specific location requirements, total benefits and on-call expectations rather than a salary headline.",
+      "roles": [
+        "Review security analyst versus governance pathways in US financial and cloud technology teams; compare shifts, clearance requirements and breach escalation ownership.",
+        "Compare cloud infrastructure and SRE advertisements in the US: production access, incident rotation, service-level objectives and location restrictions can differ greatly.",
+        "For US finance roles separate licensed client advice from corporate risk and analytics; verify required registration before you shortlist.",
+        "In US life-sciences teams distinguish bench research, clinical operations and product quality; validate whether regulated experience is mandatory.",
+        "US industrial roles can split plant engineering from software-enabled operations; check PE licensing where relevant and actual travel expectations."
+      ]
+    },
+    {
+      "id": "canada",
+      "name": "Canada",
+      "locations": "Toronto, Vancouver, Montréal, Ottawa and province-specific hybrid roles",
+      "visa": "Check federal work permits and the applicable provincial professional rules; French-language requirements can be material in some positions.",
+      "screen": "Compare province, language expectation, credential recognition and hybrid attendance before applying.",
+      "roles": [
+        "Canadian cybersecurity roles may mix privacy governance with technical security; check whether bilingual client communication is part of the job.",
+        "For Canadian cloud roles examine data residency, incident rotation and the province in which remote work is permitted.",
+        "When reviewing Canadian banking compliance vacancies, verify local financial-services frameworks and bilingual requirements rather than inferring them from an international title.",
+        "A Canadian biotech vacancy may require provincial licensing for clinical roles while research roles may follow different credential pathways.",
+        "Canadian energy engineering advertisements can involve provincial professional standards and remote field locations; validate both before estimating moving costs."
+      ]
+    },
+    {
+      "id": "united-kingdom",
+      "name": "United Kingdom",
+      "locations": "London, Manchester, Edinburgh, Cambridge and UK-based remote roles",
+      "visa": "Confirm the employer's UK sponsorship policy directly; check professional recognition rather than assuming a global company sponsors each listing.",
+      "screen": "Consider pension, commuting, contracted hours and the precise UK city alongside base pay.",
+      "roles": [
+        "In UK cyber hiring, separate hands-on security operations from assurance and audit responsibilities; read whether clearance or sector-specific controls matter.",
+        "UK cloud platform work may emphasize regulated availability and infrastructure cost management; clarify rota and data governance ownership.",
+        "For UK banking and insurance jobs, distinguish FCA-regulated functions from internal control roles; confirm required experience without assuming the same licensing applies.",
+        "In UK pharma research, check whether the position is laboratory, clinical, quality or medical-device focused; these have very different safeguards.",
+        "UK energy engineering requires checking site travel, chartership expectations and the boundary between design and operational responsibility."
+      ]
+    },
+    {
+      "id": "australia",
+      "name": "Australia",
+      "locations": "Sydney, Melbourne, Brisbane, Perth and state-limited remote roles",
+      "visa": "Verify Australian work rights and state-specific registration requirements; remote roles may still require residing in Australia.",
+      "screen": "Study superannuation, regional travel, roster patterns and working-hour obligations.",
+      "roles": [
+        "Australian security jobs in government-linked environments may require specific clearance and citizenship; verify these before investing in applications.",
+        "Australian cloud roles can span corporate platforms and mining operations; compare cloud-first versus on-site reliability expectations.",
+        "In Australian risk and insurance roles review regulatory reporting duties and whether local professional memberships are essential.",
+        "Australian medtech opportunities may involve clinical support, product quality or research; check any Australian professional registration.",
+        "Energy and resources engineering in Australia often changes greatly with fly-in/fly-out rosters and site access, so examine location details early."
+      ]
+    },
+    {
+      "id": "germany",
+      "name": "Germany",
+      "locations": "Berlin, Munich, Frankfurt, Hamburg and local language-dependent roles",
+      "visa": "Check work authorization and whether German-language proficiency is mandatory; EU recognition differs by occupation.",
+      "screen": "Evaluate German-language levels, collective agreements, relocation and qualification recognition.",
+      "roles": [
+        "German security consulting roles may demand German-language reporting and industry standards knowledge; do not assume English-only work.",
+        "For Germany-based cloud jobs, investigate data protection responsibilities, German-language operations and whether the role permits hybrid work.",
+        "German banking compliance work can be centered in Frankfurt but requires employer-specific language and financial-rule expertise.",
+        "German pharma and medical-device roles often demand documentation discipline and language skills across quality processes; verify exact role requirements.",
+        "German industrial automation roles may require on-site commissioning, trade qualifications and standards-specific safety evidence."
+      ]
+    },
+    {
+      "id": "switzerland",
+      "name": "Switzerland",
+      "locations": "Zurich, Basel, Zug, Geneva and canton-specific positions",
+      "visa": "Swiss permits and employer eligibility depend on nationality and canton; healthcare and other regulated roles can require qualification recognition.",
+      "screen": "Review canton, commuting, insurance costs and required local languages before comparing gross compensation.",
+      "roles": [
+        "Swiss cybersecurity jobs can involve banking confidentiality and independent assurance; verify whether local-language or financial-control experience is required.",
+        "Swiss cloud-engineering vacancies should be read for data-location constraints and financial-services operational resilience, not just the cloud stack.",
+        "For Swiss finance roles compare private-banking, risk and audit teams and confirm regulatory responsibilities and local-language requirements.",
+        "In Basel-area life-sciences searches distinguish laboratory scientist, process quality and clinical functions; verify credential equivalence early.",
+        "Swiss industrial engineering applications benefit from documented commissioning evidence and understanding of canton and language expectations."
+      ]
+    },
+    {
+      "id": "netherlands",
+      "name": "Netherlands",
+      "locations": "Amsterdam, Rotterdam, Eindhoven, Utrecht and Dutch-location hybrid posts",
+      "visa": "Verify Dutch residence/work conditions and highly skilled migrant sponsorship with the employer; English-only assumptions should be checked per vacancy.",
+      "screen": "Compare commuting, pension arrangements, employment contract type and Dutch-language needs.",
+      "roles": [
+        "Dutch cybersecurity work can involve multinational privacy and cloud assurance; check how much client-facing Dutch is expected.",
+        "For cloud jobs in the Netherlands, clarify whether the role owns platform reliability, data governance or customer delivery.",
+        "Dutch finance compliance postings may mix EU cross-border controls with domestic obligations; check local experience and language requirements.",
+        "Dutch life-sciences roles span university labs, clinical suppliers and regulated product teams; distinguish research from clinical practice.",
+        "For Netherlands engineering compare port automation, industrial controls and energy-grid roles with attention to on-site operations."
+      ]
+    },
+    {
+      "id": "ireland",
+      "name": "Ireland",
+      "locations": "Dublin, Cork, Galway, Limerick and Ireland-only remote positions",
+      "visa": "Review Irish permission to work, employment permit eligibility and employer sponsorship; a US-headquartered company may have distinct Irish contracts.",
+      "screen": "Check housing and commuting costs, local employment terms and whether remote work is limited to Ireland.",
+      "roles": [
+        "Irish cyber roles often serve regional operations; verify what security incidents are handled locally and whether time-zone shifts apply.",
+        "For Ireland cloud jobs compare on-call scope, region-specific operations and actual responsibility for platform changes.",
+        "Ireland-based financial compliance jobs may involve EU reporting and multinational functions; document the relevant control experience.",
+        "Irish life-sciences hiring can involve manufacturing validation and quality systems; verify what hands-on regulated experience is required.",
+        "Industrial engineering roles in Ireland may emphasize plant reliability, automation and safety documentation; compare shift and site requirements."
+      ]
+    },
+    {
+      "id": "singapore",
+      "name": "Singapore",
+      "locations": "Singapore city and Singapore-resident hybrid roles",
+      "visa": "Confirm Singapore Employment Pass or other work-pass criteria with the employer and current official requirements; availability is not implied.",
+      "screen": "Compare work-pass feasibility, employer location, hours and healthcare/benefits, not gross pay alone.",
+      "roles": [
+        "Singapore cybersecurity vacancies may support regional security teams; check if the position needs financial-sector control frameworks.",
+        "Cloud jobs in Singapore can include regional infrastructure and data-residency work; verify which countries' systems the team manages.",
+        "Singapore finance jobs often have regional regulatory exposure; distinguish compliance oversight from trade execution and sales.",
+        "Singapore life-sciences roles can span biomedical research and regional quality functions; verify technical or registered professional requirements.",
+        "Industrial and energy roles in Singapore often intersect with automation and maritime operations; check site schedules and safety responsibilities."
+      ]
+    },
+    {
+      "id": "united-arab-emirates",
+      "name": "United Arab Emirates",
+      "locations": "Dubai, Abu Dhabi and employer-specific UAE locations",
+      "visa": "Work permits are employer- and visa-category dependent; never infer sponsorship from an international job search result.",
+      "screen": "Verify actual contract currency, health coverage, dependent benefits and on-site hours before comparing packages.",
+      "roles": [
+        "UAE cyber opportunities may be tied to large enterprise or finance environments; verify access requirements, security screening and locality.",
+        "Cloud infrastructure jobs in the UAE may require customer-site delivery; clarify travel, support windows and responsibilities.",
+        "UAE banking compliance job titles vary by institution; check regulatory oversight scope and whether prior GCC experience is mandatory.",
+        "Healthcare technology roles in the UAE may be technical rather than licensed clinical practice; verify local authority requirements carefully.",
+        "UAE infrastructure engineering roles can involve construction delivery and commissioning; check contract terms, site safety and city location."
+      ]
+    }
+  ],
+  "publicationDate": "2026-10-17"
+}
