@@ -1,6 +1,6 @@
 # BuySell.Best — Private Google Search Console integration
 
-The existing Cloudflare Worker (no second Worker) has a read-only, server-side Google Search Console client in lib/gsc-integration.js. No public endpoint serves these reports. It uses the existing six-hour Worker cron while preserving syncPromos. The Worker does not submit normal articles for indexing.
+The existing Cloudflare Worker (no second Worker) has a read-only, server-side Google Search Console client in lib/gsc-integration.js. No public endpoint serves these reports. It uses a separate hourly cron for URL inspections while preserving the existing six-hour syncPromos cron. The Worker does not submit normal articles for indexing.
 
 ## Prerequisites
 
@@ -17,7 +17,7 @@ The existing Cloudflare Worker (no second Worker) has a read-only, server-side G
 
 - OAuth JWT bearer flow, RS256, Google token endpoint and webmasters.readonly scope. Tokens obtained at runtime, never stored.
 - Once per UTC day: 28 complete days of Search Analytics, up to 250 pages, 100 queries, site totals and sitemap status. Search Analytics is not exhaustive; anonymized queries or row-limit omissions may occur.
-- Every six hours: up to 12 rotating published URL inspections for home, hubs, 50 guides and shopping pages. No scraping or fake traffic. Google reports the indexed version, not live indexability.
+- Every hour: up to five rotating published URL inspections for home, hubs, 50 guides and shopping pages. No scraping or fake traffic. Google reports the indexed version, not live indexability.
 - Results stay in the existing private Cloudflare D1 database buysell-best-db. Tables auto-create if not present; the schema is also in db/migrations/0006_search_console_monitoring.sql.
 - Errors stored by status code only, not Google response bodies or key material. Invalid property identifiers fail closed.
 
@@ -33,3 +33,13 @@ First data appears after the next scheduled cron execution, if authorization suc
 ## Limitations
 
 URL Inspection does not expose the entire Discovered — currently not indexed list and cannot force indexing of ordinary pages. Normal discovery continues through canonical links, crawlable pages and https://buysell.best/sitemap.xml.
+
+## Automation cadence and first five pages
+
+Cloudflare schedules: `0 * * * *` for five URL inspections each hour,
+`0 */6 * * *` for the existing promotion sync. The first inspection batch
+checks `/`, `/insights/`, `/guides/`, `/shopping-methodology/` and
+`/insights/compare-auto-insurance-quotes/`. Later runs advance the D1
+`inspection_cursor` through the remaining published URL list. This is
+**status inspection only**, not Google's Request Indexing operation. The
+Google Search Console API must authorize correctly before any results appear.
