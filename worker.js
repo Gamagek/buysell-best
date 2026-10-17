@@ -538,8 +538,10 @@ async function serveAsset(request, env) {
 
 export default {
   async scheduled(event, env, ctx) {
-    ctx.waitUntil(syncPromos(env).catch(() => {}));
-    ctx.waitUntil(syncSearchConsole(env).catch(() => {}));
+    // Keep the existing six-hour promotional sync unchanged.
+    if (event.cron === '0 */6 * * *') ctx.waitUntil(syncPromos(env).catch(() => {}));
+    // Read-only URL inspections: five URLs per hour with a persisted cursor.
+    if (event.cron === '0 * * * *') ctx.waitUntil(syncSearchConsole(env).catch(() => {}));
   },
 
   async fetch(request, env, ctx) {
