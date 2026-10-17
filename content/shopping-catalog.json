@@ -1026,7 +1026,7 @@
       "id": "st-luggage-strap",
       "name": "Adjustable buckle luggage-strap candidate",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005003292833865.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012890883774.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005003292833865",
       "notes": "Exact item ID discovered in an indexed luggage-strap record with different historical titles/variants. Select the intended buckle version and verify length and operating instructions. No security certification or theft protection claimed.",
@@ -1038,13 +1038,18 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "adjustable-buckle-luggage-strap",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005003292833865.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "st-pack-cover",
       "name": "Backpack rain-cover candidate",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005006832626721.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005007955824229.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005006832626721",
       "notes": "Exact item ID discovered in an indexed backpack-cover record. Confirm the current size range, attachment points, and seam construction. Reflective or waterproof words in a title are not treated as verified performance.",
@@ -1056,13 +1061,18 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "backpack-rain-cover",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005006832626721.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "st-umbrella-sleeve",
       "name": "Reusable wet-umbrella sleeve candidate",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005012948998292.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005011743025425.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005012948998292",
       "notes": "Exact item ID discovered in an indexed umbrella-sleeve record. Verify folded umbrella fit, liner, closure, and care instructions. No leakproof performance or drying-time claim verified.",
@@ -1074,13 +1084,18 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "reusable-wet-umbrella-sleeve",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005012948998292.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-controller-switch",
       "name": "8BitDo Ultimate 2 Bluetooth Controller",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005009250918330.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005006215959751.html",
       "linkKind": "item",
       "referenceUrl": "https://www.8bitdo.com/ultimate-2-bluetooth-controller/",
       "notes": "Match the Bluetooth model and hardware revision; Ultimate 2 Wireless is a different product. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005009250918330. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
@@ -1092,13 +1107,18 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "8bitdo-ultimate-2-bluetooth-controller",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005009250918330.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-controller-multi",
       "name": "GameSir Nova Lite controller",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005006667923301.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005008500550817.html",
       "linkKind": "item",
       "referenceUrl": "https://gamesir.com/products/gamesir-nova-lite",
       "notes": "Nova Lite is distinct from Nova and Nova 2 Lite. Receiver inclusion and supported input modes need checking. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005006667923301. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
@@ -1110,13 +1130,18 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "gamesir-nova-lite-controller",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005006667923301.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-controller-wired",
       "name": "8BitDo Ultimate 2C Wired Controller",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005007360886633.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005007185107783.html",
       "linkKind": "item",
       "referenceUrl": "https://www.8bitdo.com/ultimate-2c-wired-controller/",
       "notes": "Choose the wired Windows/Android model, not the similarly named Bluetooth Switch controller. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005007360886633. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
@@ -1128,13 +1153,18 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "8bitdo-ultimate-2c-wired-controller",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005007360886633.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-audio-analog",
       "name": "MOONDROP CHU II 3.5 mm earphones",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005005801962946.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005005801911172.html",
       "linkKind": "item",
       "referenceUrl": "https://moondroplab.com/en/products/chu-ii",
       "notes": "The analogue 3.5 mm model uses a replaceable two-pin cable; do not confuse it with DSP bundles. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005005801962946. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
@@ -1146,14 +1176,19 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "moondrop-chu-ii-3-5-mm-earphones",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005005801962946.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-audio-usb",
       "name": "MOONDROP JIU USB-C earphones",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/w/wholesale-MOONDROP-JIU-USB-C.html",
-      "linkKind": "search",
+      "merchantUrl": "https://www.aliexpress.com/item/1005006425171300.html",
+      "linkKind": "item",
       "referenceUrl": "https://moondroplab.com/en/products/jiu",
       "notes": "Marketplace search, not a specific listing. Check USB audio support, included microphone controls and seller authenticity.",
       "image": {
@@ -1164,14 +1199,19 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "moondrop-jiu-usb-c-earphones",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/w/wholesale-MOONDROP-JIU-USB-C.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-audio-speaker",
       "name": "soundcore Motion 300 speaker",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/w/wholesale-soundcore-Motion-300.html",
-      "linkKind": "search",
+      "merchantUrl": "https://www.aliexpress.com/item/1005007427213591.html",
+      "linkKind": "item",
       "referenceUrl": "https://www.soundcore.com/products/motion-300-speaker-a3135011",
       "notes": "Marketplace search, not a current-stock or price claim. Check model A3135 and destination delivery.",
       "image": {
@@ -1182,14 +1222,19 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "soundcore-motion-300-speaker",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/w/wholesale-soundcore-Motion-300.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-projector-smart",
       "name": "XGIMI MoGo 3 Pro projector",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/w/wholesale-XGIMI-MoGo-3-Pro.html",
-      "linkKind": "search",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012765586533.html",
+      "linkKind": "item",
       "referenceUrl": "https://global.xgimi.com/products/mogo-3-pro",
       "notes": "Marketplace search. Regional operating system, licensed apps, power accessories and warranty can differ.",
       "image": {
@@ -1200,14 +1245,19 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "xgimi-mogo-3-pro-projector",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/w/wholesale-XGIMI-MoGo-3-Pro.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-projector-lcd",
       "name": "Wanbo New T2 Max projector",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/w/wholesale-Wanbo-New-T2-Max-projector.html",
-      "linkKind": "search",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012110049301.html",
+      "linkKind": "item",
       "referenceUrl": "https://wanbo.cn/pages/html-sitemap-products",
       "notes": "Marketplace search. The original T2 Max and New T2 Max are different revisions; verify the exact specification sheet.",
       "image": {
@@ -1218,14 +1268,19 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "wanbo-new-t2-max-projector",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/w/wholesale-Wanbo-New-T2-Max-projector.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-projector-battery",
       "name": "NEBULA Capsule 3 Google TV projector",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/w/wholesale-NEBULA-Capsule-3-Google-TV-D2425.html",
-      "linkKind": "search",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012935908391.html",
+      "linkKind": "item",
       "referenceUrl": "https://www.anker.com/se/products/capsule-3-projectors-d2425",
       "notes": "Marketplace search. Capsule 3 D2425 is distinct from Capsule 3 Laser; verify receiver power and regional app support.",
       "image": {
@@ -1236,13 +1291,18 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "nebula-capsule-3-google-tv-projector",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/w/wholesale-NEBULA-Capsule-3-Google-TV-D2425.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-mic-dynamic",
       "name": "FIFINE AmpliGame AM8 USB/XLR microphone",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005007039412661.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005006356702381.html",
       "linkKind": "item",
       "referenceUrl": "https://fifinemicrophone.com/products/fifine-ampligame-am8-microphone",
       "notes": "AM8 standalone and boom-arm bundles contain different accessories. USB controls do not all operate in XLR mode. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005007039412661. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
@@ -1254,7 +1314,12 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "fifine-ampligame-am8-usb-xlr-microphone",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005007039412661.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-mic-condenser",
@@ -1272,14 +1337,18 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "fifine-k669b-usb-microphone",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "affiliateSource": "missing-affiliate-url-original-search-retained"
     },
     {
       "id": "ed-mic-wireless",
       "name": "BOYA BY-V20 USB-C wireless microphone kit",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/w/wholesale-BOYA-BY-V20-USB-C-microphone.html",
-      "linkKind": "search",
+      "merchantUrl": "https://www.aliexpress.com/item/1005005042094333.html",
+      "linkKind": "item",
       "referenceUrl": "https://www.boyamic.com/blogs/theby-vseriesthebestwirelessmicrophoneformobile",
       "notes": "Marketplace search. Specify the BY-V20 USB-C two-transmitter kit; other BY-V receivers use different connectors.",
       "image": {
@@ -1290,7 +1359,12 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "boya-by-v20-usb-c-wireless-microphone",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/w/wholesale-BOYA-BY-V20-USB-C-microphone.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-keyboard-mechanical",
@@ -1308,7 +1382,12 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "keychron-k2-max-mechanical-keyboard",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005007921521644.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-keyboard-magnetic",
@@ -1326,14 +1405,19 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "keychron-k2-he-magnetic-keyboard",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005008217715572.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-keyboard-slim",
       "name": "Keychron K3 Max low-profile keyboard",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/w/wholesale-Keychron-K3-Max.html",
-      "linkKind": "search",
+      "merchantUrl": "https://www.aliexpress.com/item/1005006702683329.html",
+      "linkKind": "item",
       "referenceUrl": "https://www.keychron.com/products/keychron-k3-max-qmk-via-wireless-custom-mechanical-keyboard",
       "notes": "Marketplace search. Low-profile switch and keycap compatibility differs from full-height MX-style keyboards.",
       "image": {
@@ -1344,13 +1428,18 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "keychron-k3-max-low-profile-keyboard",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/w/wholesale-Keychron-K3-Max.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-stand-rotating",
       "name": "UGREEN adjustable laptop stand with rotating base",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/item/1005012383888141.html",
+      "merchantUrl": "https://www.aliexpress.com/item/1005012494685405.html",
       "linkKind": "item",
       "referenceUrl": "https://us.ugreen.com/products/ugreen-laptop-riser-desk-rotating-portable",
       "notes": "Check dimensions, supported laptop weight and the adjustment mechanism on the exact model. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005012383888141. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
@@ -1362,14 +1451,19 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "ugreen-adjustable-rotating-laptop-stand",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/item/1005012383888141.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-stand-vertical",
       "name": "UGREEN 2-in-1 vertical laptop stand",
       "merchant": "AliExpress",
-      "merchantUrl": "https://www.aliexpress.com/w/wholesale-UGREEN-2-in-1-vertical-laptop-stand.html",
-      "linkKind": "search",
+      "merchantUrl": "https://www.aliexpress.com/item/1005006108235341.html",
+      "linkKind": "item",
       "referenceUrl": "https://eu.ugreen.com/en-fi/products/2-in-1-vertical-laptop-stand-adjustable-aluminum-holder",
       "notes": "Marketplace search. Adjustable slot size and open-use/closed-use geometry must match your laptop.",
       "image": {
@@ -1380,7 +1474,12 @@
         "kind": "editorial-concept",
         "credit": "BuySell.Best original vector illustration",
         "generatedAt": "2026-10-17"
-      }
+      },
+      "slug": "ugreen-2-in-1-vertical-laptop-stand",
+      "editorialPage": true,
+      "updatedAt": "2026-10-17",
+      "previousMerchantUrl": "https://www.aliexpress.com/w/wholesale-UGREEN-2-in-1-vertical-laptop-stand.html",
+      "affiliateSource": "uploaded-document-2026-10-17"
     },
     {
       "id": "ed-stand-portable",
