@@ -4,7 +4,7 @@ import {generateKeyPairSync, webcrypto} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
 import {
   propertyIdentifier, monitoredUrls, accessToken,
-  googleRequest, indexStatus, syncSearchConsole
+  googleRequest, submitSitemap, indexStatus, syncSearchConsole
 } from '../lib/gsc-integration.js';
 
 test('only the configured buysell.best property is accepted', () => {
@@ -18,14 +18,13 @@ test('only the configured buysell.best property is accepted', () => {
 
 test('monitoring candidates contain canonical guides and shopping products without duplicates', () => {
   const urls = monitoredUrls();
-  assert.ok(urls.length >= 58);
-  assert.deepEqual(urls.slice(0,5),[
-    'https://buysell.best/',
-    'https://buysell.best/insights/',
-    'https://buysell.best/guides/',
-    'https://buysell.best/shopping-methodology/',
-    'https://buysell.best/insights/compare-auto-insurance-quotes/'
+  assert.ok(urls.length >= 150,'monitor the complete canonical content set');
+  assert.deepEqual(urls.slice(0,3),[
+    'https://buysell.best/careers/',
+    'https://buysell.best/careers/united-states-cybersecurity-career-guide/',
+    'https://buysell.best/careers/united-states-cloud-platform-career-guide/'
   ]);
+  assert.equal(urls.filter(url=>url.includes('/careers/')).length,51);
   assert.equal(urls.length, new Set(urls).size);
   assert.ok(urls.every(url => url.startsWith('https://buysell.best/')));
   assert.ok(urls.includes('https://buysell.best/insights/'));
@@ -109,4 +108,55 @@ test('hourly GSC cron stays independent from six-hour promotions cron',async()=>
   assert.ok(wrangler.includes('"0 */6 * * *"'));
   assert.ok(worker.includes("if (event.cron === '0 * * * *') ctx.waitUntil(syncSearchConsole"));
   assert.ok(worker.includes("if (event.cron === '0 */6 * * *') ctx.waitUntil(syncPromos"));
+});
+
+test('all static sitemap URLs are in inspection queue and job research pages do not assert fake vacancies',async()=>{
+  const urls=monitoredUrls();
+  const xml=await readFile('sitemap.xml','utf8');
+  const listed=[...xml.matchAll(/<url>\s*<loc>(https:\/\/buysell\.best\/[^<]*)<\/loc>/g)].map(m=>m[1]);
+  const missing=listed.filter(url=>!urls.includes(url));
+  assert.deepEqual(missing,[],'all sitemap pages must be in the monitoring queue');
+  assert.equal(listed.filter(url=>url.includes('/careers/')).length,51);
+  assert.equal(new Set(listed).size,listed.length,'sitemap must not contain duplicate URLs');
+});
+
+test('official sitemaps.submit API PUTs the canonical sitemap without a request body',async()=>{
+  for(const property of ['sc-domain:buysell.best','https://buysell.best/']){
+    let called=0;
+    const result=await submitSitemap(property,'test-writer-token',async (url,init)=>{
+      called++;
+      assert.equal(url,'https://www.googleapis.com/webmasters/v3/sites/'+encodeURIComponent(property)+'/sitemaps/'+encodeURIComponent('https://buysell.best/sitemap.xml'));
+      assert.equal(init.method,'PUT');
+      assert.equal(init.headers.authorization,'Bearer test-writer-token');
+      assert.equal(init.body,undefined);
+      return new Response(null,{status:204});
+    });
+    assert.deepEqual(result,{submitted:true,url:'https://buysell.best/sitemap.xml'});
+    assert.equal(called,1);
+  }
+  await assert.rejects(
+    ()=>submitSitemap('sc-domain:vid.best','test',async()=>new Response(null,{status:204})),
+    /GSC_PROPERTY_INVALID/
+  );
+  await assert.rejects(
+    ()=>submitSitemap('sc-domain:buysell.best','test',async()=>new Response('denied',{status:403})),
+    /GSC_SITEMAP_HTTP_403/
+  );
+});
+
+test('OAuth can request write scope separately while retaining safe read-only default',async()=>{
+  const {privateKey}=generateKeyPairSync('rsa',{modulusLength:2048});
+  const cred={
+    type:'service_account',
+    client_email:'buysell-best-search-console@buysell-best-seo.iam.gserviceaccount.com',
+    private_key:privateKey.export({type:'pkcs8',format:'pem'}).toString()
+  };
+  let scope='';
+  const token=await accessToken(JSON.stringify(cred),async(url,init)=>{
+    const jwt=new URLSearchParams(init.body).get('assertion');
+    scope=JSON.parse(Buffer.from(jwt.split('.')[1],'base64url').toString()).scope;
+    return new Response(JSON.stringify({access_token:'token'}));
+  },webcrypto,'https://www.googleapis.com/auth/webmasters');
+  assert.equal(token,'token');
+  assert.equal(scope,'https://www.googleapis.com/auth/webmasters');
 });
