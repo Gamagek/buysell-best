@@ -1,3 +1,4 @@
+import { renderCareerIndex, renderCareerGuide, findCareerGuide, careerSitemapEntries, renderCareerSpotlight } from "./lib/career-guides.js";
 import { syncSearchConsole } from "./lib/gsc-integration.js";
 import { DEAL_CATEGORIES, SEASONAL_PAGES, DEAL_HUB_LINKS } from "./lib/deal-seo.js";
 import { searchEbay } from "./functions/api/deals.js";
@@ -21,7 +22,7 @@ async function renderAffiliateHome(request, env) {
   if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) return response;
   const rewriter = new HTMLRewriter()
     .on("#shopping-guides-spotlight", {element(element) {element.setInnerContent(renderGuidesSpotlight(), {html:true});}})
-    .on(".shopping-home-section", {element(element) {element.after(renderHighIntentSpotlight(), {html:true});}})
+    .on(".shopping-home-section", {element(element) {element.after(renderHighIntentSpotlight()+renderCareerSpotlight(), {html:true});}})
     .on("#affiliate-product-spotlight", {element(element) {element.setInnerContent(renderSpotlight(), {html:true});}})
     .on("#current-listings-track", {element(element) {element.setInnerContent(AFFILIATE_PRODUCTS.map(renderInitialCarousel).join(""), {html:true});}})
     .on("#global-deals", {element(element) {element.setInnerContent('<div data-curated-products>'+AFFILIATE_PRODUCTS.map(renderMiniProductTile).join("")+'</div>', {html:true});}})
@@ -381,7 +382,7 @@ async function renderSitemap(env){
   const urls=staticPaths.map(path=>`<url><loc>https://buysell.best${path}</loc>${path==="/"&&latestAll?`<lastmod>${escapeHtml(latestAll)}</lastmod>`:""}</url>`).join("");
   const cats=categoryPaths.map(path=>`<url><loc>https://buysell.best/category/${path}</loc>${latestByCategory[path]?`<lastmod>${escapeHtml(latestByCategory[path])}</lastmod>`:""}</url>`).join("");
   const products = productSitemapEntries();
-  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${travelSitemapEntries()}${highIntentSitemapEntries()}${dynamic}</urlset>`;
+  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${travelSitemapEntries()}${highIntentSitemapEntries()}${careerSitemapEntries()}${dynamic}</urlset>`;
 }
 
 async function serveSeoPage(request,env) {
@@ -396,6 +397,16 @@ async function serveSeoPage(request,env) {
   if (["/hotels","/promo-codes"].includes(pathname)) return Response.redirect("https://buysell.best"+pathname+"/"+url.search,301);
   if (pathname === "/hotels/") return new Response(renderHotelComparison(url.searchParams), {headers:guideHeaders});
   if (pathname === "/promo-codes/") return new Response(renderPromoCodes(), {headers:guideHeaders});
+  if (pathname === "/careers") return Response.redirect("https://buysell.best/careers/",301);
+  if (pathname === "/careers/") return new Response(renderCareerIndex(),{headers:guideHeaders});
+  const careerMatch=pathname.match(/^\/careers\/([^/]+)\/?$/);
+  if (careerMatch) {
+    const career=findCareerGuide(careerMatch[1]);
+    if (!career) return new Response("Career guide not found",{status:404,headers:{"x-robots-tag":"noindex","content-type":"text/plain; charset=UTF-8"}});
+    if (pathname!==career.path) return Response.redirect("https://buysell.best"+career.path,301);
+    return new Response(renderCareerGuide(career),{headers:guideHeaders});
+  }
+  if (pathname.startsWith("/careers/")) return new Response("Career guide not found",{status:404,headers:{"x-robots-tag":"noindex","content-type":"text/plain; charset=UTF-8"}});
   if (pathname === "/insights") return Response.redirect("https://buysell.best/insights/",301);
   if (pathname === "/insights/") return new Response(renderHighIntentIndex(),{headers:guideHeaders});
   const premiumGuideMatch=pathname.match(/^\/insights\/([^/]+)\/?$/);
@@ -549,6 +560,9 @@ export default {
     if(seoResponse){
       if(request.method === "HEAD") return new Response(null, {status:seoResponse.status,headers:seoResponse.headers});
       const path = new URL(request.url).pathname;
+      // Career research has one user-initiated sponsored step before official portals,
+      // not additional top, sidebar or bottom advertising placements.
+      if (path === "/careers/" || path.startsWith("/careers/")) return withSponsoredSupport(seoResponse);
       return withDisplayAdvertising(request, path === "/" || path === "/index.html" ? seoResponse : withSponsoredSupport(seoResponse));
     }
 
