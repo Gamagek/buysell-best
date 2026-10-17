@@ -1,3 +1,4 @@
+import {findEditorialProduct, renderEditorialProductPage, editorialProductPath, editorialSitemapEntries} from "./lib/editorial-product-pages.js";
 import { renderCareerIndex, renderCareerGuide, findCareerGuide, careerSitemapEntries, renderCareerSpotlight } from "./lib/career-guides.js";
 import { syncSearchConsole } from "./lib/gsc-integration.js";
 import { DEAL_CATEGORIES, SEASONAL_PAGES, DEAL_HUB_LINKS } from "./lib/deal-seo.js";
@@ -382,7 +383,7 @@ async function renderSitemap(env){
   const urls=staticPaths.map(path=>`<url><loc>https://buysell.best${path}</loc>${path==="/"&&latestAll?`<lastmod>${escapeHtml(latestAll)}</lastmod>`:""}</url>`).join("");
   const cats=categoryPaths.map(path=>`<url><loc>https://buysell.best/category/${path}</loc>${latestByCategory[path]?`<lastmod>${escapeHtml(latestByCategory[path])}</lastmod>`:""}</url>`).join("");
   const products = productSitemapEntries();
-  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${travelSitemapEntries()}${highIntentSitemapEntries()}${careerSitemapEntries()}${dynamic}</urlset>`;
+  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${travelSitemapEntries()}${highIntentSitemapEntries()}${careerSitemapEntries()}${editorialSitemapEntries()}${dynamic}</urlset>`;
 }
 
 async function serveSeoPage(request,env) {
@@ -445,6 +446,11 @@ async function serveSeoPage(request,env) {
     if (shoppingProduct) {
       if (pathname !== shoppingProductPath(shoppingProduct)) return Response.redirect("https://buysell.best"+shoppingProductPath(shoppingProduct),301);
       return new Response(renderShoppingProductPage(shoppingProduct), {headers:guideHeaders});
+    }
+    const editorial=findEditorialProduct(productMatch[1]);
+    if (editorial) {
+      if(pathname!==editorialProductPath(editorial))return Response.redirect("https://buysell.best"+editorialProductPath(editorial),301);
+      return new Response(renderEditorialProductPage(editorial),{headers:guideHeaders});
     }
     const product = findProduct(productMatch[1]);
     if (!product) return new Response("Product not found", {status:404,headers:{"x-robots-tag":"noindex","content-type":"text/plain; charset=UTF-8"}});

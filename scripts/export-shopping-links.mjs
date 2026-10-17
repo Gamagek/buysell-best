@@ -1,3 +1,4 @@
+import {editorialSitemapEntries} from "../lib/editorial-product-pages.js";
 import {readFile,writeFile} from "node:fs/promises";
 import {SHOPPING_GUIDES,SHOPPING_PRODUCTS,shoppingDestination,guideSitemapEntries} from "../lib/shopping-guides.js";
 import {AFFILIATE_PRODUCTS,productSitemapEntries} from "../lib/affiliate-products.js";
@@ -41,5 +42,5 @@ console.log("Synced the first 20 review rows; account-level verification remains
 const sitemapPath=new URL("../sitemap.xml",import.meta.url);
 const old=await readFile(sitemapPath,"utf8");
 const preserved=old.replace(/<url>\s*<loc>https:\/\/buysell\.best\/(?:guides|shopping-methodology|products|hotels|promo-codes|insights)(?:\/|<)[\s\S]*?<\/url>/g,"");
-await writeFile(sitemapPath,preserved.replace("</urlset>",productSitemapEntries()+guideSitemapEntries()+travelSitemapEntries()+highIntentSitemapEntries()+"</urlset>"));
+await writeFile(sitemapPath,preserved.replace("</urlset>",productSitemapEntries()+guideSitemapEntries()+travelSitemapEntries()+highIntentSitemapEntries()+editorialSitemapEntries()+"</urlset>"));
 console.log("Updated the static fallback sitemap without removing existing marketplace URLs.");

@@ -49,7 +49,7 @@ test('editorial concept thumbnails are honest image files with no broken product
  assert.ok(doc.querySelector('.shopping-product-photo figcaption').textContent.includes('Original illustrative concept') ||
   [...doc.querySelectorAll('.shopping-product-photo figcaption')].some(x=>x.textContent.includes('Original illustrative concept')));
  assert.equal(doc.querySelectorAll('.shopping-product-photo a[href^="/products/"]').length,
-  guide.selection.filter(s=>SHOPPING_PRODUCTS.some(p=>p.id===s.productId&&p.details)).length);
+  guide.selection.filter(s=>SHOPPING_PRODUCTS.some(p=>p.id===s.productId&&(p.details||p.editorialPage))).length);
 });
 
 test('image sitemap includes every newly illustrated guide product when generated',async()=>{
