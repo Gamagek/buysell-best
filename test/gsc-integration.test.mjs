@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {generateKeyPairSync, webcrypto} from 'node:crypto';
+import {readFile} from 'node:fs/promises';
 import {
   propertyIdentifier, monitoredUrls, accessToken,
   googleRequest, indexStatus, syncSearchConsole
@@ -18,6 +19,13 @@ test('only the configured buysell.best property is accepted', () => {
 test('monitoring candidates contain canonical guides and shopping products without duplicates', () => {
   const urls = monitoredUrls();
   assert.ok(urls.length >= 58);
+  assert.deepEqual(urls.slice(0,5),[
+    'https://buysell.best/',
+    'https://buysell.best/insights/',
+    'https://buysell.best/guides/',
+    'https://buysell.best/shopping-methodology/',
+    'https://buysell.best/insights/compare-auto-insurance-quotes/'
+  ]);
   assert.equal(urls.length, new Set(urls).size);
   assert.ok(urls.every(url => url.startsWith('https://buysell.best/')));
   assert.ok(urls.includes('https://buysell.best/insights/'));
@@ -92,4 +100,13 @@ test('inspection parser preserves coverage and canonical fields',()=>{
 test('a Worker without configuration skips GSC without interfering with other cron tasks',async()=>{
   assert.deepEqual(await syncSearchConsole({}),{status:'not-configured'});
   assert.deepEqual(await syncSearchConsole({DB:{}}),{status:'not-configured'});
+});
+
+test('hourly GSC cron stays independent from six-hour promotions cron',async()=>{
+  const worker=await readFile('worker.js','utf8');
+  const wrangler=await readFile('wrangler.toml','utf8');
+  assert.ok(wrangler.includes('"0 * * * *"'));
+  assert.ok(wrangler.includes('"0 */6 * * *"'));
+  assert.ok(worker.includes("if (event.cron === '0 * * * *') ctx.waitUntil(syncSearchConsole"));
+  assert.ok(worker.includes("if (event.cron === '0 */6 * * *') ctx.waitUntil(syncPromos"));
 });
