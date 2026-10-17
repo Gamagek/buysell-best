@@ -1029,7 +1029,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005003292833865.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005003292833865",
-      "notes": "Exact item ID discovered in an indexed luggage-strap record with different historical titles/variants. Select the intended buckle version and verify length and operating instructions. No security certification or theft protection claimed."
+      "notes": "Exact item ID discovered in an indexed luggage-strap record with different historical titles/variants. Select the intended buckle version and verify length and operating instructions. No security certification or theft protection claimed.",
+      "image": {
+        "src": "/assets/products/editorial/st-luggage-strap.svg",
+        "alt": "Original editorial illustration for Adjustable buckle luggage-strap candidate; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "st-pack-cover",
@@ -1038,7 +1047,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005006832626721.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005006832626721",
-      "notes": "Exact item ID discovered in an indexed backpack-cover record. Confirm the current size range, attachment points, and seam construction. Reflective or waterproof words in a title are not treated as verified performance."
+      "notes": "Exact item ID discovered in an indexed backpack-cover record. Confirm the current size range, attachment points, and seam construction. Reflective or waterproof words in a title are not treated as verified performance.",
+      "image": {
+        "src": "/assets/products/editorial/st-pack-cover.svg",
+        "alt": "Original editorial illustration for Backpack rain-cover candidate; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "st-umbrella-sleeve",
@@ -1047,7 +1065,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005012948998292.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005012948998292",
-      "notes": "Exact item ID discovered in an indexed umbrella-sleeve record. Verify folded umbrella fit, liner, closure, and care instructions. No leakproof performance or drying-time claim verified."
+      "notes": "Exact item ID discovered in an indexed umbrella-sleeve record. Verify folded umbrella fit, liner, closure, and care instructions. No leakproof performance or drying-time claim verified.",
+      "image": {
+        "src": "/assets/products/editorial/st-umbrella-sleeve.svg",
+        "alt": "Original editorial illustration for Reusable wet-umbrella sleeve candidate; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-controller-switch",
@@ -1056,7 +1083,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005009250918330.html",
       "linkKind": "item",
       "referenceUrl": "https://www.8bitdo.com/ultimate-2-bluetooth-controller/",
-      "notes": "Match the Bluetooth model and hardware revision; Ultimate 2 Wireless is a different product. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005009250918330. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability."
+      "notes": "Match the Bluetooth model and hardware revision; Ultimate 2 Wireless is a different product. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005009250918330. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
+      "image": {
+        "src": "/assets/products/editorial/ed-controller-switch.svg",
+        "alt": "Original editorial illustration for 8BitDo Ultimate 2 Bluetooth Controller; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-controller-multi",
@@ -1065,7 +1101,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005006667923301.html",
       "linkKind": "item",
       "referenceUrl": "https://gamesir.com/products/gamesir-nova-lite",
-      "notes": "Nova Lite is distinct from Nova and Nova 2 Lite. Receiver inclusion and supported input modes need checking. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005006667923301. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability."
+      "notes": "Nova Lite is distinct from Nova and Nova 2 Lite. Receiver inclusion and supported input modes need checking. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005006667923301. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
+      "image": {
+        "src": "/assets/products/editorial/ed-controller-multi.svg",
+        "alt": "Original editorial illustration for GameSir Nova Lite controller; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-controller-wired",
@@ -1074,7 +1119,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005007360886633.html",
       "linkKind": "item",
       "referenceUrl": "https://www.8bitdo.com/ultimate-2c-wired-controller/",
-      "notes": "Choose the wired Windows/Android model, not the similarly named Bluetooth Switch controller. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005007360886633. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability."
+      "notes": "Choose the wired Windows/Android model, not the similarly named Bluetooth Switch controller. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005007360886633. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
+      "image": {
+        "src": "/assets/products/editorial/ed-controller-wired.svg",
+        "alt": "Original editorial illustration for 8BitDo Ultimate 2C Wired Controller; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-audio-analog",
@@ -1083,7 +1137,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005005801962946.html",
       "linkKind": "item",
       "referenceUrl": "https://moondroplab.com/en/products/chu-ii",
-      "notes": "The analogue 3.5 mm model uses a replaceable two-pin cable; do not confuse it with DSP bundles. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005005801962946. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability."
+      "notes": "The analogue 3.5 mm model uses a replaceable two-pin cable; do not confuse it with DSP bundles. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005005801962946. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
+      "image": {
+        "src": "/assets/products/editorial/ed-audio-analog.svg",
+        "alt": "Original editorial illustration for MOONDROP CHU II 3.5 mm earphones; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-audio-usb",
@@ -1092,7 +1155,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-MOONDROP-JIU-USB-C.html",
       "linkKind": "search",
       "referenceUrl": "https://moondroplab.com/en/products/jiu",
-      "notes": "Marketplace search, not a specific listing. Check USB audio support, included microphone controls and seller authenticity."
+      "notes": "Marketplace search, not a specific listing. Check USB audio support, included microphone controls and seller authenticity.",
+      "image": {
+        "src": "/assets/products/editorial/ed-audio-usb.svg",
+        "alt": "Original editorial illustration for MOONDROP JIU USB-C earphones; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-audio-speaker",
@@ -1101,7 +1173,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-soundcore-Motion-300.html",
       "linkKind": "search",
       "referenceUrl": "https://www.soundcore.com/products/motion-300-speaker-a3135011",
-      "notes": "Marketplace search, not a current-stock or price claim. Check model A3135 and destination delivery."
+      "notes": "Marketplace search, not a current-stock or price claim. Check model A3135 and destination delivery.",
+      "image": {
+        "src": "/assets/products/editorial/ed-audio-speaker.svg",
+        "alt": "Original editorial illustration for soundcore Motion 300 speaker; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-projector-smart",
@@ -1110,7 +1191,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-XGIMI-MoGo-3-Pro.html",
       "linkKind": "search",
       "referenceUrl": "https://global.xgimi.com/products/mogo-3-pro",
-      "notes": "Marketplace search. Regional operating system, licensed apps, power accessories and warranty can differ."
+      "notes": "Marketplace search. Regional operating system, licensed apps, power accessories and warranty can differ.",
+      "image": {
+        "src": "/assets/products/editorial/ed-projector-smart.svg",
+        "alt": "Original editorial illustration for XGIMI MoGo 3 Pro projector; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-projector-lcd",
@@ -1119,7 +1209,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-Wanbo-New-T2-Max-projector.html",
       "linkKind": "search",
       "referenceUrl": "https://wanbo.cn/pages/html-sitemap-products",
-      "notes": "Marketplace search. The original T2 Max and New T2 Max are different revisions; verify the exact specification sheet."
+      "notes": "Marketplace search. The original T2 Max and New T2 Max are different revisions; verify the exact specification sheet.",
+      "image": {
+        "src": "/assets/products/editorial/ed-projector-lcd.svg",
+        "alt": "Original editorial illustration for Wanbo New T2 Max projector; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-projector-battery",
@@ -1128,7 +1227,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-NEBULA-Capsule-3-Google-TV-D2425.html",
       "linkKind": "search",
       "referenceUrl": "https://www.anker.com/se/products/capsule-3-projectors-d2425",
-      "notes": "Marketplace search. Capsule 3 D2425 is distinct from Capsule 3 Laser; verify receiver power and regional app support."
+      "notes": "Marketplace search. Capsule 3 D2425 is distinct from Capsule 3 Laser; verify receiver power and regional app support.",
+      "image": {
+        "src": "/assets/products/editorial/ed-projector-battery.svg",
+        "alt": "Original editorial illustration for NEBULA Capsule 3 Google TV projector; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-mic-dynamic",
@@ -1137,7 +1245,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005007039412661.html",
       "linkKind": "item",
       "referenceUrl": "https://fifinemicrophone.com/products/fifine-ampligame-am8-microphone",
-      "notes": "AM8 standalone and boom-arm bundles contain different accessories. USB controls do not all operate in XLR mode. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005007039412661. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability."
+      "notes": "AM8 standalone and boom-arm bundles contain different accessories. USB controls do not all operate in XLR mode. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005007039412661. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
+      "image": {
+        "src": "/assets/products/editorial/ed-mic-dynamic.svg",
+        "alt": "Original editorial illustration for FIFINE AmpliGame AM8 USB/XLR microphone; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-mic-condenser",
@@ -1146,7 +1263,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-FIFINE-K669B-USB-microphone.html",
       "linkKind": "search",
       "referenceUrl": "https://fifinemicrophone.com/products/fifine-k669b-microphone",
-      "notes": "Marketplace search. Confirm USB connector, operating-system support, supplied stand and cable arrangement."
+      "notes": "Marketplace search. Confirm USB connector, operating-system support, supplied stand and cable arrangement.",
+      "image": {
+        "src": "/assets/products/editorial/ed-mic-condenser.svg",
+        "alt": "Original editorial illustration for FIFINE K669B USB microphone; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-mic-wireless",
@@ -1155,7 +1281,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-BOYA-BY-V20-USB-C-microphone.html",
       "linkKind": "search",
       "referenceUrl": "https://www.boyamic.com/blogs/theby-vseriesthebestwirelessmicrophoneformobile",
-      "notes": "Marketplace search. Specify the BY-V20 USB-C two-transmitter kit; other BY-V receivers use different connectors."
+      "notes": "Marketplace search. Specify the BY-V20 USB-C two-transmitter kit; other BY-V receivers use different connectors.",
+      "image": {
+        "src": "/assets/products/editorial/ed-mic-wireless.svg",
+        "alt": "Original editorial illustration for BOYA BY-V20 USB-C wireless microphone kit; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-keyboard-mechanical",
@@ -1164,7 +1299,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005007921521644.html",
       "linkKind": "item",
       "referenceUrl": "https://www.keychron.com/products/keychron-k2-max-qmk-wireless-mechanical-keyboard",
-      "notes": "Check assembled versus barebone, ANSI versus ISO, switch type and hot-swap variant. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005007921521644. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability."
+      "notes": "Check assembled versus barebone, ANSI versus ISO, switch type and hot-swap variant. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005007921521644. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
+      "image": {
+        "src": "/assets/products/editorial/ed-keyboard-mechanical.svg",
+        "alt": "Original editorial illustration for Keychron K2 Max mechanical keyboard; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-keyboard-magnetic",
@@ -1173,7 +1317,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005008217715572.html",
       "linkKind": "item",
       "referenceUrl": "https://www.keychron.com/products/keychron-k2-he-wireless-magnetic-switch-keyboard",
-      "notes": "Magnetic switch Version 1 and Version 2 have different compatible replacement switches. Confirm the exact edition. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005008217715572. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability."
+      "notes": "Magnetic switch Version 1 and Version 2 have different compatible replacement switches. Confirm the exact edition. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005008217715572. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
+      "image": {
+        "src": "/assets/products/editorial/ed-keyboard-magnetic.svg",
+        "alt": "Original editorial illustration for Keychron K2 HE magnetic keyboard; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-keyboard-slim",
@@ -1182,7 +1335,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-Keychron-K3-Max.html",
       "linkKind": "search",
       "referenceUrl": "https://www.keychron.com/products/keychron-k3-max-qmk-via-wireless-custom-mechanical-keyboard",
-      "notes": "Marketplace search. Low-profile switch and keycap compatibility differs from full-height MX-style keyboards."
+      "notes": "Marketplace search. Low-profile switch and keycap compatibility differs from full-height MX-style keyboards.",
+      "image": {
+        "src": "/assets/products/editorial/ed-keyboard-slim.svg",
+        "alt": "Original editorial illustration for Keychron K3 Max low-profile keyboard; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-stand-rotating",
@@ -1191,7 +1353,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005012383888141.html",
       "linkKind": "item",
       "referenceUrl": "https://us.ugreen.com/products/ugreen-laptop-riser-desk-rotating-portable",
-      "notes": "Check dimensions, supported laptop weight and the adjustment mechanism on the exact model. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005012383888141. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability."
+      "notes": "Check dimensions, supported laptop weight and the adjustment mechanism on the exact model. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005012383888141. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
+      "image": {
+        "src": "/assets/products/editorial/ed-stand-rotating.svg",
+        "alt": "Original editorial illustration for UGREEN adjustable laptop stand with rotating base; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-stand-vertical",
@@ -1200,7 +1371,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-UGREEN-2-in-1-vertical-laptop-stand.html",
       "linkKind": "search",
       "referenceUrl": "https://eu.ugreen.com/en-fi/products/2-in-1-vertical-laptop-stand-adjustable-aluminum-holder",
-      "notes": "Marketplace search. Adjustable slot size and open-use/closed-use geometry must match your laptop."
+      "notes": "Marketplace search. Adjustable slot size and open-use/closed-use geometry must match your laptop.",
+      "image": {
+        "src": "/assets/products/editorial/ed-stand-vertical.svg",
+        "alt": "Original editorial illustration for UGREEN 2-in-1 vertical laptop stand; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-stand-portable",
@@ -1209,7 +1389,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-UGREEN-foldable-dual-rod-laptop-stand.html",
       "linkKind": "search",
       "referenceUrl": "https://uk.ugreen.com/products/ugreen-foldable-dual-rod-laptop-stand",
-      "notes": "Marketplace search. Confirm usable tilt positions, bottom-lip clearance and carrying dimensions."
+      "notes": "Marketplace search. Confirm usable tilt positions, bottom-lip clearance and carrying dimensions.",
+      "image": {
+        "src": "/assets/products/editorial/ed-stand-portable.svg",
+        "alt": "Original editorial illustration for UGREEN foldable dual-rod laptop stand; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-hub-basic",
@@ -1218,7 +1407,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005012355466215.html",
       "linkKind": "item",
       "referenceUrl": "https://www.ugreen.com/products/usa-15495",
-      "notes": "Verify model 105, HDMI refresh limit and exact USB-A port speeds against the manufacturer sheet. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005012355466215. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability."
+      "notes": "Verify model 105, HDMI refresh limit and exact USB-A port speeds against the manufacturer sheet. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005012355466215. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
+      "image": {
+        "src": "/assets/products/editorial/ed-hub-basic.svg",
+        "alt": "Original editorial illustration for UGREEN Revodok 105 5-in-1 USB-C hub; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-hub-reader",
@@ -1227,7 +1425,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005009850858369.html",
       "linkKind": "item",
       "referenceUrl": "https://us.ugreen.com/blogs/usb-hub/usb-c-hub-4k-vs-8k",
-      "notes": "The Pro 107 has HDMI and card-reader functions; do not infer 4K60 from a 4K-only title. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005009850858369. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability."
+      "notes": "The Pro 107 has HDMI and card-reader functions; do not infer 4K60 from a 4K-only title. Indexed listing identity: https://www.pricearchive.org/aliexpress.com/item/1005009850858369. Direct AliExpress retrieval was unavailable; confirm seller, exact variant, destination-country delivery and current availability.",
+      "image": {
+        "src": "/assets/products/editorial/ed-hub-reader.svg",
+        "alt": "Original editorial illustration for UGREEN Revodok Pro 107 USB-C hub; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-hub-data",
@@ -1236,7 +1443,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-UGREEN-USB-3-data-hub-4-ports.html",
       "linkKind": "search",
       "referenceUrl": "https://us.ugreen.com/collections/usb-hubs",
-      "notes": "Marketplace search for a data-only hub. USB-A and USB-C host connector versions differ; this is not an HDMI adapter."
+      "notes": "Marketplace search for a data-only hub. USB-A and USB-C host connector versions differ; this is not an HDMI adapter.",
+      "image": {
+        "src": "/assets/products/editorial/ed-hub-data.svg",
+        "alt": "Original editorial illustration for UGREEN USB data hub; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-cable-ties",
@@ -1245,7 +1461,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-reusable-hook-loop-cable-ties.html",
       "linkKind": "search",
       "referenceUrl": "https://www.velcro.com/products/electronics-organization/one-wrap-ties/",
-      "notes": "Generic marketplace search. VELCRO ONE-WRAP is the reference for the fastening method, not a claim that every result is that brand."
+      "notes": "Generic marketplace search. VELCRO ONE-WRAP is the reference for the fastening method, not a claim that every result is that brand.",
+      "image": {
+        "src": "/assets/products/editorial/ed-cable-ties.svg",
+        "alt": "Original editorial illustration for Reusable hook-and-loop cable ties; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-cable-clips",
@@ -1254,7 +1479,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-desk-cable-clips-adhesive.html",
       "linkKind": "search",
       "referenceUrl": "https://www.command.com/3M/en_US/p/d/b5005604063/",
-      "notes": "Generic marketplace search. 3M Command is the application reference; generic adhesive clips may have different surface and removal instructions."
+      "notes": "Generic marketplace search. 3M Command is the application reference; generic adhesive clips may have different surface and removal instructions.",
+      "image": {
+        "src": "/assets/products/editorial/ed-cable-clips.svg",
+        "alt": "Original editorial illustration for Desk cable clips; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "ed-cable-tray",
@@ -1263,7 +1497,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-clamp-on-under-desk-cable-tray.html",
       "linkKind": "search",
       "referenceUrl": "https://www.ikea.com/us/en/cat/cable-management-accessories-16195/",
-      "notes": "Generic marketplace search. The IKEA cable-management catalogue is a reference for tray organization, not a claim that generic clamp-on results are IKEA products. Verify the exact mount and load rating."
+      "notes": "Generic marketplace search. The IKEA cable-management catalogue is a reference for tray organization, not a claim that generic clamp-on results are IKEA products. Verify the exact mount and load rating.",
+      "image": {
+        "src": "/assets/products/editorial/ed-cable-tray.svg",
+        "alt": "Original editorial illustration for Clamp-on under-desk cable tray; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-kitchen-scale",
@@ -1272,7 +1515,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005012144328132.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005012144328132",
-      "notes": "Exact AliExpress item identity found in current public search on 2026-10-15. Live merchant page could not be retrieved. Seller's capacity, resolution, material, accuracy and included batteries require confirmation. Research candidate, not a tested recommendation."
+      "notes": "Exact AliExpress item identity found in current public search on 2026-10-15. Live merchant page could not be retrieved. Seller's capacity, resolution, material, accuracy and included batteries require confirmation. Research candidate, not a tested recommendation.",
+      "image": {
+        "src": "/assets/products/editorial/hp-kitchen-scale.svg",
+        "alt": "Original editorial illustration for Compact digital kitchen scale listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-measuring-spoons",
@@ -1281,7 +1533,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005012831651777.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005012831651777",
-      "notes": "Exact item ID and spoon-set identity confirmed in the public index, including indexed name history. Verify stamped volumes, number of spoons and material on the live listing. No independently verified accuracy or food-contact certification."
+      "notes": "Exact item ID and spoon-set identity confirmed in the public index, including indexed name history. Verify stamped volumes, number of spoons and material on the live listing. No independently verified accuracy or food-contact certification.",
+      "image": {
+        "src": "/assets/products/editorial/hp-measuring-spoons.svg",
+        "alt": "Original editorial illustration for Stainless measuring spoon set listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-measuring-cups",
@@ -1290,7 +1551,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005012991461088.html",
       "linkKind": "item",
       "referenceUrl": "https://da.pricearchive.org/aliexpress.com/item/1005012991461088",
-      "notes": "Exact indexed item identity describes collapsible nesting measuring cups. Confirm actual cup volumes, food-contact documentation, set contents and cleaning instructions with merchant. No Joseph Joseph branding or performance equivalence is claimed."
+      "notes": "Exact indexed item identity describes collapsible nesting measuring cups. Confirm actual cup volumes, food-contact documentation, set contents and cleaning instructions with merchant. No Joseph Joseph branding or performance equivalence is claimed.",
+      "image": {
+        "src": "/assets/products/editorial/hp-measuring-cups.svg",
+        "alt": "Original editorial illustration for Collapsible nesting measuring cup set listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-pantry-jars",
@@ -1299,7 +1569,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005002331938285.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005002331938285",
-      "notes": "Indexed as multiple sizes of plastic kitchen storage jars. Exact AliExpress identity confirmed through public index; live stock, volume options, gasket design and food-contact suitability require merchant confirmation. Not an OXO product."
+      "notes": "Indexed as multiple sizes of plastic kitchen storage jars. Exact AliExpress identity confirmed through public index; live stock, volume options, gasket design and food-contact suitability require merchant confirmation. Not an OXO product.",
+      "image": {
+        "src": "/assets/products/editorial/hp-pantry-jars.svg",
+        "alt": "Original editorial illustration for Stackable pantry jar listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-steel-storage",
@@ -1308,7 +1587,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005010501421685.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005010501421685",
-      "notes": "Exact item identity found in search. Steel grade, lid material, capacity, leak resistance and cleaning instructions remain seller claims to verify. Do not imply microwave compatibility."
+      "notes": "Exact item identity found in search. Steel grade, lid material, capacity, leak resistance and cleaning instructions remain seller claims to verify. Do not imply microwave compatibility.",
+      "image": {
+        "src": "/assets/products/editorial/hp-steel-storage.svg",
+        "alt": "Original editorial illustration for Stackable steel food container listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-fridge-box",
@@ -1317,7 +1605,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005007038587336.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005007038587336",
-      "notes": "Exact indexed AliExpress item. Confirm external dimensions and food-contact suitability. No verified preservation-time, airtightness, freezer or microwave claim."
+      "notes": "Exact indexed AliExpress item. Confirm external dimensions and food-contact suitability. No verified preservation-time, airtightness, freezer or microwave claim.",
+      "image": {
+        "src": "/assets/products/editorial/hp-fridge-box.svg",
+        "alt": "Original editorial illustration for Clear refrigerator storage box listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-cleaning-cloths",
@@ -1326,7 +1623,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005012471365987.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005012471365987",
-      "notes": "Exact AliExpress item identity appears in current index. Pack counts vary in indexed title. Verify size, fabric composition and care label; no independent lint, absorbency or surface-safety test."
+      "notes": "Exact AliExpress item identity appears in current index. Pack counts vary in indexed title. Verify size, fabric composition and care label; no independent lint, absorbency or surface-safety test.",
+      "image": {
+        "src": "/assets/products/editorial/hp-cleaning-cloths.svg",
+        "alt": "Original editorial illustration for Reusable household cleaning cloth listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-crevice-brushes",
@@ -1335,7 +1641,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005012447072783.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005012447072783",
-      "notes": "Exact indexed item ID for a household cleaning brush set. Confirm brush width and bristle material. Hard bristles are not assumed suitable for every finish."
+      "notes": "Exact indexed item ID for a household cleaning brush set. Confirm brush width and bristle material. Hard bristles are not assumed suitable for every finish.",
+      "image": {
+        "src": "/assets/products/editorial/hp-crevice-brushes.svg",
+        "alt": "Original editorial illustration for Household crevice brush set listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-sink-caddy",
@@ -1344,7 +1659,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005009719153353.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005009719153353",
-      "notes": "Exact item identity from current public search. Confirm mounting diameter, tap clearance and drainage openings. No antimicrobial or corrosion-resistance claim verified."
+      "notes": "Exact item identity from current public search. Confirm mounting diameter, tap clearance and drainage openings. No antimicrobial or corrosion-resistance claim verified.",
+      "image": {
+        "src": "/assets/products/editorial/hp-sink-caddy.svg",
+        "alt": "Original editorial illustration for Faucet-mounted sponge caddy listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-cabinet-bar",
@@ -1353,7 +1677,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005006736514561.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005006736514561",
-      "notes": "Exact indexed AliExpress identity. Multiple lengths appear in title; confirm selected length, input requirements, sensor modes and mounting system. Runtime, lumen and battery claims not independently verified."
+      "notes": "Exact indexed AliExpress identity. Multiple lengths appear in title; confirm selected length, input requirements, sensor modes and mounting system. Runtime, lumen and battery claims not independently verified.",
+      "image": {
+        "src": "/assets/products/editorial/hp-cabinet-bar.svg",
+        "alt": "Original editorial illustration for Rechargeable sensor light bar listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-cabinet-puck",
@@ -1362,7 +1695,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005012821966952.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005012821966952",
-      "notes": "Exact item ID indexed as a puck light with remote options. Confirm whether chosen pack includes remote, number of lamps, input and replacement arrangements. Not an emergency lighting recommendation."
+      "notes": "Exact item ID indexed as a puck light with remote options. Confirm whether chosen pack includes remote, number of lamps, input and replacement arrangements. Not an emergency lighting recommendation.",
+      "image": {
+        "src": "/assets/products/editorial/hp-cabinet-puck.svg",
+        "alt": "Original editorial illustration for Rechargeable cabinet puck light listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-usb-display-light",
@@ -1371,7 +1713,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005005368235042.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005005368235042",
-      "notes": "Exact ID found in current search. Indexed as a USB 5V display/cabinet lamp, but input, connector and installation instructions must be checked on merchant page. No mains installation advice."
+      "notes": "Exact ID found in current search. Indexed as a USB 5V display/cabinet lamp, but input, connector and installation instructions must be checked on merchant page. No mains installation advice.",
+      "image": {
+        "src": "/assets/products/editorial/hp-usb-display-light.svg",
+        "alt": "Original editorial illustration for USB-powered small display light listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-usbc-basic",
@@ -1380,7 +1731,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005005219517691.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005005219517691",
-      "notes": "Exact indexed item identity. Title lists multiple power variants. Confirm model, cable length, genuine seller, rated power, data rate and certification; manufacturer examples cited in guide do not establish specifications for this listing."
+      "notes": "Exact indexed item identity. Title lists multiple power variants. Confirm model, cable length, genuine seller, rated power, data rate and certification; manufacturer examples cited in guide do not establish specifications for this listing.",
+      "image": {
+        "src": "/assets/products/editorial/hp-usbc-basic.svg",
+        "alt": "Original editorial illustration for UGREEN USB-C to USB-C cable listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-usbc-braided",
@@ -1389,7 +1749,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005010496565552.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005010496565552",
-      "notes": "Exact indexed item identity explicitly describes a braided UGREEN USB-C-to-USB-C cable. Live authenticity, selected variant, rated power, data speed and certification remain unverified. Brand text is seller attribution, not verified authorized-store status."
+      "notes": "Exact indexed item identity explicitly describes a braided UGREEN USB-C-to-USB-C cable. Live authenticity, selected variant, rated power, data speed and certification remain unverified. Brand text is seller attribution, not verified authorized-store status.",
+      "image": {
+        "src": "/assets/products/editorial/hp-usbc-braided.svg",
+        "alt": "Original editorial illustration for UGREEN braided USB-C cable listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-usbc-retractable",
@@ -1398,7 +1767,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005005029414407.html",
       "linkKind": "item",
       "referenceUrl": "https://ro.pricearchive.org/aliexpress.com/item/1005005029414407",
-      "notes": "Exact ID found in current index. Retractable cable format identified, but SKU, charge capability, data rate and reel mechanism need merchant confirmation."
+      "notes": "Exact ID found in current index. Retractable cable format identified, but SKU, charge capability, data rate and reel mechanism need merchant confirmation.",
+      "image": {
+        "src": "/assets/products/editorial/hp-usbc-retractable.svg",
+        "alt": "Original editorial illustration for UGREEN retractable USB-C cable listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-tripod-mini",
@@ -1407,7 +1785,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005006255093789.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005006255093789",
-      "notes": "Exact item ID identified in current public index. Official Ulanzi MT-08 documentation independently confirms product format. Seller authenticity, package and any included phone clamp remain unchecked."
+      "notes": "Exact item ID identified in current public index. Official Ulanzi MT-08 documentation independently confirms product format. Seller authenticity, package and any included phone clamp remain unchecked.",
+      "image": {
+        "src": "/assets/products/editorial/hp-tripod-mini.svg",
+        "alt": "Original editorial illustration for Ulanzi MT-08 mini tripod listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-tripod-tall",
@@ -1416,7 +1803,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005007462578939.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005007462578939",
-      "notes": "Exact indexed item ID and model. Official manufacturer page confirms MT-78 format; verify chosen bundle, remote and mount contents with seller. No wind-stability testing performed."
+      "notes": "Exact indexed item ID and model. Official manufacturer page confirms MT-78 format; verify chosen bundle, remote and mount contents with seller. No wind-stability testing performed.",
+      "image": {
+        "src": "/assets/products/editorial/hp-tripod-tall.svg",
+        "alt": "Original editorial illustration for Ulanzi MT-78 tripod listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-phone-clamp",
@@ -1425,7 +1821,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005007218368088.html",
       "linkKind": "item",
       "referenceUrl": "https://cs.pricearchive.org/aliexpress.com/item/1005007218368088",
-      "notes": "Exact indexed item ID. Treat as phone-clamp research candidate; dimensions, joint compatibility, genuine branding and included plates require merchant confirmation. No model-specific load claim made."
+      "notes": "Exact indexed item ID. Treat as phone-clamp research candidate; dimensions, joint compatibility, genuine branding and included plates require merchant confirmation. No model-specific load claim made.",
+      "image": {
+        "src": "/assets/products/editorial/hp-phone-clamp.svg",
+        "alt": "Original editorial illustration for Ulanzi M053 phone mount listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-redmi-a5-search",
@@ -1434,7 +1839,16 @@
       "merchantUrl": "https://www.aliexpress.com/w/wholesale-redmi-a5-smartphone.html",
       "linkKind": "search",
       "referenceUrl": "https://www.mi.com/lk/product/redmi-a5/specs/",
-      "notes": "Marketplace search, not an exact item or verified authorized seller. Xiaomi's primary Sri Lankan specifications provide a comparison reference. Check that search result is a phone rather than a case, and match regional model."
+      "notes": "Marketplace search, not an exact item or verified authorized seller. Xiaomi's primary Sri Lankan specifications provide a comparison reference. Check that search result is a phone rather than a case, and match regional model.",
+      "image": {
+        "src": "/assets/products/editorial/hp-redmi-a5-search.svg",
+        "alt": "Original editorial illustration for Search AliExpress for Redmi A5 phones; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-refurbished-phone",
@@ -1443,7 +1857,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005010061577276.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005010061577276",
-      "notes": "Exact indexed ID. Listing title describes used/refurbished and US version; neither condition nor 5G capability is independently verified. Confirm model number, unlock status, radio bands, repairs and return terms. Comparison example, not a recommendation to buy."
+      "notes": "Exact indexed ID. Listing title describes used/refurbished and US version; neither condition nor 5G capability is independently verified. Confirm model number, unlock status, radio bands, repairs and return terms. Comparison example, not a recommendation to buy.",
+      "image": {
+        "src": "/assets/products/editorial/hp-refurbished-phone.svg",
+        "alt": "Original editorial illustration for Used or refurbished Galaxy A16 listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-android-listing",
@@ -1452,7 +1875,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005013267651702.html",
       "linkKind": "item",
       "referenceUrl": "https://buysell.best/products/7-3-inch-android-15-smartphone/",
-      "notes": "Exact AliExpress URL supplied by site owner. Unverified generic Android listing; do not describe it as an Apple iPhone. Seller specifications require verification. Existing tracked product page is retained separately by the site."
+      "notes": "Exact AliExpress URL supplied by site owner. Unverified generic Android listing; do not describe it as an Apple iPhone. Seller specifications require verification. Existing tracked product page is retained separately by the site.",
+      "image": {
+        "src": "/assets/products/editorial/hp-android-listing.svg",
+        "alt": "Original editorial illustration for Seller-described Android smartphone listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-tpu-case",
@@ -1461,7 +1893,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005009930849336.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005009930849336",
-      "notes": "Exact item ID found in current index. Multiple iPhone model options appear in merchant title; check exact device and selected variant. No independent drop, yellowing or wireless-charge test."
+      "notes": "Exact item ID found in current index. Multiple iPhone model options appear in merchant title; check exact device and selected variant. No independent drop, yellowing or wireless-charge test.",
+      "image": {
+        "src": "/assets/products/editorial/hp-tpu-case.svg",
+        "alt": "Original editorial illustration for Soft transparent phone case listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-screen-glass",
@@ -1470,7 +1911,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005012058730785.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005012058730785",
-      "notes": "Exact indexed item for multiple iPhone models. Confirm exact device variant, pack size and whether installation tray is included. No verified hardness, shatter-proof or lens-cover performance claim."
+      "notes": "Exact indexed item for multiple iPhone models. Confirm exact device variant, pack size and whether installation tray is included. No verified hardness, shatter-proof or lens-cover performance claim.",
+      "image": {
+        "src": "/assets/products/editorial/hp-screen-glass.svg",
+        "alt": "Original editorial illustration for Phone screen protector with alignment kit listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     },
     {
       "id": "hp-galaxy-case",
@@ -1479,7 +1929,16 @@
       "merchantUrl": "https://www.aliexpress.com/item/1005009316420340.html",
       "linkKind": "item",
       "referenceUrl": "https://www.pricearchive.org/aliexpress.com/item/1005009316420340",
-      "notes": "Exact ID from current search. Confirm exact Galaxy A16 regional/device version and cutouts. Seller's camera-protection description does not establish a tested protection rating."
+      "notes": "Exact ID from current search. Confirm exact Galaxy A16 regional/device version and cutouts. Seller's camera-protection description does not establish a tested protection rating.",
+      "image": {
+        "src": "/assets/products/editorial/hp-galaxy-case.svg",
+        "alt": "Original editorial illustration for Galaxy A16 phone case listing; not a photograph of a seller product",
+        "width": 1200,
+        "height": 800,
+        "kind": "editorial-concept",
+        "credit": "BuySell.Best original vector illustration",
+        "generatedAt": "2026-10-17"
+      }
     }
   ],
   "guides": [
@@ -4834,5 +5293,6 @@
         "usb-c-phone-cables-aliexpress"
       ]
     }
-  ]
+  ],
+  "editorialImageUpdatedAt": "2026-10-17"
 }
