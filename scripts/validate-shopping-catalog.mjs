@@ -21,7 +21,11 @@ for(const [id,value] of Object.entries(overrides)) {
   const destination=validHttps(tracked.searchParams.get("ulp"));
   assert.equal(destination.hostname,"www.aliexpress.com");
   const product=catalog.products.find(product=>product.id===id);
-  assert.equal(destination.pathname,new URL(product.merchantUrl).pathname,"Affiliate destination mismatch: "+id);
+  // The submitted NEBULA affiliate link uses AliExpress's /i/<id>.html
+  // permalink form, whereas our reference uses /item/<id>.html.
+  const merchantPath=new URL(product.merchantUrl).pathname;
+  const normalizePath=path=>path.replace(/^\/i\/(\d+)\.html$/,"/item/$1.html");
+  assert.equal(normalizePath(destination.pathname),normalizePath(merchantPath),"Affiliate destination mismatch: "+id);
 }
 const detailSlugs=new Set();
 for(const product of catalog.products.filter(product=>product.details)) {
