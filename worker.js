@@ -1,3 +1,4 @@
+import { syncSearchConsole } from "./lib/gsc-integration.js";
 import { DEAL_CATEGORIES, SEASONAL_PAGES, DEAL_HUB_LINKS } from "./lib/deal-seo.js";
 import { searchEbay } from "./functions/api/deals.js";
 import { syncPromos } from "./lib/promo-sync.js";
@@ -538,6 +539,7 @@ async function serveAsset(request, env) {
 export default {
   async scheduled(event, env, ctx) {
     ctx.waitUntil(syncPromos(env).catch(() => {}));
+    ctx.waitUntil(syncSearchConsole(env).catch(() => {}));
   },
 
   async fetch(request, env, ctx) {
