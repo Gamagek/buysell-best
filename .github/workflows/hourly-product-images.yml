@@ -1,0 +1,48 @@
+name: Hourly Product Image SEO Sync
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/sync-editorial-product-images.mjs'
+      - 'lib/shopping-guides.js'
+      - 'content/shopping-catalog.json'
+      - '.github/workflows/hourly-product-images.yml'
+permissions:
+  contents: write
+concurrency:
+  group: hourly-product-images
+  cancel-in-progress: false
+jobs:
+  image-and-sitemap:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          persist-credentials: true
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Add original illustrations only to unpictured guide candidates
+        run: node scripts/sync-editorial-product-images.mjs
+      - name: Refresh fallback image sitemap and public product-link exports
+        run: npm run content:export
+      - name: Verify image provenance, Worker routes and SEO tests
+        run: npm test
+      - name: Commit approved deterministic content changes only
+        run: |
+          git add content/shopping-catalog.json content/image-audit-report.json assets/products/editorial sitemap.xml shopping-links.csv shopping-links-to-verify-2026-10-15.csv
+          if git diff --cached --quiet; then
+            echo 'No new images or sitemap changes. No SEO date bumps or resubmission needed.'
+            exit 0
+          fi
+          git config user.name "BuySell SEO Automation"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore(images): publish original product-concept thumbnails and changed image sitemap"
+          git push origin HEAD:main
