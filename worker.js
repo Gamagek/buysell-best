@@ -1,3 +1,4 @@
+import {imageSitemapFromCanonical} from "./lib/image-sitemap.js";
 import {findEditorialProduct, renderEditorialProductPage, editorialProductPath, editorialSitemapEntries} from "./lib/editorial-product-pages.js";
 import { renderCareerIndex, renderCareerGuide, findCareerGuide, careerSitemapEntries, renderCareerSpotlight } from "./lib/career-guides.js";
 import { syncSearchConsole } from "./lib/gsc-integration.js";
@@ -481,6 +482,16 @@ async function serveSeoPage(request,env) {
       headers:{
         "content-type":"application/xml; charset=UTF-8",
         "cache-control":"public, max-age=300, s-maxage=300, stale-while-revalidate=600"
+      }
+    });
+  }
+  if (pathname === "/image-sitemap.xml") {
+    const canonicalSitemap=await renderSitemap(env);
+    return new Response(imageSitemapFromCanonical(canonicalSitemap),{
+      headers:{
+        "content-type":"application/xml; charset=UTF-8",
+        "cache-control":"public, max-age=300, s-maxage=300, stale-while-revalidate=600",
+        "x-content-type-options":"nosniff"
       }
     });
   }

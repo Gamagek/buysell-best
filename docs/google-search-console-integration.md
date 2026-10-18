@@ -80,3 +80,51 @@ remain required; credentials stay in Cloudflare Secrets.
 If permission cannot be granted to the existing Service Account, the owner can
 manually submit `https://buysell.best/sitemap.xml` in the Search Console
 Sitemaps UI. This does not require moving any secrets into GitHub.
+
+## Dedicated image sitemap (October 2026)
+
+`https://buysell.best/image-sitemap.xml` is a companion to the existing
+`https://buysell.best/sitemap.xml`. Both are declared in `robots.txt` and
+can be submitted automatically through the already-authorized Google Search
+Console `sitemaps.submit` API using the existing Cloudflare Secret. The
+GSC integration stores **separate** successful submission hashes, timestamps,
+and sanitized errors for each feed in private D1. It submits only when
+the published URL/image associations or first-party marketplace listing
+inventory actually changes. It does **not** repeatedly request indexing for
+individual image files.
+
+Source of truth: the canonical sitemap already attaches every published
+first-party editorial image to its content page with
+`<image:image><image:loc>...`. The dedicated image feed is *derived* from
+those page-to-image associations, so there is no disconnected image-only
+sitemap. New approved marketplace listings on `buysell.best` with
+first-party hosted images are included automatically. A third-party listing
+image is not included because the remote image host may not be verified
+in the site owner's Search Console.
+
+Current source inventory: 87 substantive first-party content image files,
+145 page-image relations, 72 image-bearing canonical pages; the two favicon
+SVG icons are intentionally not in the image feed. The 51 SVG illustrations
+are labeled as editorial concepts, not physical-product photographs. The
+site includes 20 seller-image WebPs and 10 smartphone-gallery JPGs.
+
+The existing hourly product-image GitHub workflow also regenerates the
+fallback static `image-sitemap.xml` when files change and commits the two
+sitemaps together. `worker.js` serves the dynamic sitemap first, using
+the same main sitemap builder as the public `sitemap.xml`.
+
+Verify status via the private D1 SQL console:
+```sql
+SELECT name, value FROM gsc_state
+WHERE name IN (
+  'sitemap_submission_time','sitemap_submission_error',
+  'image_sitemap_submission_time','image_sitemap_submission_error',
+  'image_sitemap_submission_hash'
+);
+```
+
+The successful API submission only confirms Google received the sitemap
+submission. Google ultimately decides when to crawl, process, and index each
+page and image. Google Images ranking is not guaranteed. Future images need
+valid rights, meaningful placement in crawlable HTML, descriptive alt text and
+valid first-party image URLs; decorative icons do not belong in the image feed.
