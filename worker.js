@@ -1,3 +1,4 @@
+import {trendingSitemapEntry} from "./lib/trending-sitemap.js";
 import {syncFlashSale,loadFlashSale,renderFlashHome,renderFlashPage,flashSaleSitemap,serveFlashMedia} from "./lib/flash-sale.js";
 import {imageSitemapFromCanonical} from "./lib/image-sitemap.js";
 import {findEditorialProduct, renderEditorialProductPage, editorialProductPath, editorialSitemapEntries} from "./lib/editorial-product-pages.js";
@@ -388,7 +389,7 @@ async function renderSitemap(env){
   const urls=staticPaths.map(path=>`<url><loc>https://buysell.best${path}</loc>${path==="/"&&latestAll?`<lastmod>${escapeHtml(latestAll)}</lastmod>`:""}</url>`).join("");
   const cats=categoryPaths.map(path=>`<url><loc>https://buysell.best/category/${path}</loc>${latestByCategory[path]?`<lastmod>${escapeHtml(latestByCategory[path])}</lastmod>`:""}</url>`).join("");
   const products = productSitemapEntries();
-  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${travelSitemapEntries()}${highIntentSitemapEntries()}${careerSitemapEntries()}${editorialSitemapEntries()}${flashSaleSitemap(flashSale)}${dynamic}</urlset>`;
+  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${travelSitemapEntries()}${highIntentSitemapEntries()}${careerSitemapEntries()}${editorialSitemapEntries()}${trendingSitemapEntry()}${flashSaleSitemap(flashSale)}${dynamic}</urlset>`;
 }
 
 async function serveSeoPage(request,env) {
@@ -455,6 +456,13 @@ async function serveSeoPage(request,env) {
   }
   if (pathname === "/products") return Response.redirect("https://buysell.best/products/",301);
   if (pathname === "/products/") return new Response(renderProductsIndex(), {headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=60, s-maxage=300"}});
+  if (pathname === "/products/trending-100")
+    return Response.redirect("https://buysell.best/products/trending-100/",301);
+  if (pathname === "/products/trending-100/") {
+    const asset=new URL("/products/trending-100/index.html",request.url);
+    const page=await env.ASSETS.fetch(new Request(asset.href,{method:"GET"}));
+    return page.ok?page:new Response("Not found",{status:404});
+  }
   const productMatch = pathname.match(/^\/products\/([^/]+)\/?$/);
   if (productMatch) {
     const shoppingProduct = findShoppingProduct(productMatch[1]);
