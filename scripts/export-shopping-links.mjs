@@ -1,3 +1,4 @@
+import {trendingSitemapEntry} from "../lib/trending-sitemap.js";
 import {imageSitemapFromCanonical} from "../lib/image-sitemap.js";
 import {editorialSitemapEntries} from "../lib/editorial-product-pages.js";
 import {readFile,writeFile} from "node:fs/promises";
@@ -43,7 +44,7 @@ console.log("Synced the first 20 review rows; account-level verification remains
 const sitemapPath=new URL("../sitemap.xml",import.meta.url);
 const old=await readFile(sitemapPath,"utf8");
 const preserved=old.replace(/<url>\s*<loc>https:\/\/buysell\.best\/(?:guides|shopping-methodology|products|hotels|promo-codes|insights)(?:\/|<)[\s\S]*?<\/url>/g,"");
-const refreshed=preserved.replace("</urlset>",productSitemapEntries()+guideSitemapEntries()+travelSitemapEntries()+highIntentSitemapEntries()+editorialSitemapEntries()+"</urlset>");
+const refreshed=preserved.replace("</urlset>",productSitemapEntries()+guideSitemapEntries()+travelSitemapEntries()+highIntentSitemapEntries()+editorialSitemapEntries()+trendingSitemapEntry()+"</urlset>");
 await writeFile(sitemapPath,refreshed);
 await writeFile(new URL("../image-sitemap.xml",import.meta.url),imageSitemapFromCanonical(refreshed));
 console.log("Updated canonical and image sitemaps; retained existing marketplace URLs.");
