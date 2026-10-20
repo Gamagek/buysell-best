@@ -34,7 +34,7 @@ test("JSON, Admitad CSV and product-feed XML map to the same verified offer",()=
 });
 
 test("category ranks cap at 10 per category; never fill to 1000 with fictional products",()=>{
- const many=Array.from({length:43},(_,i)=>({...basic,offer_id:""+(10000+i),name:"Keyboard "+i,category_name:"Keyboards category "+(i%3),discount_percent:20}));
+ const many=Array.from({length:43},(_,i)=>({...basic,offer_id:""+(10000+i),name:"Keyboard "+i,category_name:"Keyboards category "+(i%3)}));
  const groups=chooseOffers(many,now);
  assert.equal(groups.length,3);
  assert.ok(groups.every(g=>g.offers.length<=10));
@@ -57,7 +57,7 @@ test("homepage tile adverts appear only with verified cached images, with honest
  assert.equal(doc.querySelectorAll(".flash-end").length,0);
  const unavailable=new JSDOM(renderFlashHome([])).window.document;
  assert.equal(unavailable.querySelectorAll(".flash-discount").length,0);
- assert.match(unavailable.textContent,/not available yet/);
+ assert.match(unavailable.body.textContent,/not available yet/);
  const hub=new JSDOM(renderFlashPage(groups)).window.document;
  assert.equal(hub.querySelectorAll(".flash-tile").length,1);
  assert.ok(flashSaleSitemap(groups).includes("<image:loc>https://buysell.best/flash-media/items/image.jpg</image:loc>"));
