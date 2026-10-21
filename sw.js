@@ -1,50 +1,22 @@
-const CACHE_NAME = "buysell-best-shell-v2";
-const SHELL = [
-  "/",
-  "/index.html",
-  "/css/style.css",
-  "/js/app.js",
-  "/data/global-deals.js",
-  "/data/market-timeline.js",
-  "/site-tools.js",
-  "/js/promo-wall.js",
-  "/manifest.webmanifest",
-  "/icons/buysell-192.svg",
-  "/icons/buysell-512.svg"
-];
-
+// Notifications and installation do not require persistent page/image Cache Storage.
+// Legacy broad network-first caching stored every successful GET in the user's
+// browser, including full HTML and thumbnails. Public content now uses Cloudflare
+// edge caching instead, while normal browser HTTP caching remains browser-managed.
 self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(SHELL))
-      .then(() => self.skipWaiting())
-  );
+  event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener("activate", event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key)))
-    ).then(() => self.clients.claim())
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(key => key.startsWith("buysell-best-shell-"))
+        .map(key => caches.delete(key))))
+      .then(() => self.clients.claim())
   );
 });
 
-self.addEventListener("fetch", event => {
-  const request = event.request;
-  if (request.method !== "GET") return;
-  const url = new URL(request.url);
-  if (url.origin !== self.location.origin || url.pathname.startsWith("/api/")) return;
-
-  event.respondWith(
-    fetch(request)
-      .then(response => {
-        const copy = response.clone();
-        caches.open(CACHE_NAME).then(cache => cache.put(request, copy)).catch(() => {});
-        return response;
-      })
-      .catch(() => caches.match(request).then(cached => cached || caches.match("/index.html")))
-  );
-});
+// No fetch event interception: use regular network requests, the Cloudflare edge,
+// and browser-managed HTTP cache. Never persist personalised/ad responses locally.
 
 self.addEventListener("notificationclick", event => {
   event.notification.close();
