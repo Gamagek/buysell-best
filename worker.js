@@ -87,6 +87,16 @@ function escapeHtml(value) {
   }[c]));
 }
 
+function isD1QuotaError(error) {
+  return /(?:7500|row[ -]?read limit|quota exceeded|daily row read limit)/i.test(
+    String(error?.message || error || ""));
+}
+function temporarilyUnavailable(){
+  return new Response("Marketplace data is temporarily unavailable. Please retry shortly.",{
+    status:503,headers:{"content-type":"text/plain; charset=utf-8",
+      "x-robots-tag":"noindex,follow","retry-after":"180","cache-control":"no-store"}
+  });
+}
 function clean(value, fallback="") {
   const s=String(value ?? "").trim();
   return s && !/^(null|undefined)$/i.test(s) ? s : fallback;
@@ -126,12 +136,14 @@ async function getActiveListing(env, slug) {
     return await env.DB.prepare(
       "SELECT id,slug,title,brand,category,price,currency,condition,description,image_url,status,location,video_url,video_embed_url,video_thumbnail_url,video_duration,video_upload_date,created_at,updated_at FROM listings WHERE slug=? AND COALESCE(status,'active')='active' LIMIT 1"
     ).bind(slug).first();
-  } catch (_) {
+  } catch (error) {
+    if (isD1QuotaError(error)) throw error;
     try {
       return await env.DB.prepare(
         "SELECT id,slug,title,brand,category,price,currency,condition,description,image_url,status,created_at,updated_at FROM listings WHERE slug=? AND COALESCE(status,'active')='active' LIMIT 1"
       ).bind(slug).first();
-    } catch (_) {
+    } catch (fallbackError) {
+      if (isD1QuotaError(fallbackError)) throw fallbackError;
       return null;
     }
   }
@@ -358,11 +370,11 @@ async function renderSitemap(env){
     try{
       const latest=await env.DB.prepare("SELECT MAX(COALESCE(updated_at,created_at)) AS latest FROM listings WHERE COALESCE(status,'active')='active'").first();
       latestAll=isoDate(latest?.latest);
-    }catch(_){}
+    }catch(error){if(isD1QuotaError(error))throw error;}
     try{
       const rows=await env.DB.prepare("SELECT category,MAX(COALESCE(updated_at,created_at)) AS latest FROM listings WHERE COALESCE(status,'active')='active' GROUP BY category").all();
       for(const row of rows.results||[])latestByCategory[String(row.category||"").toLowerCase()]=isoDate(row.latest);
-    }catch(_){}
+    }catch(error){if(isD1QuotaError(error))throw error;}
     const queries=[
       "SELECT slug,updated_at,image_url,video_url,video_embed_url,title,description,created_at FROM listings WHERE COALESCE(status,'active')='active' AND slug IS NOT NULL ORDER BY datetime(updated_at) DESC LIMIT 50000",
       "SELECT slug,updated_at,title,description,created_at FROM listings WHERE COALESCE(status,'active')='active' AND slug IS NOT NULL ORDER BY datetime(updated_at) DESC LIMIT 50000"
@@ -384,7 +396,7 @@ async function renderSitemap(env){
           return `<url><loc>${escapeHtml(loc)}</loc>${last?`<lastmod>${escapeHtml(last)}</lastmod>`:""}${imageTag}${video}</url>`;
         }).join("");
         break;
-      }catch(_){}
+      }catch(error){if(isD1QuotaError(error))throw error;}
     }
   }
   const dealPaths=(env?.EBAY_CLIENT_ID&&env?.EBAY_CLIENT_SECRET) ? ["/deals/",...DEAL_CATEGORIES.map(x=>"/deals/"+x.slug),...SEASONAL_PAGES.map(x=>"/seasonal/"+x.slug)] : [];
@@ -502,7 +514,10 @@ async function serveSeoPage(request,env) {
   }
 
   if (pathname === "/sitemap.xml") {
-    return new Response(await renderSitemap(env),{
+    let content;
+    try{content=await renderSitemap(env);}
+    catch(error){if(isD1QuotaError(error))return temporarilyUnavailable();throw error;}
+    return new Response(content,{
       headers:{
         "content-type":"application/xml; charset=UTF-8",
         "cache-control":"public, max-age=300, s-maxage=300, stale-while-revalidate=600"
@@ -510,7 +525,9 @@ async function serveSeoPage(request,env) {
     });
   }
   if (pathname === "/image-sitemap.xml") {
-    const canonicalSitemap=await renderSitemap(env);
+    let canonicalSitemap;
+    try{canonicalSitemap=await renderSitemap(env);}
+    catch(error){if(isD1QuotaError(error))return temporarilyUnavailable();throw error;}
     return new Response(imageSitemapFromCanonical(canonicalSitemap),{
       headers:{
         "content-type":"application/xml; charset=UTF-8",
@@ -530,7 +547,7 @@ async function serveSeoPage(request,env) {
       try{
         const result=await env.DB.prepare("SELECT id,slug,title,brand,category,price,currency,condition,description,image_url,status FROM listings WHERE category=? AND COALESCE(status,'active')='active' ORDER BY datetime(created_at) DESC LIMIT 40").bind(categorySlug).all();
         items=result.results||[];
-      }catch(_){}
+      }catch(error){if(isD1QuotaError(error))return temporarilyUnavailable();}
     }
     return new Response(renderCategoryPage(categorySlug,items),{
       headers:{
@@ -543,7 +560,9 @@ async function serveSeoPage(request,env) {
   const match=pathname.match(/^\/item\/([^/]+)\/?$/);
   if(match){
     const slug=decodeURIComponent(match[1]);
-    const item=await getActiveListing(env,slug);
+    let item;
+    try{item=await getActiveListing(env,slug);}
+    catch(error){if(isD1QuotaError(error))return temporarilyUnavailable();throw error;}
     if(!item){
       return new Response("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"robots\" content=\"noindex,follow\"><title>Listing not found | BuySell.Best</title></head><body><main><h1>Listing not found</h1><p>This listing is no longer available.</p><a href=\"/search.html\">Browse listings</a></main></body></html>",{
         status:404,
