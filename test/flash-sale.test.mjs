@@ -11,7 +11,9 @@ test("approved discounts are calculated from feed data without making up prices 
  assert.equal(p.discount,50);assert.equal(p.price,25);assert.equal(p.originalPrice,50);
  assert.equal(p.saleEnd,null);assert.equal(p.source,"Approved AliExpress affiliate product feed");
  assert.equal(normalizeOffer({...basic,oldprice:"24"},now),null);
- assert.equal(normalizeOffer({...basic,oldprice:"100"},now),null);
+ assert.equal(normalizeOffer({...basic,oldprice:"100"},now)?.discount,75);
+ assert.equal(normalizeOffer({...basic,oldprice:"800"},now),null);
+ assert.equal(normalizeOffer({...basic,oldprice:"28"},now),null);
  assert.equal(normalizeOffer({...basic,picture:"https://evil.example/photo.jpg"},now),null);
  assert.equal(normalizeOffer({...basic,url:"http://www.aliexpress.com/item/12345678.html"},now),null);
  assert.equal(normalizeOffer({...basic,name:"THC vape accessory"},now),null);
