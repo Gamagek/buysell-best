@@ -18,7 +18,7 @@ test("approved discounts are calculated from feed data without making up prices 
  assert.equal(normalizeOffer({...basic,url:"http://www.aliexpress.com/item/12345678.html"},now),null);
  assert.equal(normalizeOffer({...basic,name:"THC vape accessory"},now),null);
  assert.equal(normalizeOffer({...basic,end_date:"2020-01-01T00:00:00Z"},now),null);
- assert.equal(normalizeOffer({...basic,price_discount:"20",oldprice:"50",discount_percent:"60"},now),null);
+ assert.equal(normalizeOffer({...basic,price_discount:"20",oldprice:"50",discount_percent:"20"},now),null);
  const withEnd=normalizeOffer({...basic,end_date:"2026-10-22T00:00:00Z"},now);
  assert.equal(withEnd.saleEnd,"2026-10-22T00:00:00.000Z");
 });
