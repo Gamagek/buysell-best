@@ -19,3 +19,16 @@
 .flash-categories{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0 25px}.flash-categories a{padding:6px 9px;border:1px solid #dde5eb;border-radius:999px;text-decoration:none;font-size:.85rem}
 .flash-pages{display:flex;align-items:center;gap:15px;margin:25px 0}
 @media(max-width:560px){.flash-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.flash-tile-body{padding:10px}.flash-tile h3{font-size:.86rem}.flash-desc{font-size:.75rem}.flash-heading h2{font-size:1.35rem}}
+
+/* Always-visible researched-product catalogue, including narrow mobile screens. */
+.flash-card-image{display:block;background:#fff}
+.flash-research-badge{font-size:.68rem;font-weight:800;letter-spacing:.04em;color:#365e77;background:#ecf4f8;border-radius:5px;padding:4px 6px;align-self:start}
+.flash-research-tile .flash-tile-body h3 a{color:inherit;text-decoration:none}
+.flash-research-tile .flash-tile-body h3 a:hover{text-decoration:underline}
+.flash-price-note{font-size:.81rem;color:#56697c;margin:4px 0;font-weight:600}
+.flash-read{display:block;color:#17667c;font-size:.83rem;font-weight:700;margin-top:auto}
+.flash-research-tile .flash-shop{margin-top:2px}
+.flash-footlink{margin-top:22px;display:flex;gap:15px;flex-wrap:wrap;font-weight:700}
+.flash-footlink a{color:#17667c}
+.flash-section .flash-tile .flash-card-image img{display:block;width:100%;object-fit:contain;aspect-ratio:1}
+.flash-directory .flash-grid{margin-top:20px}
