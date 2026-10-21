@@ -62,13 +62,15 @@ test("homepage tile adverts appear only with verified cached images, with honest
  const hub=new JSDOM(renderFlashPage(groups)).window.document;
  assert.equal(hub.querySelectorAll(".flash-tile").length,1);
  assert.ok(flashSaleSitemap(groups).includes("<image:loc>https://buysell.best/flash-media/items/image.jpg</image:loc>"));
+ assert.equal((flashSaleSitemap(groups).match(/<loc>https:\/\/buysell\.best\/flash-sale\/<\/loc>/g)||[]).length,1,"live catalogue hub must be indexed exactly once");
  assert.equal(flashSaleSitemap([]),"");
 });
 
 test("R2 image endpoint requires a valid cached key and returns safe content type",async()=>{
- const env={FLASH_MEDIA:{get:async key=>key==="items/123.jpg"?{body:new Uint8Array([1,2,3]),httpMetadata:{contentType:"image/jpeg"}}:null}};
+ const env={FLASH_MEDIA:{get:async key=>["items/123.jpg","items/bulk-123.jpg"].includes(key)?{body:new Uint8Array([1,2,3]),httpMetadata:{contentType:"image/jpeg"}}:null}};
  const good=await serveFlashMedia(new Request("https://buysell.best/flash-media/items/123.jpg"),env,"items/123.jpg");
  assert.equal(good.status,200);
+ assert.equal((await serveFlashMedia(new Request("https://buysell.best/flash-media/items/bulk-123.jpg"),env,"items/bulk-123.jpg")).status,200,"bulk importer images must be crawlable");
  assert.equal(good.headers.get("content-type"),"image/jpeg");
  assert.equal((await good.arrayBuffer()).byteLength,3);
  assert.equal((await serveFlashMedia(new Request("https://buysell.best/flash-media/../secret"),env,"../secret")).status,404);
