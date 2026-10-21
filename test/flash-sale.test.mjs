@@ -57,7 +57,8 @@ test("homepage tile adverts appear only with verified cached images, with honest
  assert.equal(doc.querySelectorAll(".flash-end").length,0);
  const unavailable=new JSDOM(renderFlashHome([])).window.document;
  assert.equal(unavailable.querySelectorAll(".flash-discount").length,0);
- assert.match(unavailable.body.textContent,/not available yet/);
+ assert.equal(unavailable.querySelectorAll(".flash-research-tile").length,24);
+ assert.match(unavailable.body.textContent,/not verified flash-sale offers/);
  const hub=new JSDOM(renderFlashPage(groups)).window.document;
  assert.equal(hub.querySelectorAll(".flash-tile").length,1);
  assert.ok(flashSaleSitemap(groups).includes("<image:loc>https://buysell.best/flash-media/items/image.jpg</image:loc>"));

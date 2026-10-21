@@ -1,3 +1,4 @@
+import {curatedSitemapEntries} from "./lib/product-catalog-fallback.js";
 import {trendingSitemapEntry} from "./lib/trending-sitemap.js";
 import {syncFlashSale,loadFlashSale,renderFlashHome,renderFlashPage,flashSaleSitemap,serveFlashMedia} from "./lib/flash-sale.js";
 import {imageSitemapFromCanonical} from "./lib/image-sitemap.js";
@@ -389,7 +390,7 @@ async function renderSitemap(env){
   const urls=staticPaths.map(path=>`<url><loc>https://buysell.best${path}</loc>${path==="/"&&latestAll?`<lastmod>${escapeHtml(latestAll)}</lastmod>`:""}</url>`).join("");
   const cats=categoryPaths.map(path=>`<url><loc>https://buysell.best/category/${path}</loc>${latestByCategory[path]?`<lastmod>${escapeHtml(latestByCategory[path])}</lastmod>`:""}</url>`).join("");
   const products = productSitemapEntries();
-  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${travelSitemapEntries()}${highIntentSitemapEntries()}${careerSitemapEntries()}${editorialSitemapEntries()}${trendingSitemapEntry()}${flashSaleSitemap(flashSale)}${dynamic}</urlset>`;
+  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${travelSitemapEntries()}${highIntentSitemapEntries()}${careerSitemapEntries()}${editorialSitemapEntries()}${trendingSitemapEntry()}${curatedSitemapEntries()}${flashSaleSitemap(flashSale)}${dynamic}</urlset>`;
 }
 
 async function serveSeoPage(request,env) {
