@@ -1,3 +1,4 @@
+import {importHourlyBulkProducts,bulkDirectory,bulkProduct,bulkSitemap,renderBulkHome,renderBulkDirectoryPage,renderBulkProductPage} from "./lib/bulk-products.js";
 import {curatedSitemapEntries} from "./lib/product-catalog-fallback.js";
 import {trendingSitemapEntry} from "./lib/trending-sitemap.js";
 import {syncFlashSale,loadFlashSale,renderFlashHome,renderFlashPage,flashSaleSitemap,serveFlashMedia} from "./lib/flash-sale.js";
@@ -23,7 +24,7 @@ function withSponsoredSupport(response) {
 }
 
 async function renderAffiliateHome(request, env) {
-  const flash=await loadFlashSale(env);
+  const [flash,bulk] = await Promise.all([loadFlashSale(env),bulkDirectory(env,{size:24})]);
   const response = await env.ASSETS.fetch(request);
   if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) return response;
   const rewriter = new HTMLRewriter()
@@ -32,7 +33,7 @@ async function renderAffiliateHome(request, env) {
     .on("#affiliate-product-spotlight", {element(element) {element.setInnerContent(renderSpotlight(), {html:true});}})
     .on("#current-listings-track", {element(element) {element.setInnerContent(AFFILIATE_PRODUCTS.map(renderInitialCarousel).join(""), {html:true});}})
     .on("#global-deals", {element(element) {element.setInnerContent('<div data-curated-products>'+AFFILIATE_PRODUCTS.map(renderMiniProductTile).join("")+'</div>', {html:true});}})
-    .on("main", {element(element) {element.append(renderFlashHome(flash),{html:true});}})
+    .on("main", {element(element) {element.append(bulk.items.length?renderBulkHome(bulk.items):renderFlashHome(flash),{html:true});}})
     .on("head", {element(element) {element.append('<script type="application/json" id="affiliate-products-data">'+jsonLd(featuredCarouselItems())+'</script>', {html:true});}});
   const headers = new Headers(response.headers);
   headers.set("cache-control", "public, max-age=0, s-maxage=300, must-revalidate");
@@ -349,7 +350,7 @@ async function renderDealHub(env,type,slug,country="US"){
   return new Response(renderDealHubPage({...config,type},live.items,live),{headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=300, s-maxage=600, stale-while-revalidate=900"}});
 }
 async function renderSitemap(env){
-  const flashSale=await loadFlashSale(env);
+  const [flashSale,bulkXML] = await Promise.all([loadFlashSale(env),bulkSitemap(env)]);
   const staticPaths=["/","/categories.html","/post-ad.html","/about.html","/contact.html","/privacy.html","/terms.html"];
   const categoryPaths=["phones","electronics","vehicles","property","fashion","furniture","services","other"];
   let dynamic="",latestAll="",latestByCategory={};
@@ -390,7 +391,7 @@ async function renderSitemap(env){
   const urls=staticPaths.map(path=>`<url><loc>https://buysell.best${path}</loc>${path==="/"&&latestAll?`<lastmod>${escapeHtml(latestAll)}</lastmod>`:""}</url>`).join("");
   const cats=categoryPaths.map(path=>`<url><loc>https://buysell.best/category/${path}</loc>${latestByCategory[path]?`<lastmod>${escapeHtml(latestByCategory[path])}</lastmod>`:""}</url>`).join("");
   const products = productSitemapEntries();
-  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${travelSitemapEntries()}${highIntentSitemapEntries()}${careerSitemapEntries()}${editorialSitemapEntries()}${trendingSitemapEntry()}${curatedSitemapEntries()}${flashSaleSitemap(flashSale)}${dynamic}</urlset>`;
+  return `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">${urls}${cats}${products}${guideSitemapEntries()}${travelSitemapEntries()}${highIntentSitemapEntries()}${careerSitemapEntries()}${editorialSitemapEntries()}${trendingSitemapEntry()}${curatedSitemapEntries()}${flashSaleSitemap(flashSale)}${bulkXML}${dynamic}</urlset>`;
 }
 
 async function serveSeoPage(request,env) {
@@ -445,13 +446,20 @@ async function serveSeoPage(request,env) {
     }
   }
   if (pathname.startsWith("/guides/") || pathname.startsWith("/shopping-methodology/")) return new Response("Guide not found", {status:404,headers:{"x-robots-tag":"noindex","content-type":"text/plain; charset=UTF-8"}});
+  const bulkMatch=pathname.match(/^\/flash-sale\/product\/([a-z0-9-]+)\/?$/);
+  if(bulkMatch){
+    const p=await bulkProduct(env,bulkMatch[1]);
+    if(!p)return new Response("Product not found",{status:404,headers:{"x-robots-tag":"noindex"}});
+    if(pathname!=="/flash-sale/product/"+p.slug+"/")return Response.redirect("https://buysell.best/flash-sale/product/"+p.slug+"/",301);
+    return new Response(renderBulkProductPage(p),{headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public,max-age=180,s-maxage=300","x-content-type-options":"nosniff"}});
+  }
   if (pathname === "/flash-sale") return Response.redirect("https://buysell.best/flash-sale/",301);
   if (pathname === "/flash-sale/" || pathname.startsWith("/flash-sale/category/")) {
     const match=pathname.match(/^\/flash-sale\/category\/([a-z0-9-]+)\/?$/);
     if (pathname !== "/flash-sale/" && !match)
       return new Response("Not found",{status:404,headers:{"x-robots-tag":"noindex"}});
-    const flash=await loadFlashSale(env);
-    const html=renderFlashPage(flash,match?.[1]||null,Number(url.searchParams.get("page"))||1);
+    const [flash,bulk]=await Promise.all([loadFlashSale(env),bulkDirectory(env,{page:Number(url.searchParams.get("page"))||1,size:60})]);
+    const html=!match && bulk.total>0?renderBulkDirectoryPage(bulk):renderFlashPage(flash,match?.[1]||null,Number(url.searchParams.get("page"))||1);
     if(!html)return new Response("Not found",{status:404,headers:{"x-robots-tag":"noindex"}});
     return new Response(html,{headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=60, s-maxage=300","x-content-type-options":"nosniff"}});
   }
@@ -593,7 +601,9 @@ export default {
     if (event.cron === '0 */6 * * *') ctx.waitUntil(syncPromos(env).catch(() => {}));
     // Read-only URL inspections: five URLs per hour with a persisted cursor.
     if (event.cron === '0 * * * *') ctx.waitUntil(syncSearchConsole(env).catch(() => {}));
-    if (event.cron === '0 * * * *') ctx.waitUntil(syncFlashSale(env).catch(() => {}));
+    // One bounded import every hour. The previous full-feed importer consumed
+    // excess bandwidth and would reject large XML feeds; never run both.
+    if (event.cron === '0 * * * *') ctx.waitUntil(importHourlyBulkProducts(env).catch(() => {}));
   },
 
   async fetch(request, env, ctx) {

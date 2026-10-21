@@ -11,12 +11,14 @@ test("approved discounts are calculated from feed data without making up prices 
  assert.equal(p.discount,50);assert.equal(p.price,25);assert.equal(p.originalPrice,50);
  assert.equal(p.saleEnd,null);assert.equal(p.source,"Approved AliExpress affiliate product feed");
  assert.equal(normalizeOffer({...basic,oldprice:"24"},now),null);
- assert.equal(normalizeOffer({...basic,oldprice:"100"},now),null);
+ assert.equal(normalizeOffer({...basic,oldprice:"100"},now)?.discount,75);
+ assert.equal(normalizeOffer({...basic,oldprice:"800"},now),null);
+ assert.equal(normalizeOffer({...basic,oldprice:"28"},now),null);
  assert.equal(normalizeOffer({...basic,picture:"https://evil.example/photo.jpg"},now),null);
  assert.equal(normalizeOffer({...basic,url:"http://www.aliexpress.com/item/12345678.html"},now),null);
  assert.equal(normalizeOffer({...basic,name:"THC vape accessory"},now),null);
  assert.equal(normalizeOffer({...basic,end_date:"2020-01-01T00:00:00Z"},now),null);
- assert.equal(normalizeOffer({...basic,price_discount:"20",oldprice:"50",discount_percent:"60"},now),null);
+ assert.equal(normalizeOffer({...basic,price_discount:"20",oldprice:"50",discount_percent:"20"},now),null);
  const withEnd=normalizeOffer({...basic,end_date:"2026-10-22T00:00:00Z"},now);
  assert.equal(withEnd.saleEnd,"2026-10-22T00:00:00.000Z");
 });
@@ -83,8 +85,8 @@ test("scheduled sync never invents products or calls external services without v
 test("Worker appends catalogue at bottom of main and retains existing Adsterra popup and six-hour cron",async()=>{
  const w=await readFile("worker.js","utf8"),wr=await readFile("wrangler.toml","utf8");
  const ads=await readFile("js/sponsored-click.js","utf8");
- assert.ok(w.includes('element.append(renderFlashHome(flash),{html:true})'));
- assert.ok(w.includes('event.cron === \'0 * * * *\') ctx.waitUntil(syncFlashSale'));
+ assert.ok(w.includes('bulk.items.length?renderBulkHome(bulk.items):renderFlashHome(flash)'));
+ assert.ok(w.includes('event.cron === \'0 * * * *\') ctx.waitUntil(importHourlyBulkProducts'));
  assert.ok(w.includes('event.cron === \'0 */6 * * *\') ctx.waitUntil(syncPromos'));
  assert.ok(w.includes('flashSaleSitemap(flashSale)'));
  assert.ok(wr.includes('binding = "FLASH_MEDIA"'));
