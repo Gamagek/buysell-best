@@ -32,3 +32,16 @@
 .flash-footlink a{color:#17667c}
 .flash-section .flash-tile .flash-card-image img{display:block;width:100%;object-fit:contain;aspect-ratio:1}
 .flash-directory .flash-grid{margin-top:20px}
+
+/* Image-first AliExpress product research pages (seller photos, never AI mockups). */
+.flash-product-overview{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start;margin:18px 0 26px}
+.flash-product-overview figure{margin:0;background:#fff;border:1px solid #e4ebf0;border-radius:12px;padding:12px;overflow:hidden}
+.flash-product-overview img{width:100%;height:auto;aspect-ratio:1;object-fit:contain;display:block}
+.flash-product-overview figcaption{font-size:.78rem;line-height:1.5;color:#58697b;padding:8px 4px}
+.flash-product-overview section{background:#f6f9fb;border:1px solid #e0e8f0;border-radius:12px;padding:16px}
+.flash-product-overview .flash-shop{display:inline-block;margin:14px 0}
+.flash-product-research{max-width:840px;line-height:1.8;font-size:1rem}
+.flash-product-research h2{margin-top:22px;font-size:1.4rem}
+.flash-product-detail h1{font-size:clamp(1.55rem,3.5vw,2.4rem);line-height:1.25}
+.flash-product-detail .flash-discount{margin:6px 0 14px}
+@media(max-width:680px){.flash-product-overview{grid-template-columns:1fr;gap:12px}.flash-product-overview figure{max-width:480px}.flash-product-research{font-size:.95rem}}
