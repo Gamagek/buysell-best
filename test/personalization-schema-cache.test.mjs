@@ -14,7 +14,7 @@ function stubDB({failOnce=false}={}){
     },
     async batch(statements){
       calls++;
-      assert.equal(statements.length,14,"full legacy D1 schema should still be installed once");
+      assert.equal(statements.length,13,"full legacy D1 schema should still be installed once");
       if(failOnce && calls===1)throw new Error("temporary D1 quota error 7500");
       return statements;
     }
@@ -26,7 +26,7 @@ test("concurrent visitor actions share one schema initialization per D1 binding"
   const result=await Promise.all(Array.from({length:20},()=>ensureSchema(db)));
   assert.ok(result.every(x=>x===true));
   assert.equal(db.calls,1);
-  assert.equal(db.prepared,14);
+  assert.equal(db.prepared,13);
   assert.equal(await ensureSchema(db),true);
   assert.equal(db.calls,1,"sequential repeated requests must reuse success");
 });
