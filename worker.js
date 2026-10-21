@@ -1,3 +1,4 @@
+import { cachedPublicResponse } from "./lib/public-cache.js";
 import {curatedSitemapEntries} from "./lib/product-catalog-fallback.js";
 import {trendingSitemapEntry} from "./lib/trending-sitemap.js";
 import {syncFlashSale,loadFlashSale,renderFlashHome,renderFlashPage,flashSaleSitemap,serveFlashMedia} from "./lib/flash-sale.js";
@@ -597,6 +598,13 @@ export default {
   },
 
   async fetch(request, env, ctx) {
+    const cached = await cachedPublicResponse(request, env, ctx,
+      () => serveUncached(request, env, ctx));
+    return cached || serveUncached(request, env, ctx);
+  }
+};
+
+async function serveUncached(request, env, ctx) {
     const pathname=new URL(request.url).pathname;
     if(pathname.startsWith("/flash-media/"))return serveFlashMedia(request,env,pathname.slice("/flash-media/".length));
     const seoResponse=await serveSeoPage(request,env);
@@ -625,5 +633,4 @@ export default {
     }
 
     return fn({request, env, ctx});
-  }
-};
+}
