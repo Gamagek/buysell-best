@@ -85,8 +85,8 @@ test("scheduled sync never invents products or calls external services without v
 test("Worker appends catalogue at bottom of main and retains existing Adsterra popup and six-hour cron",async()=>{
  const w=await readFile("worker.js","utf8"),wr=await readFile("wrangler.toml","utf8");
  const ads=await readFile("js/sponsored-click.js","utf8");
- assert.ok(w.includes('element.append(renderFlashHome(flash),{html:true})'));
- assert.ok(w.includes('event.cron === \'0 * * * *\') ctx.waitUntil(syncFlashSale'));
+ assert.ok(w.includes('bulk.items.length?renderBulkHome(bulk.items):renderFlashHome(flash)'));
+ assert.ok(w.includes('event.cron === \'0 * * * *\') ctx.waitUntil(importHourlyBulkProducts'));
  assert.ok(w.includes('event.cron === \'0 */6 * * *\') ctx.waitUntil(syncPromos'));
  assert.ok(w.includes('flashSaleSitemap(flashSale)'));
  assert.ok(wr.includes('binding = "FLASH_MEDIA"'));
