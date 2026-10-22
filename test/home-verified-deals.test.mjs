@@ -81,8 +81,8 @@ test("daily schedule never silently re-enables hourly product importing or chang
  const wrangler=await readFile("wrangler.toml","utf8");
  const worker=await readFile("worker.js","utf8");
  const popup=await readFile("js/sponsored-click.js","utf8");
- assert.ok(wrangler.includes('"15 1 * * *"'));
- assert.ok(worker.includes("event.cron === '15 1 * * *'"));
+ assert.ok(!wrangler.includes('"15 1 * * *"'),"no extra cron trigger on Free plan");
+ assert.ok(worker.includes("new Date(event.scheduledTime).getUTCHours() === 0"),"daily refresh piggybacks on existing six-hour cron");
  assert.ok(worker.includes("event.cron === '0 * * * *'"));
  assert.doesNotMatch(worker,/event\.cron === '0 \* \* \* \*'\) ctx\.waitUntil\(syncFlashSale/);
  assert.ok(popup.includes("data-sponsored-navigation"));
