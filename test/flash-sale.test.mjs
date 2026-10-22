@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 import {JSDOM} from "jsdom";
-import {parseFeed,normalizeOffer,chooseOffers,renderFlashHome,renderFlashPage,flashSaleSitemap,syncFlashSale,serveFlashMedia} from "../lib/flash-sale.js";
+import {parseFeed,normalizeOffer,chooseOffers,renderFlashHome,renderFlashPage,flashSaleSitemap,syncFlashSale,serveFlashMedia,flashProductPath,findFlashProduct,renderFlashProductPage} from "../lib/flash-sale.js";
 
 const now=new Date("2026-10-21T00:00:00.000Z");
 const basic={offer_id:"12345678",name:"Wireless keyboard with a compact carrying case",category_name:"Gaming keyboards",price:"25.00",oldprice:"50.00",currencyId:"USD",picture:"https://ae01.alicdn.com/kf/test.jpg",url:"https://www.aliexpress.com/item/12345678.html",description:"Portable gaming keyboard with a compact layout"};
@@ -100,4 +100,46 @@ test("Worker appends catalogue at bottom of main and retains existing Adsterra p
  assert.ok(ads.includes("Continue to "));
  const adm=await readFile("lib/display-ads.js","utf8");
  assert.ok(adm.includes("DISPLAY_AD_UNITS"));
+});
+
+
+test("each verified cached offer receives a canonical crawlable product page and matching image sitemap",()=>{
+ const p={...normalizeOffer(basic,now),image:"/flash-media/items/verifiedproduct.webp"};
+ const group={name:"Gaming keyboards",slug:p.slug,modifiedAt:"2026-10-21T00:00:00Z",offers:[p]};
+ const productUrl="https://buysell.best"+flashProductPath(p);
+ const found=findFlashProduct([group],flashProductPath(p).split("/")[3]);
+ assert.ok(found);
+ assert.equal(found.product.id,p.id);
+ assert.equal(findFlashProduct([group],"not-real"),null);
+ const doc=new JSDOM(renderFlashProductPage(p,group)).window.document;
+ assert.equal(doc.querySelector("link[rel=canonical]").href,productUrl);
+ assert.ok(doc.querySelector('meta[name="robots"]').content.includes("index"));
+ assert.equal(doc.querySelector("img").getAttribute("src"),p.image);
+ assert.ok(doc.querySelector(".flash-shop").getAttribute("rel").includes("sponsored"));
+ const ld=[...doc.querySelectorAll('script[type="application/ld+json"]')].map(x=>JSON.parse(x.textContent));
+ const schema=ld.find(x=>x["@type"]==="Product");
+ assert.equal(schema.offers.priceCurrency,"USD");
+ assert.equal(schema.offers.price,p.price);
+ assert.equal(schema.offers.url,p.destination);
+ assert.ok(!("aggregateRating" in schema));
+ assert.ok(!("availability" in schema.offers));
+ assert.ok(ld.some(x=>x["@type"]==="BreadcrumbList"));
+ const sitemap=flashSaleSitemap([group]);
+ const entry=[...sitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)].map(x=>x[1]).find(x=>x.includes("<loc>"+productUrl+"</loc>"));
+ assert.ok(entry,"product detail must be in canonical sitemap");
+ assert.ok(entry.includes("<image:loc>https://buysell.best"+p.image+"</image:loc>"));
+ const rendered=renderFlashPage([group]);
+ assert.ok(rendered.includes(flashProductPath(p)),"category product tiles must link to detail");
+ const expired={...p,saleEnd:"2026-01-01T00:00:00Z"};
+ assert.equal(normalizeOffer({...basic,end_date:expired.saleEnd},now),null);
+});
+
+test("pagination canonical is self-referential and impossible pages are 404 candidates",()=>{
+ const p={...normalizeOffer(basic,now),image:"/flash-media/items/verifiedproduct.webp"};
+ const group={name:"Gaming keyboards",slug:p.slug,offers:Array.from({length:65},(_,i)=>({...p,id:""+i,title:"Product "+i}))};
+ const second=new JSDOM(renderFlashPage([group],null,2)).window.document;
+ assert.equal(second.querySelector("link[rel=canonical]").href,"https://buysell.best/flash-sale/?page=2");
+ assert.match(second.querySelector('meta[name="robots"]').content,/index,follow/);
+ assert.equal(renderFlashPage([group],null,3),null);
+ assert.equal(renderFlashPage([group],null,-1),null);
 });
