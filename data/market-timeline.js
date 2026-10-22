@@ -1,94 +1,13 @@
+// Static source shortcuts are NOT a claim that a sale is live.
+// Actual daily verified USD deal cards are server-rendered from the Admitad snapshot.
 const GLOBAL_MARKET_TIMELINE = [
-  {
-    id:"daraz-now",
-    state:"NOW",
-    merchant:"Daraz",
-    label:"Flash Sale & On Sale Now",
-    date:"Live now",
-    detail:"International marketplace",
-    url:"https://www.daraz.lk/",
-    tone:"live"
-  },
-  {
-    id:"ebay-now",
-    state:"NOW",
-    merchant:"eBay",
-    label:"Daily Deals",
-    date:"Live now",
-    detail:"Daily marketplace offers",
-    url:"https://www.ebay.com/deals/daily/",
-    tone:"live"
-  },
-  {
-    id:"amazon-now",
-    state:"NOW",
-    merchant:"Amazon",
-    label:"Early Prime Big Deal Days offers",
-    date:"Live before Oct 6",
-    detail:"Early savings are available",
-    url:"https://www.aboutamazon.com/prime-big-deal-days",
-    tone:"live"
-  },
-  {
-    id:"walmart-now",
-    state:"NOW",
-    merchant:"Walmart",
-    label:"Fall deals warm-up",
-    date:"Save now",
-    detail:"More deals start Oct 5",
-    url:"https://www.walmart.com/shop/deals/announce",
-    tone:"live"
-  },
-  {
-    id:"aliexpress-watch",
-    state:"WATCH",
-    merchant:"AliExpress",
-    label:"Seasonal deal watch",
-    date:"Check live",
-    detail:"Promotions vary by market",
-    url:"https://www.aliexpress.com/",
-    tone:"watch"
-  },
-  {
-    id:"temu-watch",
-    state:"WATCH",
-    merchant:"Temu",
-    label:"Current promotion watch",
-    date:"Check live",
-    detail:"Promotions vary by market",
-    url:"https://www.temu.com/",
-    tone:"watch"
-  },
-  {
-    id:"walmart-next",
-    state:"NEXT",
-    merchant:"Walmart",
-    label:"Fall Deals event",
-    date:"Oct 5, 2026",
-    detail:"Starts 12am ET",
-    url:"https://www.walmart.com/shop/deals/announce",
-    tone:"next"
-  },
-  {
-    id:"amazon-next",
-    state:"NEXT",
-    merchant:"Amazon",
-    label:"Prime Big Deal Days",
-    date:"Oct 6–7, 2026",
-    detail:"48-hour event",
-    url:"https://www.aboutamazon.com/prime-big-deal-days",
-    tone:"next"
-  },
-  {
-    id:"halloween-watch",
-    state:"NEXT",
-    merchant:"BuySell.Best",
-    label:"Halloween shopping hub",
-    date:"Oct 2026",
-    detail:"Seasonal category discovery",
-    url:"/seasonal/halloween-deals-2026",
-    tone:"next"
-  }
+  {id:"aliexpress",state:"CHECK",merchant:"AliExpress",label:"Current seller offers",date:"Confirm checkout",detail:"Regional prices and savings vary",url:"https://www.aliexpress.com/",tone:"watch"},
+  {id:"ebay",state:"CHECK",merchant:"eBay",label:"Daily deals source",date:"Verify source",detail:"Check eligible items and delivery",url:"https://www.ebay.com/deals/daily/",tone:"watch"},
+  {id:"daraz",state:"CHECK",merchant:"Daraz",label:"Official marketplace",date:"Verify source",detail:"Availability changes by country",url:"https://www.daraz.lk/",tone:"watch"},
+  {id:"amazon",state:"CHECK",merchant:"Amazon",label:"Official shopping site",date:"Verify source",detail:"No unverified event countdowns",url:"https://www.amazon.com/",tone:"watch"},
+  {id:"walmart",state:"CHECK",merchant:"Walmart",label:"Shopping deals source",date:"Verify source",detail:"Confirm current merchant terms",url:"https://www.walmart.com/shop/deals/",tone:"watch"},
+  {id:"temu",state:"CHECK",merchant:"Temu",label:"Official marketplace",date:"Verify source",detail:"Confirm individual offers",url:"https://www.temu.com/",tone:"watch"},
+  {id:"buysell",state:"EXPLORE",merchant:"BuySell.Best",label:"Verified product catalogue",date:"Daily feed checks",detail:"Only source-backed discounts appear",url:"/flash-sale/",tone:"watch"}
 ];
 
 function renderGlobalMarketPulse() {
