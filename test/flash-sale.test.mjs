@@ -86,7 +86,7 @@ test("Worker appends catalogue at bottom of main and retains existing Adsterra p
  const w=await readFile("worker.js","utf8"),wr=await readFile("wrangler.toml","utf8");
  const ads=await readFile("js/sponsored-click.js","utf8");
  assert.ok(w.includes('element.append(renderFlashHome(flash),{html:true})'));
- assert.ok(w.includes('event.cron === \'0 * * * *\') ctx.waitUntil(syncFlashSale'));
+ assert.ok(!w.includes("ctx.waitUntil(syncFlashSale(env)"),'hourly product sync remains paused');
  assert.ok(w.includes('event.cron === \'0 */6 * * *\') ctx.waitUntil(syncPromos'));
  assert.ok(w.includes('flashSaleSitemap(flashSale)'));
  assert.ok(wr.includes('binding = "FLASH_MEDIA"'));

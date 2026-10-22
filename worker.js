@@ -614,7 +614,7 @@ export default {
     if (event.cron === '0 */6 * * *') ctx.waitUntil(syncPromos(env).catch(() => {}));
     // Read-only URL inspections: five URLs per hour with a persisted cursor.
     if (event.cron === '0 * * * *') ctx.waitUntil(syncSearchConsole(env).catch(() => {}));
-    if (event.cron === '0 * * * *') ctx.waitUntil(syncFlashSale(env).catch(() => {}));
+    // Owner paused hourly product sync; retain read-only Search Console monitoring.
   },
 
   async fetch(request, env, ctx) {
