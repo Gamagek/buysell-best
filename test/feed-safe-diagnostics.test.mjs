@@ -38,10 +38,14 @@ test("feed URLs can never redirect to arbitrary external hosts, http, or more th
    fetchApprovedFeed(admitad,async()=>new Response(null,{status:302,headers:{location:"https://hostile.invalid/steal?token=hidden"}})),
    {message:"FLASH_FEED_REDIRECT_UNTRUSTED"}
  );
- await assert.rejects(
-   fetchApprovedFeed(admitad,async()=>new Response(null,{status:302,headers:{location:"http://files.admitad.com/public.csv"}})),
-   {message:"FLASH_FEED_REDIRECT_UNTRUSTED"}
- );
+ const urls=[];
+ await fetchApprovedFeed(admitad,async url=>{
+   urls.push(url);
+   return urls.length===1
+     ?new Response(null,{status:302,headers:{location:"http://files.admitad.com/public.csv"}})
+     :new Response("offer_id,name",{status:200});
+ });
+ assert.equal(urls[1],"https://files.admitad.com/public.csv","old Admitad http redirect must be upgraded, never requested over http");
  await assert.rejects(
    fetchApprovedFeed(admitad,async()=>new Response(null,{status:302,headers:{location:"/again"}})),
    {message:"FLASH_FEED_REDIRECT_LIMIT"}
