@@ -13,7 +13,7 @@ database_name = "buysell-best-db"
 database_id = "822532f2-1e71-41c5-8d3b-0b678c903e0a"
 
 [triggers]
-crons = ["0 */6 * * *", "0 * * * *", "15 1 * * *"]
+crons = ["0 */6 * * *", "0 * * * *"]
 
 [[r2_buckets]]
 binding = "FLASH_MEDIA"
