@@ -1,13 +1,5 @@
-const LISTINGS=[
-{id:"demo-iphone-15",slug:"apple-iphone-15-128gb-colombo",title:"Apple iPhone 15 128GB",brand:"Apple",category:"phones",price:145000,currency:"LKR",location:"",condition:"Used",emoji:"📱",description:"Demo listing for the BuySell.Best starter site. Replace this with real, moderated listings when D1 is connected."},
-{id:"demo-s24",slug:"samsung-galaxy-s24-256gb-kandy",title:"Samsung Galaxy S24 256GB",brand:"Samsung",category:"phones",price:158000,currency:"LKR",location:"",condition:"Used",emoji:"📱",description:"Demo listing with a clear title, price, location and condition."},
-{id:"demo-laptop",slug:"lenovo-thinkpad-t14-galle",title:"Lenovo ThinkPad T14",brand:"Lenovo",category:"electronics",price:98000,currency:"LKR",location:"",condition:"Used",emoji:"💻",description:"Demo laptop listing. Add real specifications, photos and seller details in production."},
-{id:"demo-camera",slug:"mirrorless-camera-colombo",title:"Mirrorless Camera Kit",brand:"Sony",category:"electronics",price:125000,currency:"LKR",location:"",condition:"Used",emoji:"📷",description:"Demo camera listing for the marketplace interface."},
-{id:"demo-car",slug:"toyota-aqua-hybrid-colombo",title:"Toyota Aqua Hybrid",brand:"Toyota",category:"vehicles",price:7850000,currency:"LKR",location:"",condition:"Used",emoji:"🚗",description:"Demo vehicle listing. Vehicle listings should use truthful, detailed information."},
-{id:"demo-sofa",slug:"three-seat-sofa-negombo",title:"Three-seat Sofa",brand:"",category:"furniture",price:45000,currency:"LKR",location:"",condition:"Used",emoji:"🛋️",description:"Demo furniture listing."},
-{id:"demo-land",slug:"small-land-plot-kurunegala",title:"Small Land Plot",brand:"",category:"property",price:3200000,currency:"LKR",location:"",condition:"New",emoji:"🏠",description:"Demo property listing. Verify ownership and legal details independently."},
-{id:"demo-bike",slug:"motorbike-commuter-kalutara",title:"Commuter Motorbike",brand:"",category:"vehicles",price:420000,currency:"LKR",location:"",condition:"Used",emoji:"🏍️",description:"Demo motorbike listing."}
-];
+// Local classifieds are loaded from moderated D1 records, not public demonstration fixtures.
+const LISTINGS=[];
 
 const COUNTRY_NAMES={LK:"Sri Lanka",US:"United States",GB:"United Kingdom",IN:"India",AU:"Australia",CA:"Canada",NZ:"New Zealand",SG:"Singapore",MY:"Malaysia",JP:"Japan",KR:"South Korea",AE:"United Arab Emirates",ZA:"South Africa",BR:"Brazil",MX:"Mexico",DE:"Germany",FR:"France",IT:"Italy",ES:"Spain",IE:"Ireland",PK:"Pakistan",BD:"Bangladesh",NP:"Nepal",SA:"Saudi Arabia"};
 let ACTIVE_LISTINGS=[];
@@ -25,7 +17,7 @@ async function loadSiteListings(){
       .map(x=>({...x,image:displayText(x.image||x.image_url,"")}));
     const bySlug=new Map();
     remote.forEach(x=>{if(x.slug)bySlug.set(String(x.slug),x);});
-    LISTINGS.forEach(x=>{if(x.slug&&!bySlug.has(String(x.slug)))bySlug.set(String(x.slug),x);});
+    // Never inject synthetic used products with LKR prices into public results.
     ACTIVE_LISTINGS=[...bySlug.values()];
     window.__bsbListings=ACTIVE_LISTINGS;
     return ACTIVE_LISTINGS;
@@ -157,9 +149,8 @@ async function loadCurrentListingsCarousel(){
   if(globalResult&&show(globalResult.items,globalResult.temporary?"Global catalog preview; verify seller prices.":"Current global market offers and returned prices."))return;
   // A curated product remains usable even when every remote feed is unavailable.
   if(featured.length)return;
-  const direct=await fetchJson("https://dummyjson.com/products?limit=12",4500);
-  const directItems=(direct?.products||[]).map(x=>({id:"global-"+x.id,title:displayText(x.title,"Product"),category:displayText(x.category,"Global Market"),condition:"Online offer",price:Number(x.price)||0,currency:"USD",image:displayText(x.thumbnail||x.images?.[0],""),url:"https://www.google.com/search?tbm=shop&q="+encodeURIComponent(displayText(x.title,"product"))})).filter(x=>x.image&&x.price>0);
-  if(show(directItems,"Global catalog preview; verify seller prices."))return;
+  // Do not inject generic demo-product data when genuine seller feeds are missing.
+
   const lateLocal=await localPromise.catch(()=>[]);
   if(show(lateLocal,"Live BuySell.Best listings — prices come from the listing records."))return;
   setupCurrentListingsCarousel([]);
@@ -311,7 +302,7 @@ document.addEventListener("DOMContentLoaded",async()=>{
   loadCurrentListingsCarousel();
   const siteItems=await loadSiteListings();
   if(home){
-    home.innerHTML=siteItems.slice(0,8).map(listingCard).join("");
+    home.innerHTML=siteItems.length?siteItems.slice(0,8).map(listingCard).join(""):'<p class="flash-notice">No verified local classifieds are listed at the moment. <a href="/flash-sale/">Explore the product catalogue →</a></p>';
     wireInteractions(home);
   }
   const profile=await getProfile();
