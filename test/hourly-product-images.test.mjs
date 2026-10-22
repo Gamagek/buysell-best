@@ -15,10 +15,11 @@ test('seller photo provenance is never replaced by an illustrative candidate thu
  }
 });
 
-test('hourly image sync preserves catalogue and approved image provenance',async()=>{
+test('manual image sync preserves catalogue and approved image provenance',async()=>{
  const workflow=await readFile('.github/workflows/hourly-product-images.yml','utf8');
  const generator=await readFile('scripts/sync-editorial-product-images.mjs','utf8');
- assert.match(workflow,/17 \* \* \* \*/);
+ assert.ok(workflow.includes('workflow_dispatch:'));
+ assert.doesNotMatch(workflow,/cron:/,'owner disabled hourly product-image schedule');
  assert.ok(workflow.includes('node scripts/sync-editorial-product-images.mjs'));
  assert.ok(workflow.includes('npm run content:export'));
  assert.ok(workflow.includes('npm test'));
