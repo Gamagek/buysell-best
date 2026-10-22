@@ -9,6 +9,7 @@ import { syncSearchConsole } from "./lib/gsc-integration.js";
 import { DEAL_CATEGORIES, SEASONAL_PAGES, DEAL_HUB_LINKS } from "./lib/deal-seo.js";
 import { searchEbay } from "./functions/api/deals.js";
 import { syncPromos } from "./lib/promo-sync.js";
+import {selectCategoryDiscounts,renderDailyDiscountShelf,renderHomeGlobalDeals,renderDailyPulse,loadVerifiedCoupons,renderVerifiedCouponPanel} from "./lib/home-verified-deals.js";
 import { AFFILIATE_PRODUCTS, findProduct, featuredCarouselItems, productPath, renderSpotlight, renderInitialCarousel, renderMiniProductTile, renderProductPage, renderProductsIndex, productSitemapEntries } from "./lib/affiliate-products.js";
 import { findShoppingProduct, renderShoppingProductPage, shoppingProductPath, findGuide, findGuideCategory, guidePath, categoryPath, renderGuidesIndex, renderGuideCategory, renderShoppingGuide, renderShoppingMethodology, renderGuidesSpotlight, guideSitemapEntries } from "./lib/shopping-guides.js";
 import { renderHotelComparison, renderPromoCodes, travelSitemapEntries } from "./lib/travel-guides.js";
@@ -25,6 +26,8 @@ function withSponsoredSupport(response) {
 
 async function renderAffiliateHome(request, env) {
   const flash=await loadFlashSale(env);
+  const couponCards=await loadVerifiedCoupons(env);
+  const verifiedGlobal=renderHomeGlobalDeals(flash);
   const response = await env.ASSETS.fetch(request);
   if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) return response;
   const rewriter = new HTMLRewriter()
@@ -32,7 +35,11 @@ async function renderAffiliateHome(request, env) {
     .on(".shopping-home-section", {element(element) {element.after(renderHighIntentSpotlight()+renderCareerSpotlight(), {html:true});}})
     .on("#affiliate-product-spotlight", {element(element) {element.setInnerContent(renderSpotlight(), {html:true});}})
     .on("#current-listings-track", {element(element) {element.setInnerContent(AFFILIATE_PRODUCTS.map(renderInitialCarousel).join(""), {html:true});}})
-    .on("#global-deals", {element(element) {element.setInnerContent('<div data-curated-products>'+AFFILIATE_PRODUCTS.map(renderMiniProductTile).join("")+'</div>', {html:true});}})
+    .on("#global-deals", {element(element) {element.setInnerContent(verifiedGlobal || '<div data-curated-products>'+AFFILIATE_PRODUCTS.map(renderMiniProductTile).join("")+'</div>', {html:true});}})
+    .on(".current-listings-section", {element(element) {const shelf=renderDailyDiscountShelf(flash);if(shelf)element.before(shelf,{html:true});}})
+    .on(".market-pulse-wrap", {element(element) {const pulse=renderDailyPulse(flash);if(pulse)element.after(pulse,{html:true});}})
+    .on(".category-grid", {element(element) {const groups=selectCategoryDiscounts(flash,80);if(groups.length){const seen=new Set();const links=groups.filter(p=>!seen.has(p.groupSlug)&&seen.add(p.groupSlug)).map(p=>'<a href="/flash-sale/category/'+escapeHtml(p.groupSlug)+'/">'+escapeHtml(p.groupName)+'</a>').join("");element.before('<nav class="flash-categories flash-category-shortcuts" aria-label="Verified affiliate deal categories">'+links+'</nav>',{html:true});}}})
+    .on(".vip-analyzer-section", {element(element) {element.before(renderVerifiedCouponPanel(couponCards),{html:true});}})
     .on("main", {element(element) {element.append(renderFlashHome(flash),{html:true});}})
     .on("head", {element(element) {element.append('<script type="application/json" id="affiliate-products-data">'+jsonLd(featuredCarouselItems())+'</script>', {html:true});}});
   const headers = new Headers(response.headers);
@@ -418,7 +425,11 @@ async function serveSeoPage(request,env) {
   const guideHeaders = {"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=60, s-maxage=300","x-content-type-options":"nosniff","referrer-policy":"strict-origin-when-cross-origin"};
   if (["/hotels","/promo-codes"].includes(pathname)) return Response.redirect("https://buysell.best"+pathname+"/"+url.search,301);
   if (pathname === "/hotels/") return new Response(renderHotelComparison(url.searchParams), {headers:guideHeaders});
-  if (pathname === "/promo-codes/") return new Response(renderPromoCodes(), {headers:guideHeaders});
+  if (pathname === "/promo-codes/") {
+    const offers=await loadVerifiedCoupons(env);
+    const html=renderPromoCodes().replace('<section class="travel-hero">',renderVerifiedCouponPanel(offers)+'<section class="travel-hero">');
+    return new Response(html,{headers:guideHeaders});
+  }
   if (pathname === "/careers") return Response.redirect("https://buysell.best/careers/",301);
   if (pathname === "/careers/") return new Response(renderCareerIndex(),{headers:guideHeaders});
   const careerMatch=pathname.match(/^\/careers\/([^/]+)\/?$/);
@@ -465,7 +476,10 @@ async function serveSeoPage(request,env) {
     if (pathname !== "/flash-sale/" && !match)
       return new Response("Not found",{status:404,headers:{"x-robots-tag":"noindex"}});
     const flash=await loadFlashSale(env);
-    const html=renderFlashPage(flash,match?.[1]||null,Number(url.searchParams.get("page"))||1);
+    const rawPage=url.searchParams.get("page");
+    const page=rawPage===null?1:/^[1-9]\d{0,3}$/.test(rawPage)?Number(rawPage):NaN;
+    if(!Number.isFinite(page))return new Response("Not found",{status:404,headers:{"x-robots-tag":"noindex"}});
+    const html=renderFlashPage(flash,match?.[1]||null,page);
     if(!html)return new Response("Not found",{status:404,headers:{"x-robots-tag":"noindex"}});
     return new Response(html,{headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=60, s-maxage=300","x-content-type-options":"nosniff"}});
   }
@@ -610,8 +624,10 @@ async function serveAsset(request, env) {
 
 export default {
   async scheduled(event, env, ctx) {
-    // Keep the existing six-hour promotional sync unchanged.
+    // Keep the existing six-hour coupon sync unchanged.
     if (event.cron === '0 */6 * * *') ctx.waitUntil(syncPromos(env).catch(() => {}));
+    // Daily approved-feed snapshot (not an hourly bulk product publisher).
+    if (event.cron === '15 1 * * *') ctx.waitUntil(syncFlashSale(env).catch(() => {}));
     // Read-only URL inspections: five URLs per hour with a persisted cursor.
     if (event.cron === '0 * * * *') ctx.waitUntil(syncSearchConsole(env).catch(() => {}));
     // Owner paused hourly product sync; retain read-only Search Console monitoring.
