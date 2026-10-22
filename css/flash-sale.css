@@ -32,3 +32,47 @@
 .flash-footlink a{color:#17667c}
 .flash-section .flash-tile .flash-card-image img{display:block;width:100%;object-fit:contain;aspect-ratio:1}
 .flash-directory .flash-grid{margin-top:20px}
+
+
+/* Daily feed-backed merchandising; compact and mobile-friendly without touching classifieds. */
+.flash-home-featured{background:#f6f8ff}
+.flash-category-label{font-size:.72rem;font-weight:750;color:#285d98}
+.flash-daily-tile .flash-card-image{display:block}
+.flash-daily-tile .flash-card-image img{width:100%;aspect-ratio:1;object-fit:contain}
+.flash-global-deals{grid-column:1/-1;width:100%;min-width:0}
+.flash-global-deals .flash-notice{margin:0 0 14px}
+.flash-category-shortcuts{margin:0 0 20px}
+.flash-pulse-summary{padding:36px 0;background:#f7fafd}
+.flash-coupon-section{padding:34px 0;background:#f9fbff}
+.flash-coupon-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.flash-coupon-card{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid #dce7f3;border-radius:13px;padding:17px;min-width:0}
+.flash-coupon-card h3{font-size:1.02rem;line-height:1.4;margin:0}
+.flash-coupon-card p{font-size:.85rem;line-height:1.55;margin:0}
+.flash-coupon-code{color:#205493;font-weight:700;overflow-wrap:anywhere}
+.flash-coupon-code code{font-size:.95rem;padding:5px 8px;background:#ecf5ff;border-radius:6px}
+.flash-coupon-terms{color:#637387}
+.flash-coupon-card .flash-shop{margin-top:auto}
+@media(max-width:560px){
+ .flash-coupon-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .flash-coupon-card{padding:11px}
+ .flash-coupon-card h3{font-size:.88rem}
+ .flash-daily-tile .flash-price strong{font-size:.92rem}
+ .flash-pulse-summary{padding:22px 0}
+}
+
+/* Source-backed individual merchant offer pages. No fake merchant ratings/stock. */
+.flash-product-detail{padding:25px 14px 55px;max-width:1160px;margin:auto}
+.flash-product-detail h1{font-size:clamp(1.5rem,4vw,2.25rem);line-height:1.27;margin:14px 0}
+.flash-detail-crumbs{font-size:.88rem;color:#526780}
+.flash-detail-crumbs a,.flash-detail-analysis a{color:#156b79}
+.flash-detail-layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:28px;margin-top:20px}
+.flash-detail-layout figure{margin:0}
+.flash-detail-layout figure img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain;border-radius:16px;border:1px solid #e1eaf1}
+.flash-detail-layout figcaption{font-size:.81rem;color:#6a7c90;margin-top:9px;line-height:1.45}
+.flash-detail-buy{padding:22px;border:1px solid #dfeaf1;border-radius:14px;background:#fbfdff;align-self:start}
+.flash-detail-buy .flash-price strong{font-size:1.65rem}
+.flash-detail-buy .flash-shop{margin-top:20px}
+.flash-detail-analysis{max-width:840px;margin-top:28px;line-height:1.8}
+.flash-detail-analysis h2{font-size:1.25rem;margin:26px 0 10px}
+.flash-detail-analysis li{margin-bottom:8px}
+@media(max-width:700px){.flash-detail-layout{grid-template-columns:1fr}.flash-detail-buy{padding:15px}}
