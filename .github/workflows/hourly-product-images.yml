@@ -1,7 +1,5 @@
-name: Hourly Product Image SEO Sync
+name: Product Image SEO Sync (Manual)
 on:
-  schedule:
-    - cron: '17 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
