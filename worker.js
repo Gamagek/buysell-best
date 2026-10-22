@@ -639,8 +639,10 @@ export default {
   async scheduled(event, env, ctx) {
     // Keep the existing six-hour coupon sync unchanged.
     if (event.cron === '0 */6 * * *') ctx.waitUntil(syncPromos(env).catch(() => {}));
-    // Daily approved-feed snapshot (not an hourly bulk product publisher).
-    if (event.cron === '15 1 * * *') ctx.waitUntil(syncFlashSale(env).catch(() => {}));
+    // Workers Free account cron quota: reuse the existing six-hour trigger once a day at 00:00 UTC.
+    // This does NOT resume hourly product publishing.
+    if (event.cron === '0 */6 * * *' && new Date(event.scheduledTime).getUTCHours() === 0)
+      ctx.waitUntil(syncFlashSale(env).catch(() => {}));
     // Read-only URL inspections: five URLs per hour with a persisted cursor.
     if (event.cron === '0 * * * *') ctx.waitUntil(syncSearchConsole(env).catch(() => {}));
     // Owner paused hourly product sync; retain read-only Search Console monitoring.
