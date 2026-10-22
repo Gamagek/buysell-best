@@ -657,7 +657,7 @@ export default {
 
 async function serveUncached(request, env, ctx) {
     const pathname=new URL(request.url).pathname;
-    if(pathname.startsWith("/flash-media/"))return serveFlashMedia(request,env,pathname.slice("/flash-media/".length));
+    if(pathname.startsWith("/flash-media/"))return serveFlashMedia(request,env,pathname.slice("/flash-media/".length),ctx);
     const seoResponse=await serveSeoPage(request,env);
     if(seoResponse){
       if(request.method === "HEAD") return new Response(null, {status:seoResponse.status,headers:seoResponse.headers});
