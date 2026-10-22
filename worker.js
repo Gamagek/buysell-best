@@ -1,7 +1,7 @@
 import { cachedPublicResponse } from "./lib/public-cache.js";
 import {curatedSitemapEntries} from "./lib/product-catalog-fallback.js";
 import {trendingSitemapEntry} from "./lib/trending-sitemap.js";
-import {syncFlashSale,loadFlashSale,renderFlashHome,renderFlashPage,flashSaleSitemap,serveFlashMedia} from "./lib/flash-sale.js";
+import {syncFlashSale,loadFlashSale,renderFlashHome,renderFlashPage,flashSaleSitemap,serveFlashMedia,findFlashProduct,renderFlashProductPage,flashProductPath} from "./lib/flash-sale.js";
 import {imageSitemapFromCanonical} from "./lib/image-sitemap.js";
 import {findEditorialProduct, renderEditorialProductPage, editorialProductPath, editorialSitemapEntries} from "./lib/editorial-product-pages.js";
 import { renderCareerIndex, renderCareerGuide, findCareerGuide, careerSitemapEntries, renderCareerSpotlight } from "./lib/career-guides.js";
@@ -470,6 +470,19 @@ async function serveSeoPage(request,env) {
     }
   }
   if (pathname.startsWith("/guides/") || pathname.startsWith("/shopping-methodology/")) return new Response("Guide not found", {status:404,headers:{"x-robots-tag":"noindex","content-type":"text/plain; charset=UTF-8"}});
+  // Dedicated, crawlable verified product pages are only served while the approved
+  // seller offer and first-party cached photo are in the current daily snapshot.
+  const flashProductMatch=pathname.match(/^\/flash-sale\/product\/([a-z0-9-]+)\/?$/);
+  if(flashProductMatch){
+    const current=await loadFlashSale(env);
+    const found=findFlashProduct(current,flashProductMatch[1]);
+    if(!found)return new Response("Product offer not found",{status:404,headers:{"x-robots-tag":"noindex"}});
+    const canonical=flashProductPath(found.product);
+    if(pathname!==canonical)return Response.redirect("https://buysell.best"+canonical,301);
+    return new Response(renderFlashProductPage(found.product,found.group),{
+      headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=60, s-maxage=300","x-content-type-options":"nosniff"}});
+  }
+  if(pathname.startsWith("/flash-sale/product/"))return new Response("Product offer not found",{status:404,headers:{"x-robots-tag":"noindex"}});
   if (pathname === "/flash-sale") return Response.redirect("https://buysell.best/flash-sale/",301);
   if (pathname === "/flash-sale/" || pathname.startsWith("/flash-sale/category/")) {
     const match=pathname.match(/^\/flash-sale\/category\/([a-z0-9-]+)\/?$/);
