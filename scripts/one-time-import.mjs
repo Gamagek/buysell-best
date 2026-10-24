@@ -75,6 +75,20 @@ async function main(){
  if(process.env.GITHUB_REPOSITORY!=="Gamagek/buysell-best"||
   process.env.GITHUB_REF!=="refs/heads/main"||
   process.env.GITHUB_EVENT_NAME!=="push")throw Error("UNAUTHORIZED_WORKFLOW_CONTEXT");
+ const tokenPreview=await idToken();
+ const claims=JSON.parse(Buffer.from(tokenPreview.split(".")[1],"base64url").toString("utf8"));
+ const expected={
+  issuer:claims.iss==="https://token.actions.githubusercontent.com",
+  audience:claims.aud===AUD,
+  repository:claims.repository==="Gamagek/buysell-best",
+  branch:claims.ref==="refs/heads/main",
+  workflow:claims.workflow_ref==="Gamagek/buysell-best/.github/workflows/one-time-affiliate-import.yml@refs/heads/main",
+  event:claims.event_name==="push",
+  expiry:typeof claims.exp==="number"&&claims.exp>Math.floor(Date.now()/1000)
+ };
+ // Print comparison booleans only: never print token, claims, URL, or credentials.
+ console.log("OIDC access diagnostic",JSON.stringify(expected));
+ if(Object.values(expected).some(x=>!x))throw Error("GITHUB_OIDC_CLAIM_MISMATCH");
  const ready=await call("init");
  if(ready.status!=="ready")throw Error("IMPORT_D1_R2_UNAVAILABLE");
  console.log("One-time authenticated source download started.");
