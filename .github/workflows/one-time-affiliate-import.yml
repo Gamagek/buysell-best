@@ -1,0 +1,29 @@
+name: One-Time Verified Admitad Catalogue Import
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'import-control/one-shot-admitad-20261024.json'
+permissions:
+  contents: read
+  id-token: write
+concurrency:
+  group: buysell-one-shot-admitad-20261024
+  cancel-in-progress: false
+jobs:
+  publish-real-products:
+    if: github.repository == 'Gamagek/buysell-best' && github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install pinned dependencies
+        run: npm ci
+      - name: Stream verified seller offers and copy approved source photos
+        env:
+          NODE_OPTIONS: '--max-old-space-size=4096'
+        run: node scripts/one-time-import.mjs
