@@ -2,6 +2,7 @@ import { cachedPublicResponse } from "./lib/public-cache.js";
 import {curatedSitemapEntries} from "./lib/product-catalog-fallback.js";
 import {trendingSitemapEntry} from "./lib/trending-sitemap.js";
 import {syncFlashSale,loadFlashSale,renderFlashHome,renderFlashPage,flashSaleSitemap,serveFlashMedia,findFlashProduct,renderFlashProductPage,flashProductPath} from "./lib/flash-sale.js";
+export {ManualAdmitadImport} from "./lib/manual-admitad-import.js";
 import {imageSitemapFromCanonical} from "./lib/image-sitemap.js";
 import {renderAffiliateShard,renderPublicSitemapIndex} from "./lib/affiliate-sitemaps.js";
 import {findEditorialProduct, renderEditorialProductPage, editorialProductPath, editorialSitemapEntries} from "./lib/editorial-product-pages.js";

@@ -19,3 +19,9 @@ crons = []
 [[r2_buckets]]
 binding = "FLASH_MEDIA"
 bucket_name = "buysell-flash-media"
+
+# One-shot Cloudflare API-triggered workflow. No schedules and no public handler.
+[[workflows]]
+name = "buysell-admitad-manual"
+binding = "ADMITAD_IMPORT"
+class_name = "ManualAdmitadImport"
