@@ -57,8 +57,8 @@ test("bounded feed reader limits big replies, and returns actionable status for 
    {message:"FLASH_FEED_HTTP_403"}
  );
  await assert.rejects(
-   fetchApprovedFeed(admitad,async()=>new Response("fake",{status:200,headers:{"content-length":"25000001"}})),
-   {message:"FLASH_FEED_TOO_LARGE"}
+   fetchApprovedFeed(admitad,async()=>new Response("fake",{status:200,headers:{"content-length":"160000001"}})),
+   {message:"FLASH_FEED_RAW_TOO_LARGE"}
  );
  await assert.rejects(
    fetchApprovedFeed(admitad,async()=>{throw new TypeError("Network error at "+admitad);}),
@@ -97,6 +97,6 @@ test("empty supported feeds do not create false sale data",async()=>{
   now:new Date("2026-10-22T00:00:00Z"),
   fetcher:async()=>new Response("offer_id,name,price,oldprice,currencyId,picture,url\n",{status:200})
  });
- assert.equal(result.code,"FLASH_FEED_NO_VERIFIED_SALES");
+ assert.equal(result.code,"FLASH_FEED_EMPTY","a header-only feed has no product records");
  assert.equal(values.error_stage,"parse");
 });
