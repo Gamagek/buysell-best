@@ -7,5 +7,7 @@
   "require_actual_affiliate_link": true,
   "require_stored_R2_photo": true,
   "recurring_schedules": false,
-  "claim_google_indexing": false
+  "claim_google_indexing": false,
+  "attempt": "one-time-oidc-boolean-diagnostic-after-PR32",
+  "reason": "Verify strict OIDC authentication for source-backed import, no recurring cron"
 }
