@@ -73,10 +73,18 @@ test("source-backed batch only publishes seller-photo-backed USD discounted prod
 });
 test("each published product and matching R2 seller image belongs to its own XML shard",async()=>{
  const rows=[{slug:"genuine-travel-product-123",image_key:"items/bulk-abcd1234.webp",published_at:"2026-10-24T00:00:00Z"}];
- const db={prepare(sql){return {bind(){return {
-  async first(){return {n:10000};},
-  async all(){return {results:rows};}
- }};}}};
+ const db={
+  prepare(){
+   return {
+    bind(){
+     return {
+      async first(){return {n:10000};},
+      async all(){return {results:rows};}
+     };
+    }
+   };
+  }
+ };
  assert.equal(await bulkPublishedCount(db),10000);
  const index=await bulkSitemapIndex(db);
  assert.ok(index.includes("/sitemaps/affiliate-products-10.xml"));
