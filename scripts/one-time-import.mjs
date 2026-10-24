@@ -163,7 +163,7 @@ async function main(){
  const feed=await call("feed",{feed:true});
  const scan=await streamVerifiedDeals(feed,{
   parseFeed,normalizeOffer,now:new Date(),
-  categories:500,perCategory:40,maxRecords:250000,
+  categories:500,perCategory:40,maxRecords:1000000,
   allowPartialRecordLimit:true,
   // The source may end with one incomplete XML offer. Keep only prior complete,
   // independently validated records. This is NEVER enabled in scheduled import.
