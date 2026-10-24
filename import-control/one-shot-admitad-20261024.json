@@ -8,8 +8,9 @@
   "require_stored_R2_photo": true,
   "recurring_schedules": false,
   "claim_google_indexing": false,
-  "attempt": "second_manual_run_after_oidc_preflight",
+  "attempt": "oidc-public-key-and-server-stage-diagnostic",
   "verified_sales_only": true,
   "original_description_review_policy": "source-backed buying checks; no fabricated first-hand tests",
-  "run_once_no_cron": true
+  "run_once_no_cron": true,
+  "safe_auth_probe_version": 3
 }
