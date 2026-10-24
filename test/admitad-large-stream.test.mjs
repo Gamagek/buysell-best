@@ -81,14 +81,17 @@ test("feed prioritizes actual eligible products and not non-USD or false markdow
  assert.equal(r.groups.length,1);
  assert.equal(r.groups[0].offers[0].id,"usd");
 });
-test("streaming reader consumes a simulated >25MB CSV export with bounded memory",async()=>{
- // Repetitive non-product lines simulate a broad Admitad export with mostly ineligible data.
- const row="bad,Unverified product,Office,25,0,EUR,https://ae01.alicdn.com/kf/test.jpg,https://www.aliexpress.com/item/test.html\n";
- const chunk=row.repeat(210);
- const parts=[head+"\n",...Array.from({length:113},()=>chunk),item("final")+"\n"];
- assert.ok(chunk.length*113>25000000);
- const r=await streamVerifiedDeals(reader(parts),{...opts,maxRecords:25000});
+test("streaming reader consumes a simulated >25MB XML export without buffering all metadata",async()=>{
+ const comment="<!--"+"x".repeat(250000)+"-->";
+ const offer='<offer id="final"><name>Travel adapter</name><category_name>Travel</category_name>'+
+ '<price>10</price><oldprice>40</oldprice><currencyId>USD</currencyId>'+
+ '<picture>https://ae01.alicdn.com/kf/test.jpg</picture>'+
+ '<url>https://www.aliexpress.com/item/adapter.html</url></offer>';
+ const parts=["<yml_catalog><offers>",...Array.from({length:110},()=>comment),offer,"</offers></yml_catalog>"];
+ assert.ok(comment.length*110>25000000);
+ const r=await streamVerifiedDeals(reader(parts),opts);
+ assert.equal(r.format,"xml");
  assert.equal(r.groups.length,1);
  assert.equal(r.groups[0].offers[0].id,"final");
- assert.equal(r.scanned,23731);
+ assert.equal(r.scanned,1);
 });
