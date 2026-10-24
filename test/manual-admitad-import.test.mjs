@@ -13,7 +13,7 @@ test("one-off importer is Cloudflare-account-only, and never silently enables pa
  assert.match(w,/export \{ManualAdmitadImport\}/);
  assert.doesNotMatch(source,/fetch\(request|async fetch/);
  assert.match(source,/isAuthorizedOneShotEvent\(event\)/);
- assert.match(source,/retries:\{limit:0\}/);
+ assert.match(source,/retries:\{limit:1,delay:"5 seconds",backoff:"constant"\}/);
  assert.match(source,/syncFlashSale\(this\.env\)/);
  assert.doesNotMatch(source,/ALIEXPRESS_PRODUCT_FEED_URL|GSC_SERVICE_ACCOUNT_JSON/);
 });
