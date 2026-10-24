@@ -24,7 +24,11 @@ test("trusted repo/ref/job JWT cryptographic verifier never weakens signature ch
  console.warn=(...args)=>logs.push(args.join(" "));
  try{
   assert.equal(await verifyGithubImportIdentity(req,{fetcher:async()=>Response.json({keys:[jwk]})}),true);
-  const forged=req.headers.get("authorization").replace(/.$/,"A");
+  const original=req.headers.get("authorization");
+  const segments=original.slice("Bearer ".length).split(".");
+  const first=segments[2][0];
+  segments[2]=(first==="A"?"B":"A")+segments[2].slice(1);
+  const forged="Bearer "+segments.join(".");
   const bad=new Request(audience,{headers:{authorization:forged}});
   assert.equal(await verifyGithubImportIdentity(bad,{fetcher:async()=>Response.json({keys:[jwk]})}),false);
  }finally{console.warn=realWarn;}
