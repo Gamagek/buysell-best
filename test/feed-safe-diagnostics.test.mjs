@@ -97,6 +97,6 @@ test("empty supported feeds do not create false sale data",async()=>{
   now:new Date("2026-10-22T00:00:00Z"),
   fetcher:async()=>new Response("offer_id,name,price,oldprice,currencyId,picture,url\n",{status:200})
  });
- assert.equal(result.code,"FLASH_FEED_NO_VERIFIED_SALES");
+ assert.equal(result.code,"FLASH_FEED_EMPTY","a header-only feed has no product records");
  assert.equal(values.error_stage,"parse");
 });
