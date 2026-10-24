@@ -3,6 +3,7 @@ import {curatedSitemapEntries} from "./lib/product-catalog-fallback.js";
 import {trendingSitemapEntry} from "./lib/trending-sitemap.js";
 import {syncFlashSale,loadFlashSale,renderFlashHome,renderFlashPage,flashSaleSitemap,serveFlashMedia,findFlashProduct,renderFlashProductPage,flashProductPath} from "./lib/flash-sale.js";
 import {imageSitemapFromCanonical} from "./lib/image-sitemap.js";
+import {renderAffiliateShard,renderPublicSitemapIndex} from "./lib/affiliate-sitemaps.js";
 import {findEditorialProduct, renderEditorialProductPage, editorialProductPath, editorialSitemapEntries} from "./lib/editorial-product-pages.js";
 import { renderCareerIndex, renderCareerGuide, findCareerGuide, careerSitemapEntries, renderCareerSpotlight } from "./lib/career-guides.js";
 import { syncSearchConsole } from "./lib/gsc-integration.js";
@@ -540,6 +541,29 @@ async function serveSeoPage(request,env) {
     const response=await renderDealHub(env,"seasonal",decodeURIComponent(seasonalMatch[1]));
     return response||new Response("Not found",{status:404,headers:{"x-robots-tag":"noindex"}});
   }
+
+  if(pathname==="/sitemap-index.xml"){
+    const data=await loadFlashSale(env);
+    return new Response(renderPublicSitemapIndex(data),{
+      headers:{"content-type":"application/xml; charset=UTF-8",
+        "cache-control":"public, max-age=300, s-maxage=600",
+        "x-content-type-options":"nosniff"}
+    });
+  }
+  const affiliateMap=pathname.match(/^\/sitemaps\/affiliate-(products|images)-([1-9]\d{0,2})\.xml$/);
+  if(affiliateMap){
+    const data=await loadFlashSale(env);
+    const xml=renderAffiliateShard(data,{kind:affiliateMap[1],page:Number(affiliateMap[2])});
+    if(!xml)return new Response("No verified product pages in this sitemap",{
+      status:404,headers:{"x-robots-tag":"noindex","cache-control":"no-store"}});
+    return new Response(xml,{
+      headers:{"content-type":"application/xml; charset=UTF-8",
+        "cache-control":"public, max-age=300, s-maxage=600",
+        "x-content-type-options":"nosniff"}
+    });
+  }
+  if(pathname.startsWith("/sitemaps/affiliate-"))
+    return new Response("Invalid sitemap shard",{status:404,headers:{"x-robots-tag":"noindex"}});
 
   if (pathname === "/sitemap.xml") {
     let content;
