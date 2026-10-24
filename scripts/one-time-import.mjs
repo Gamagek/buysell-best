@@ -1,0 +1,112 @@
+// One-time, explicitly owner-requested catalogue ingest; never a cron.
+// Large Admitad CSV/XML/gzip is parsed on GitHub's runner, rather than in
+// Cloudflare Free's 10ms CPU budget. Secret feed URL remains only in Worker env.
+import {streamVerifiedDeals} from "../lib/admitad-stream.js";
+import {parseFeed,normalizeOffer} from "../lib/flash-sale.js";
+
+const ORIGIN="https://buysell.best";
+const AUD=ORIGIN+"/_ops/import";
+const LIMIT=10000;
+const WAIT=ms=>new Promise(r=>setTimeout(r,ms));
+const SERVICE="/__ops/import/";
+let cached="",issued=0;
+function authenticAffiliate(url){
+ try{
+  const u=new URL(url);
+  if(u.protocol!=="https:"||u.username||u.password)return false;
+  return /(^|\.)rzekl\.com$|(^|\.)admitad\.com$|(^|\.)ali\.ski$/i.test(u.hostname) ||
+    (/(^|\.)aliexpress\.com$/i.test(u.hostname) && (
+      u.searchParams.has("aff_fcid")||u.searchParams.has("admitad_uid")));
+ }catch{return false;}
+}
+async function idToken(){
+ const now=Date.now();
+ if(cached&&now-issued<180000)return cached;
+ const token=process.env.ACTIONS_ID_TOKEN_REQUEST_TOKEN;
+ const endpoint=process.env.ACTIONS_ID_TOKEN_REQUEST_URL;
+ if(!token||!endpoint)throw Error("GITHUB_OIDC_IDENTITY_UNAVAILABLE");
+ const separator=endpoint.includes("?")?"&":"?";
+ const resp=await fetch(endpoint+separator+"audience="+encodeURIComponent(AUD),{
+  headers:{Authorization:"Bearer "+token}});
+ if(!resp.ok)throw Error("GITHUB_OIDC_REQUEST_FAILED");
+ const j=await resp.json();
+ if(typeof j.value!=="string"||j.value.length>9000)throw Error("GITHUB_OIDC_INVALID");
+ cached=j.value;issued=now;return cached;
+}
+async function call(path,{body=null,feed=false}={}){
+ const auth=await idToken();
+ const r=await fetch(ORIGIN+SERVICE+path,{method:"POST",
+  headers:{"authorization":"Bearer "+auth,...(body?{"content-type":"application/json"}:{})},
+  body:body?JSON.stringify(body):null,redirect:"error"});
+ if(!r.ok){
+  const error=await r.json().catch(()=>({error:"HTTP_"+r.status}));
+  throw Error("IMPORT_"+String(error.error||r.status).replace(/[^A-Z0-9_-]/gi,"_").slice(0,90));
+ }
+ return feed?r:await r.json();
+}
+function originalSourceRow(p){
+ return {
+  offer_id:p.id,name:p.title,category_name:p.category,
+  price:p.price,oldprice:p.originalPrice,currencyId:"USD",
+  picture:p.imageSource,tracking_link:p.destination,description:p.description,
+  ...(p.saleEnd?{sale_end:p.saleEnd}:{})
+ };
+}
+function priority(groups){
+ const first=[],rest=[];
+ for(const group of groups){
+  const p=group.offers||[];
+  if(p.length)first.push(p[0]);
+  rest.push(...p.slice(1));
+ }
+ const filter=arr=>arr.filter(p=>authenticAffiliate(p.destination)&&Number(p.discount)>=20&&
+  p.currency==="USD"&&p.imageSource&&p.title&&p.title.length>=12);
+ const sorter=(a,b)=>b.discount-a.discount||a.price-b.price;
+ const top=filter(first).sort(sorter),remaining=filter(rest).sort(sorter);
+ const out=[],seen=new Set();
+ for(const p of [...top,...remaining]){
+  if(seen.has(p.id))continue;seen.add(p.id);
+  out.push(originalSourceRow(p));
+  if(out.length>=LIMIT)break;
+ }
+ return out;
+}
+async function main(){
+ if(process.env.GITHUB_REPOSITORY!=="Gamagek/buysell-best"||
+  process.env.GITHUB_REF!=="refs/heads/main"||
+  process.env.GITHUB_EVENT_NAME!=="push")throw Error("UNAUTHORIZED_WORKFLOW_CONTEXT");
+ const ready=await call("init");
+ if(ready.status!=="ready")throw Error("IMPORT_D1_R2_UNAVAILABLE");
+ console.log("One-time authenticated source download started.");
+ const feed=await call("feed",{feed:true});
+ const scan=await streamVerifiedDeals(feed,{
+  parseFeed,normalizeOffer,now:new Date(),
+  categories:500,perCategory:40,maxRecords:1000000
+ });
+ const rows=priority(scan.groups);
+ console.log("Verified feed scan",JSON.stringify({format:scan.format,scanned:scan.scanned,
+  eligible:scan.eligible,selected:rows.length}));
+ if(rows.length===0)throw Error("NO_ACTUAL_APPROVED_AFFILIATE_OFFERS");
+ let published=0,skipped=0,failed=0;
+ // Max two in-flight Cloudflare requests, each with <=5 seller photo fetches.
+ for(let i=0;i<rows.length;i+=10){
+  const chunks=[rows.slice(i,i+5),rows.slice(i+5,i+10)].filter(x=>x.length);
+  const results=await Promise.allSettled(chunks.map(chunk=>call("batch",{body:{rows:chunk}})));
+  for(const result of results){
+   if(result.status==="rejected"){failed++;continue;}
+   const data=result.value;
+   if(data.status!=="processed"){failed++;continue;}
+   published+=Number(data.published)||0;
+   skipped+=Number(data.skipped)||0;
+  }
+  if(failed>=10)throw Error("IMPORT_BATCH_FAILURE_LIMIT");
+  if((i+10)%250===0||i+10>=rows.length)
+   console.log("Published verified products",JSON.stringify({selected:rows.length,
+    attempted:Math.min(rows.length,i+10),published,skipped,failed}));
+  await WAIT(70);
+ }
+ console.log("ONE_TIME_COMPLETE",JSON.stringify({selected:rows.length,published,skipped,failed}));
+ if(published===0)throw Error("NO_VERIFIED_PRODUCTS_WITH_STORED_SELLER_PHOTOS");
+ if(failed)process.exitCode=1;
+}
+main().catch(e=>{console.error("ONE_TIME_FAILED",String(e?.message||"unavailable").slice(0,120));process.exitCode=1;});

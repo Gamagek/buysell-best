@@ -4,6 +4,9 @@ import {trendingSitemapEntry} from "./lib/trending-sitemap.js";
 import {syncFlashSale,loadFlashSale,renderFlashHome,renderFlashPage,flashSaleSitemap,serveFlashMedia,findFlashProduct,renderFlashProductPage,flashProductPath} from "./lib/flash-sale.js";
 export {ManualAdmitadImport} from "./lib/manual-admitad-import.js";
 import {imageSitemapFromCanonical} from "./lib/image-sitemap.js";
+import {bulkProduct,bulkDirectory,renderBulkHome,renderBulkProductPage,renderBulkDirectoryPage} from "./lib/bulk-products.js";
+import {bulkPublishedCount,bulkSitemapIndex,bulkSitemapShard} from "./lib/bulk-sitemap.js";
+import {serveAuthorizedImport} from "./lib/one-time-import-ops.js";
 import {renderAffiliateShard,renderPublicSitemapIndex} from "./lib/affiliate-sitemaps.js";
 import {findEditorialProduct, renderEditorialProductPage, editorialProductPath, editorialSitemapEntries} from "./lib/editorial-product-pages.js";
 import { renderCareerIndex, renderCareerGuide, findCareerGuide, careerSitemapEntries, renderCareerSpotlight } from "./lib/career-guides.js";
@@ -27,7 +30,7 @@ function withSponsoredSupport(response) {
 }
 
 async function renderAffiliateHome(request, env) {
-  const flash=await loadFlashSale(env);
+  const [flash,bulk]=await Promise.all([loadFlashSale(env),bulkDirectory(env,{size:24})]);
   const couponCards=await loadVerifiedCoupons(env);
   const verifiedGlobal=renderHomeGlobalDeals(flash);
   const response = await env.ASSETS.fetch(request);
@@ -42,7 +45,7 @@ async function renderAffiliateHome(request, env) {
     .on(".market-pulse-wrap", {element(element) {const pulse=renderDailyPulse(flash);if(pulse)element.after(pulse,{html:true});}})
     .on(".category-grid", {element(element) {const groups=selectCategoryDiscounts(flash,80);if(groups.length){const seen=new Set();const links=groups.filter(p=>!seen.has(p.groupSlug)&&seen.add(p.groupSlug)).map(p=>'<a href="/flash-sale/category/'+escapeHtml(p.groupSlug)+'/">'+escapeHtml(p.groupName)+'</a>').join("");element.before('<nav class="flash-categories flash-category-shortcuts" aria-label="Verified affiliate deal categories">'+links+'</nav>',{html:true});}}})
     .on(".vip-analyzer-section", {element(element) {element.before(renderVerifiedCouponPanel(couponCards),{html:true});}})
-    .on("main", {element(element) {element.append(renderFlashHome(flash),{html:true});}})
+    .on("main", {element(element) {element.append(bulk.items.length?renderBulkHome(bulk.items):renderFlashHome(flash),{html:true});}})
     .on("head", {element(element) {element.append('<script type="application/json" id="affiliate-products-data">'+jsonLd(featuredCarouselItems())+'</script>', {html:true});}});
   const headers = new Headers(response.headers);
   headers.set("cache-control", "public, max-age=0, s-maxage=300, must-revalidate");
@@ -476,6 +479,14 @@ async function serveSeoPage(request,env) {
   // seller offer and first-party cached photo are in the current daily snapshot.
   const flashProductMatch=pathname.match(/^\/flash-sale\/product\/([a-z0-9-]+)\/?$/);
   if(flashProductMatch){
+    const stored=await bulkProduct(env,flashProductMatch[1]);
+    if(stored){
+      const path="/flash-sale/product/"+stored.slug+"/";
+      if(pathname!==path)return Response.redirect("https://buysell.best"+path,301);
+      const html=renderBulkProductPage(stored);
+      return new Response(html,{headers:{"content-type":"text/html; charset=UTF-8",
+        "cache-control":"public, max-age=60, s-maxage=300","x-content-type-options":"nosniff"}});
+    }
     const current=await loadFlashSale(env);
     const found=findFlashProduct(current,flashProductMatch[1]);
     if(!found)return new Response("Product offer not found",{status:404,headers:{"x-robots-tag":"noindex"}});
@@ -494,6 +505,14 @@ async function serveSeoPage(request,env) {
     const rawPage=url.searchParams.get("page");
     const page=rawPage===null?1:/^[1-9]\d{0,3}$/.test(rawPage)?Number(rawPage):NaN;
     if(!Number.isFinite(page))return new Response("Not found",{status:404,headers:{"x-robots-tag":"noindex"}});
+    if(pathname==="/flash-sale/"){
+      const actual=await bulkDirectory(env,{page,size:60});
+      if(actual.total){
+        if(!actual.items.length)return new Response("Not found",{status:404,headers:{"x-robots-tag":"noindex"}});
+        return new Response(renderBulkDirectoryPage(actual),{headers:{
+          "content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=60, s-maxage=300"}});
+      }
+    }
     const html=renderFlashPage(flash,match?.[1]||null,page);
     if(!html)return new Response("Not found",{status:404,headers:{"x-robots-tag":"noindex"}});
     return new Response(html,{headers:{"content-type":"text/html; charset=UTF-8","cache-control":"public, max-age=60, s-maxage=300","x-content-type-options":"nosniff"}});
@@ -544,8 +563,10 @@ async function serveSeoPage(request,env) {
   }
 
   if(pathname==="/sitemap-index.xml"){
-    const data=await loadFlashSale(env);
-    return new Response(renderPublicSitemapIndex(data),{
+    const realCount=await bulkPublishedCount(env?.DB);
+    const data=realCount?null:await loadFlashSale(env);
+    const result=realCount?await bulkSitemapIndex(env.DB):renderPublicSitemapIndex(data);
+    return new Response(result,{
       headers:{"content-type":"application/xml; charset=UTF-8",
         "cache-control":"public, max-age=300, s-maxage=600",
         "x-content-type-options":"nosniff"}
@@ -553,8 +574,11 @@ async function serveSeoPage(request,env) {
   }
   const affiliateMap=pathname.match(/^\/sitemaps\/affiliate-(products|images)-([1-9]\d{0,2})\.xml$/);
   if(affiliateMap){
-    const data=await loadFlashSale(env);
-    const xml=renderAffiliateShard(data,{kind:affiliateMap[1],page:Number(affiliateMap[2])});
+    const realCount=await bulkPublishedCount(env?.DB);
+    const data=realCount?null:await loadFlashSale(env);
+    const xml=realCount?
+      await bulkSitemapShard(env.DB,affiliateMap[1],Number(affiliateMap[2])):
+      renderAffiliateShard(data,{kind:affiliateMap[1],page:Number(affiliateMap[2])});
     if(!xml)return new Response("No verified product pages in this sitemap",{
       status:404,headers:{"x-robots-tag":"noindex","cache-control":"no-store"}});
     return new Response(xml,{
@@ -682,6 +706,7 @@ export default {
 
 async function serveUncached(request, env, ctx) {
     const pathname=new URL(request.url).pathname;
+    if(pathname.startsWith("/__ops/import/"))return serveAuthorizedImport(request,env);
     if(pathname.startsWith("/flash-media/"))return serveFlashMedia(request,env,pathname.slice("/flash-media/".length),ctx);
     const seoResponse=await serveSeoPage(request,env);
     if(seoResponse){
