@@ -163,14 +163,15 @@ async function main(){
  const feed=await call("feed",{feed:true});
  const scan=await streamVerifiedDeals(feed,{
   parseFeed,normalizeOffer,now:new Date(),
-  categories:500,perCategory:40,maxRecords:1000000,
+  categories:500,perCategory:40,maxRecords:250000,
+  allowPartialRecordLimit:true,
   // The source may end with one incomplete XML offer. Keep only prior complete,
   // independently validated records. This is NEVER enabled in scheduled import.
   allowPartialXmlAtEof:true
  });
  const rows=priority(scan.groups);
  console.log("Verified feed scan",JSON.stringify({format:scan.format,scanned:scan.scanned,
-  eligible:scan.eligible,selected:rows.length,incompleteTail:!!scan.incompleteTail}));
+  eligible:scan.eligible,selected:rows.length,incompleteTail:!!scan.incompleteTail,recordLimitReached:!!scan.recordLimitReached}));
  if(rows.length===0)throw Error("NO_ACTUAL_APPROVED_AFFILIATE_OFFERS");
  let published=0,skipped=0,failed=0;
  // Max two in-flight Cloudflare requests, each with <=5 seller photo fetches.
