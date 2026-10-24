@@ -8,7 +8,7 @@
   "require_stored_R2_photo": true,
   "recurring_schedules": false,
   "claim_google_indexing": false,
-  "attempt": "one_shot_real_products_after_safe_partial_xml_fix_20261024",
+  "attempt": "one_shot_verified_250k_complete_records_20261024",
   "verified_sales_only": true,
   "original_description_review_policy": "source-backed buying checks; no fabricated first-hand tests",
   "run_once_no_cron": true,
@@ -24,5 +24,7 @@
     "unique_product_detail_page",
     "Adsterra_sponsored_navigation"
   ],
-  "frequency": "one-time only; Cloudflare crons must remain empty"
+  "frequency": "one-time only; Cloudflare crons must remain empty",
+  "stop_when": "250000 fully parsed source records; publish no fabricated pages",
+  "recurrence": "disabled"
 }
