@@ -12,8 +12,17 @@ test("one-off importer is Cloudflare-account-only, and never silently enables pa
  assert.doesNotMatch(wr,/schedules\s*=/);
  assert.match(w,/export \{ManualAdmitadImport\}/);
  assert.doesNotMatch(source,/fetch\(request|async fetch/);
- assert.match(source,/event\.payload\?\.mode!=="one-shot-approved-feed"/);
+ assert.match(source,/isAuthorizedOneShotEvent\(event\)/);
  assert.match(source,/retries:\{limit:0\}/);
  assert.match(source,/syncFlashSale\(this\.env\)/);
  assert.doesNotMatch(source,/ALIEXPRESS_PRODUCT_FEED_URL|GSC_SERVICE_ACCOUNT_JSON/);
+});
+\ntest("Cloudflare REST string params and Worker object payload are accepted without widening scope", async()=>{
+ const {isAuthorizedOneShotEvent}=await import("../lib/one-shot-workflow-payload.js");
+ assert.equal(isAuthorizedOneShotEvent({payload:JSON.stringify({mode:"one-shot-approved-feed"})}),true);
+ assert.equal(isAuthorizedOneShotEvent({payload:{mode:"one-shot-approved-feed"}}),true);
+ assert.equal(isAuthorizedOneShotEvent({payload:{mode:"one-shot-approved-feed",other:"x"}}),false);
+ assert.equal(isAuthorizedOneShotEvent({payload:"INVALID"}),false);
+ assert.equal(isAuthorizedOneShotEvent({payload:{mode:"cron"}}),false);
+ assert.equal(isAuthorizedOneShotEvent({}),false);
 });
