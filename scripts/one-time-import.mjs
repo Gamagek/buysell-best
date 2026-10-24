@@ -31,6 +31,26 @@ async function idToken(){
  if(!resp.ok)throw Error("GITHUB_OIDC_REQUEST_FAILED");
  const j=await resp.json();
  if(typeof j.value!=="string"||j.value.length>9000)throw Error("GITHUB_OIDC_INVALID");
+ // Diagnostic emits ONLY boolean comparisons, never the JWT or any claim values.
+ // The Worker independently verifies cryptographic signature and time.
+ try{
+  const pieces=j.value.split(".");
+  const claim=JSON.parse(Buffer.from(pieces[1],"base64url").toString("utf8"));
+  const seconds=Math.floor(now/1000);
+  const expected="Gamagek/buysell-best/.github/workflows/one-time-affiliate-import.yml@refs/heads/main";
+  const checks={
+   issuer:claim.iss==="https://token.actions.githubusercontent.com",
+   audience:claim.aud===AUD,
+   repository:claim.repository==="Gamagek/buysell-best",
+   branch:claim.ref==="refs/heads/main",
+   workflow:claim.workflow_ref===expected,
+   event:claim.event_name==="push",
+   expiry:typeof claim.exp==="number"&&claim.exp>seconds&&claim.exp<=seconds+600,
+   issued:typeof claim.iat==="number"&&claim.iat<=seconds+60&&claim.iat>seconds-1200,
+   notBefore:typeof claim.nbf!=="number"||claim.nbf<=seconds+30
+  };
+  console.log("OIDC_CLAIM_CHECK",JSON.stringify(checks));
+ }catch{console.log("OIDC_CLAIM_CHECK_UNAVAILABLE");}
  cached=j.value;issued=now;return cached;
 }
 async function call(path,{body=null,feed=false}={}){
