@@ -71,10 +71,47 @@ function priority(groups){
  }
  return out;
 }
+
+function readUnsignedClaims(jwt){
+ // Non-sensitive booleans only. Never print a JWT, its header, payload or token.
+ try{
+  const [head,data]=jwt.split(".");
+  return {
+   header:JSON.parse(Buffer.from(head,"base64url").toString("utf8")),
+   data:JSON.parse(Buffer.from(data,"base64url").toString("utf8"))
+  };
+ }catch{return null;}
+}
+async function reportSafeIdentityPreflight(){
+ const token=await idToken(),parsed=readUnsignedClaims(token);
+ if(!parsed){console.log("OIDC_PREFLIGHT",JSON.stringify({parse:false}));return;}
+ const data=parsed.data;
+ const checks={
+  issuer:data.iss==="https://token.actions.githubusercontent.com",
+  audience:data.aud===AUD,
+  repository:data.repository==="Gamagek/buysell-best",
+  branch:data.ref==="refs/heads/main",
+  workflow:data.workflow_ref==="Gamagek/buysell-best/.github/workflows/one-time-affiliate-import.yml@refs/heads/main",
+  event:data.event_name==="push",
+  algorithm:parsed.header.alg==="RS256",
+  time:typeof data.exp==="number"&&data.exp>Date.now()/1000&&data.exp<Date.now()/1000+600
+ };
+ try{
+  const keys=await fetch("https://token.actions.githubusercontent.com/.well-known/jwks",
+   {redirect:"error",headers:{accept:"application/json"}});
+  if(keys.ok){
+   const doc=await keys.json();
+   checks.signingKeyPresent=Array.isArray(doc.keys)&&doc.keys.some(k=>k.kid===parsed.header.kid);
+  }else checks.signingKeyPresent=false;
+ }catch{checks.signingKeyPresent=false;}
+ console.log("OIDC_PREFLIGHT",JSON.stringify(checks));
+}
+
 async function main(){
  if(process.env.GITHUB_REPOSITORY!=="Gamagek/buysell-best"||
   process.env.GITHUB_REF!=="refs/heads/main"||
   process.env.GITHUB_EVENT_NAME!=="push")throw Error("UNAUTHORIZED_WORKFLOW_CONTEXT");
+ await reportSafeIdentityPreflight();
  const ready=await call("init");
  if(ready.status!=="ready")throw Error("IMPORT_D1_R2_UNAVAILABLE");
  console.log("One-time authenticated source download started.");
