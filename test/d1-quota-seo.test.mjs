@@ -1,6 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import worker from "../worker.js";
+import {register} from "node:module";
+// Node tests mock the Cloudflare-only WorkflowEntrypoint import; production bundling uses the real runtime.
+register("./cloudflare-workflow-test-loader.mjs", import.meta.url);
+const {default:worker}=await import("../worker.js");
 
 function quotaContext() {
   let reads=0;
