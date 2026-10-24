@@ -104,8 +104,8 @@ test('a Worker without configuration skips GSC without interfering with other cr
 test('hourly GSC cron stays independent from six-hour promotions cron',async()=>{
   const worker=await readFile('worker.js','utf8');
   const wrangler=await readFile('wrangler.toml','utf8');
-  assert.ok(wrangler.includes('"0 * * * *"'));
-  assert.ok(wrangler.includes('"0 */6 * * *"'));
+  assert.match(wrangler,/crons\s*=\s*\[\s*\]/,"scheduled tasks must remain paused until owner resumes");
+  assert.ok(!wrangler.includes('crons = ["0 */6 * * *"'),"do not silently restore routine sync");
   assert.ok(worker.includes("if (event.cron === '0 * * * *') ctx.waitUntil(syncSearchConsole"));
   assert.ok(worker.includes("if (event.cron === '0 */6 * * *') ctx.waitUntil(syncPromos"));
 });
