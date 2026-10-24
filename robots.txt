@@ -3,3 +3,4 @@ Allow: /
 Disallow: /api/
 Sitemap: https://buysell.best/sitemap.xml
 Sitemap: https://buysell.best/image-sitemap.xml
+Sitemap: https://buysell.best/sitemap-index.xml
