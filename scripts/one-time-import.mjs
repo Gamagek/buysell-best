@@ -50,6 +50,29 @@ async function idToken(){
    notBefore:typeof claim.nbf!=="number"||claim.nbf<=seconds+30
   };
   console.log("OIDC_CLAIM_CHECK",JSON.stringify(checks));
+  // Public JWKS signature preflight: log strictly boolean outcomes, never JWT/JWK values.
+  const crypt={alg:false,keyIdPresent:false,jwksReachable:false,kidMatched:false,signatureVerified:false};
+  try{
+   const hdr=JSON.parse(Buffer.from(pieces[0],"base64url").toString("utf8"));
+   crypt.alg=hdr.alg==="RS256";
+   crypt.keyIdPresent=typeof hdr.kid==="string"&&hdr.kid.length<160;
+   const reply=await fetch("https://token.actions.githubusercontent.com/.well-known/jwks",{
+    headers:{accept:"application/json"},redirect:"error"});
+   crypt.jwksReachable=reply.ok;
+   if(reply.ok){
+    const data=await reply.json();
+    const key=Array.isArray(data.keys)?data.keys.find(v=>v.kid===hdr.kid&&v.kty==="RSA"):null;
+    crypt.kidMatched=!!key;
+    if(key){
+     const pub=await crypto.subtle.importKey("jwk",key,{
+      name:"RSASSA-PKCS1-v1_5",hash:"SHA-256"},false,["verify"]);
+     crypt.signatureVerified=await crypto.subtle.verify("RSASSA-PKCS1-v1_5",
+      pub,Buffer.from(pieces[2],"base64url"),
+      Buffer.from(pieces[0]+"."+pieces[1],"utf8"));
+    }
+   }
+  }catch{/* intentionally no exception details or secret data in logs */}
+  console.log("OIDC_CRYPTO_CHECK",JSON.stringify(crypt));
  }catch{console.log("OIDC_CLAIM_CHECK_UNAVAILABLE");}
  cached=j.value;issued=now;return cached;
 }
