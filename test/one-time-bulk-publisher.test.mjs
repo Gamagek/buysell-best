@@ -109,6 +109,6 @@ test("one-time runner cannot be scheduled and every photo publish is independent
  assert.match(cfg,/crons\s*=\s*\[\s*\]/);
  assert.match(runner,/ACTIONS_ID_TOKEN_REQUEST_TOKEN/);
  assert.match(runner,/NO_ACTUAL_APPROVED_AFFILIATE_OFFERS/);
- assert.match(runner,/maxRecords:1000000/);
+ assert.match(runner,/maxRecords:250000/);
  assert.match(runner,/LIMIT=10000/);
 });
