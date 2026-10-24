@@ -8,12 +8,21 @@
   "require_stored_R2_photo": true,
   "recurring_schedules": false,
   "claim_google_indexing": false,
-  "attempt": "one_shot_streaming_2gb_source_20261024",
+  "attempt": "one_shot_real_products_after_safe_partial_xml_fix_20261024",
   "verified_sales_only": true,
   "original_description_review_policy": "source-backed buying checks; no fabricated first-hand tests",
   "run_once_no_cron": true,
   "safe_auth_probe_version": 3,
   "public_key_diagnostic_version": 4,
   "minimum_published_evidence": "D1+R2+actual+HTTP",
-  "source_required": "verified Admitad or approved affiliate feed"
+  "source_required": "verified Admitad or approved affiliate feed",
+  "required_checks": [
+    "real_affiliate_url",
+    "USD_original_and_sale_price",
+    "at_least_20_percent_verified_discount",
+    "seller_image_saved_in_R2",
+    "unique_product_detail_page",
+    "Adsterra_sponsored_navigation"
+  ],
+  "frequency": "one-time only; Cloudflare crons must remain empty"
 }
