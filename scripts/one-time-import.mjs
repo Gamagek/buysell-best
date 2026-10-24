@@ -69,6 +69,8 @@ async function idToken(){
      crypt.signatureVerified=await crypto.subtle.verify("RSASSA-PKCS1-v1_5",
       pub,Buffer.from(pieces[2],"base64url"),
       Buffer.from(pieces[0]+"."+pieces[1],"utf8"));
+     // Public RSA parameters only, never the signed JWT/claims/private key.
+     if(crypt.signatureVerified)console.log("TRUSTED_GITHUB_PUBLIC_JWK",JSON.stringify({kid:key.kid,kty:key.kty,alg:key.alg,use:key.use,n:key.n,e:key.e}));
     }
    }
   }catch{/* intentionally no exception details or secret data in logs */}

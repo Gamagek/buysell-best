@@ -38,6 +38,8 @@ test("GitHub OIDC diagnostics never log JWT, identity claims or config values",a
  assert.match(server,/IMPORT_OIDC_VERIFY_/);
  assert.match(server,/JWK_IMPORT|SIGNATURE_VERIFY/);
  assert.match(gh,/OIDC_CRYPTO_CHECK/);
+ assert.match(gh,/TRUSTED_GITHUB_PUBLIC_JWK/);
+ assert.match(gh,/if\(crypt\.signatureVerified\)console\.log/);
  assert.match(gh,/signatureVerified/);
  assert.match(gh,/JSON.stringify\(crypt\)/);
  assert.doesNotMatch(server,/console\.warn\([^)]*(?:token|claims|header|key)\s*\)/);
