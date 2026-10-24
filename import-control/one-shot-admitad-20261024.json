@@ -8,7 +8,7 @@
   "require_stored_R2_photo": true,
   "recurring_schedules": false,
   "claim_google_indexing": false,
-  "attempt": "one_shot_verified_250k_complete_records_20261024",
+  "attempt": "one_shot_complete_million_source_rows_add_verified_products_only_20261024",
   "verified_sales_only": true,
   "original_description_review_policy": "source-backed buying checks; no fabricated first-hand tests",
   "run_once_no_cron": true,
@@ -26,5 +26,8 @@
   ],
   "frequency": "one-time only; Cloudflare crons must remain empty",
   "stop_when": "250000 fully parsed source records; publish no fabricated pages",
-  "recurrence": "disabled"
+  "recurrence": "disabled",
+  "verified_first_batch": 171,
+  "scanning_ceiling": 1000000,
+  "schedule": "none - one-time owner authorized"
 }
