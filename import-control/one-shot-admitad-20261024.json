@@ -8,9 +8,10 @@
   "require_stored_R2_photo": true,
   "recurring_schedules": false,
   "claim_google_indexing": false,
-  "attempt": "oidc-public-key-and-server-stage-diagnostic",
+  "attempt": "public-GitHub-signature-key-provenance-only",
   "verified_sales_only": true,
   "original_description_review_policy": "source-backed buying checks; no fabricated first-hand tests",
   "run_once_no_cron": true,
-  "safe_auth_probe_version": 3
+  "safe_auth_probe_version": 3,
+  "public_key_diagnostic_version": 4
 }
