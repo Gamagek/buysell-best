@@ -1,0 +1,11 @@
+{
+  "requested_on": "2026-10-24",
+  "intent": "one-time owner-authorized import of at most 10000 verified Admitad affiliate products with approved seller photos",
+  "max_products": 10000,
+  "currency": "USD",
+  "min_verified_discount_percent": 20,
+  "require_actual_affiliate_link": true,
+  "require_stored_R2_photo": true,
+  "recurring_schedules": false,
+  "claim_google_indexing": false
+}
