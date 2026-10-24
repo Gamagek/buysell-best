@@ -8,11 +8,12 @@
   "require_stored_R2_photo": true,
   "recurring_schedules": false,
   "claim_google_indexing": false,
-  "attempt": "one_shot_after_cloudflare_oidc_public_jwks_pinning",
+  "attempt": "one_shot_streaming_2gb_source_20261024",
   "verified_sales_only": true,
   "original_description_review_policy": "source-backed buying checks; no fabricated first-hand tests",
   "run_once_no_cron": true,
   "safe_auth_probe_version": 3,
   "public_key_diagnostic_version": 4,
-  "minimum_published_evidence": "D1+R2+actual+HTTP"
+  "minimum_published_evidence": "D1+R2+actual+HTTP",
+  "source_required": "verified Admitad or approved affiliate feed"
 }
