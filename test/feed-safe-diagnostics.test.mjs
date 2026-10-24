@@ -57,7 +57,7 @@ test("bounded feed reader limits big replies, and returns actionable status for 
    {message:"FLASH_FEED_HTTP_403"}
  );
  await assert.rejects(
-   fetchApprovedFeed(admitad,async()=>new Response("fake",{status:200,headers:{"content-length":"160000001"}})),
+   fetchApprovedFeed(admitad,async()=>new Response("fake",{status:200,headers:{"content-length":"2000000001"}})),
    {message:"FLASH_FEED_RAW_TOO_LARGE"}
  );
  await assert.rejects(

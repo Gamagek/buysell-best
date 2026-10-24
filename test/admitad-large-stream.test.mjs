@@ -61,7 +61,7 @@ test("large Content-Length is no longer rejected before streaming, while true ex
  const r=await streamVerifiedDeals(medium,opts);
  assert.equal(r.groups.length,1);
  await assert.rejects(fetchApprovedFeed("https://export.admitad.com/feed.csv",async()=>new Response(head,{
-  status:200,headers:{"content-length":"160000001"}})),{message:"FLASH_FEED_RAW_TOO_LARGE"});
+  status:200,headers:{"content-length":"2000000001"}})),{message:"FLASH_FEED_RAW_TOO_LARGE"});
 });
 test("batches stop at a finite record count and never publish silently truncated datasets",async()=>{
  const r=reader([head+"\n"+item("a")+"\n"+item("b")+"\n"]);
