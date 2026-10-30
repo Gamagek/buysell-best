@@ -1,0 +1,39 @@
+name: One-Time Monetag Vignette Production Deployment
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/monetag-vignette-deploy-20261030.txt'
+      - '.github/workflows/deploy-monetag-vignette-20261030.yml'
+permissions:
+  contents: read
+concurrency:
+  group: buysell-monetag-vignette-deploy-once
+  cancel-in-progress: false
+jobs:
+  wrangler-production-deploy:
+    if: github.repository == 'Gamagek/buysell-best' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: de9e41200f6bdfab80553c8eb08f9b16
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Validate repo and Worker before production deployment
+        run: npm test
+      - name: Require existing authorized Cloudflare deployment token
+        shell: bash
+        run: |
+          if [[ -z "${CLOUDFLARE_API_TOKEN}" ]]; then
+            echo "::error::CLOUDFLARE_API_TOKEN is not configured in GitHub Actions secrets; production was not modified."
+            exit 1
+          fi
+      - name: Deploy exact tested main commit to existing Cloudflare Worker
+        run: npx wrangler deploy --config wrangler.toml
