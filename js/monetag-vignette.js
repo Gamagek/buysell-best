@@ -33,12 +33,15 @@
   function available() {
     // If storage is blocked, fail closed instead of repeatedly interrupting
     // this visitor on every page. Respect privacy/browser preferences.
-    if (!window.localStorage || !window.sessionStorage) return false;
-    const last = readStamp(window.localStorage, LAST_SHOWN_KEY);
+    let local, session;
+    try { local = window.localStorage; session = window.sessionStorage; }
+    catch (_) { return false; }
+    if (!local || !session) return false;
+    const last = readStamp(local, LAST_SHOWN_KEY);
     if (last < 0) return false;
     const now = Date.now();
     if (last && (now < last || now - last < COOLDOWN_MS)) return false;
-    const adsterra = readStamp(window.sessionStorage, ADSTERRA_PROMPT_KEY);
+    const adsterra = readStamp(session, ADSTERRA_PROMPT_KEY);
     if (adsterra < 0 || (adsterra && (now < adsterra || now - adsterra < ADSTERRA_GAP_MS))) return false;
     try {
       if (navigator.globalPrivacyControl === true ||
