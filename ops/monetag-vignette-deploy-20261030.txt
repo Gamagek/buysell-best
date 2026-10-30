@@ -1,0 +1,6 @@
+Deployment request: 2026-10-30
+Repository: Gamagek/buysell-best
+Worker: buysell-best
+Scope: merged UX-capped Monetag vignette zone 12151474 and unchanged root SW verification.
+Trigger type: one-time push only. No schedule or cron.
+Precondition: existing CLOUDFLARE_API_TOKEN GitHub Actions secret with correct Worker deploy permissions.
