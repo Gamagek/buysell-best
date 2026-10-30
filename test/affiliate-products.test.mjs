@@ -313,8 +313,12 @@ test("worldwide hotel selector, search details and truthful source pages render 
   const dom=new JSDOM(await response.text()),doc=dom.window.document;
   assert.equal(doc.querySelectorAll("#hotel-country option[value]:not([value=''])").length,249);
   assert.equal(doc.querySelector("#hotel-city").value,query.get("city"));
-  const extraInlineScripts=[...doc.querySelectorAll("script:not([src]):not([type='application/ld+json'])")].filter(script=>!script.closest(".display-ad"));
+  const extraInlineScripts=[...doc.querySelectorAll("script:not([src]):not([type='application/ld+json'])")]
+    .filter(script=>!script.closest(".display-ad") && script.id!=="bsb-monetag-vignette");
   assert.equal(extraInlineScripts.length,0);
+  const monetag=doc.querySelector("head > script#bsb-monetag-vignette");
+  assert.equal(monetag?.getAttribute("data-cfasync"),"false");
+  assert.match(monetag?.textContent||"",/12151474.*n6wxm\.com\/vignette\.min\.js/);
   assert.equal(doc.querySelector('link[rel="canonical"]').href,origin+"/hotels/");
   assert.equal(doc.querySelector('meta[name="google-adsense-account"]').content,"ca-pub-4485257027995607");
   const providerLinks=[...doc.querySelectorAll("[data-hotel-provider]")];

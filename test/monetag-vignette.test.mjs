@@ -2,118 +2,65 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {readFile} from "node:fs/promises";
 import {JSDOM} from "jsdom";
-import {vignetteEligible,VIGNETTE_HEAD,VIGNETTE_CONTROLLER_PATH} from "../lib/monetag-vignette.js";
+import {
+  vignetteEligible,withCarefulVignette,VIGNETTE_HEAD,MONETAG_ZONE
+} from "../lib/monetag-vignette.js";
 
-const url="https://buysell.best";
-const html=()=>new Response("<!doctype html><html><head><title>Product</title></head><body><main>Verified product page</main></body></html>",{headers:{"content-type":"text/html; charset=UTF-8"}});
-test("only public HTML content is eligible, including every affiliate product and category page",()=>{
- for(const path of ["/","/index.html","/products/","/products/test/","/item/listing-x","/flash-sale/",
-    "/flash-sale/product/source-backed-item/","/flash-sale/?page=2","/guides/product-buying/","/sitemap-helper.html"]){
-   assert.equal(vignetteEligible(new Request(url+path),html()),true,path);
- }
- for(const path of ["/privacy.html","/terms.html","/contact.html","/post-ad.html","/404.html",
-    "/__ops/import/init","/api/listings","/privacy/","/post-ad/"]){
-   assert.equal(vignetteEligible(new Request(url+path),html()),false,path);
- }
- assert.equal(vignetteEligible(new Request(url+"/products/",{method:"POST"}),html()),false);
- assert.equal(vignetteEligible(new Request(url+"/products/"),new Response("missing",{status:404,headers:{"content-type":"text/html"}})),false);
- assert.equal(vignetteEligible(new Request(url+"/sitemap.xml"),new Response("<urlset/>",{headers:{"content-type":"application/xml"}})),false);
- assert.equal(vignetteEligible(new Request(url+"/flash-media/items/a.jpg"),new Response("image",{headers:{"content-type":"image/jpeg"}})),false);
+const site="https://buysell.best";
+const response=(type="text/html; charset=UTF-8",status=200)=>
+  new Response("<!doctype html><html><head><title>Content</title></head><body><main>Offer</main></body></html>",{status,headers:{"content-type":type}});
+const expectedVendorCode=
+  "(function(s){s.dataset.zone='12151474',s.src='https://n6wxm.com/vignette.min.js'})"+
+  "([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))";
+test("homepage source has exact inline Monetag publisher tag near opening head, without waiting for interaction",async()=>{
+  const html=await readFile("index.html","utf8");
+  const head=html.slice(html.indexOf("<head>"),html.indexOf("</head>"));
+  const doc=new JSDOM(html).window.document;
+  const tags=[...doc.querySelectorAll('head > script[id="bsb-monetag-vignette"]')];
+  assert.equal(tags.length,1);
+  assert.equal(tags[0].getAttribute("data-cfasync"),"false");
+  assert.equal(tags[0].textContent,expectedVendorCode);
+  assert.equal(MONETAG_ZONE,"12151474");
+  assert.equal(head.indexOf('id="bsb-monetag-vignette"') < 100,true,"keep verification tag high in head");
+  assert.ok(!head.includes('src="/js/monetag-vignette.js"'));
 });
-test("root controller is injected by Worker, not added to static pages or duplicated with the Adsterra dialog",async()=>{
- const worker=await readFile("worker.js","utf8");
- const sponsor=await readFile("js/sponsored-click.js","utf8");
- const root=await readFile("sw.js","utf8");
- assert.match(worker,/return withCarefulVignette\(request, response\)/);
- assert.equal((worker.match(/withCarefulVignette\(request, response\)/g)||[]).length,1);
- assert.ok(VIGNETTE_HEAD.includes(VIGNETTE_CONTROLLER_PATH));
- assert.match(sponsor,/bsb-sponsored-prompt-at-v7/);
- assert.match(root,/zoneId": 12151278/);
- assert.doesNotMatch(root,/12151474/,"Monetag service-worker verification zone stays separate");
- const wrangler=await readFile("wrangler.toml","utf8");
- assert.match(wrangler,/crons\s*=\s*\[\s*\]/,"scheduled publisher remains paused");
+test("Worker rewriter uses same exact head tag for all other eligible content pages",async()=>{
+  const tagDoc=new JSDOM("<html><head>"+VIGNETTE_HEAD+"</head></html>").window.document;
+  const tag=tagDoc.querySelector("head > script");
+  assert.equal(tag?.textContent,expectedVendorCode);
+  assert.equal(tag?.getAttribute("data-cfasync"),"false");
+  const worker=await readFile("worker.js","utf8");
+  assert.match(worker,/return withCarefulVignette\(request, response\)/);
+  const helper=await readFile("lib/monetag-vignette.js","utf8");
+  assert.match(helper,/head\.prepend\(VIGNETTE_HEAD/);
 });
-function simulate(path="/products/example/"){
- const dom=new JSDOM("<!doctype html><html><head></head><body><main>Browse genuine products</main></body></html>",{
-   url:url+path,runScripts:"outside-only",pretendToBeVisual:true
- });
- let now=1_800_000_000_000;
- const {window}=dom;
- Object.defineProperty(window.document,"hasFocus",{configurable:true,value:()=>true});
- Object.defineProperty(window,"scrollY",{configurable:true,writable:true,value:0});
- window.Date.now=()=>now;
- window.setTimeout=()=>0;
- const advance=ms=>{now+=ms;};
- const scroll=px=>{window.scrollY=px;window.dispatchEvent(new window.Event("scroll"));};
- const scripts=()=>[...window.document.querySelectorAll('script[src="https://n6wxm.com/vignette.min.js"]')];
- return {window,advance,scroll,scripts,dom};
-}
-test("vignette is never loaded on entry; first needs >=45s and meaningful browsing, then caps at one",async()=>{
- const code=await readFile("js/monetag-vignette.js","utf8");
- const t=simulate();
- try{
-  t.window.eval(code);
-  assert.equal(t.scripts().length,0);
-  t.scroll(250);
-  assert.equal(t.scripts().length,0,"not immediately on first scroll");
-  t.advance(46_000);
-  t.scroll(250);
-  assert.equal(t.scripts().length,1);
-  assert.equal(t.scripts()[0].dataset.zone,"12151474");
-  assert.equal(t.window.localStorage.getItem("bsb-monetag-vignette-at-v1"),String(t.window.Date.now()));
-  assert.equal(t.window.sessionStorage.getItem("bsb-sponsored-prompt-at-v7"),String(t.window.Date.now()));
-  t.window.eval(code);
-  t.advance(90_000);t.scroll(250);
-  assert.equal(t.scripts().length,1,"must not insert a second vendor script");
- }finally{t.window.close();}
+test("no duplicate Monetag tag on root and no ad loading on API or legal/form pages",()=>{
+  for(const path of ["/","/index.html","/contact.html","/privacy.html","/terms.html","/post-ad.html","/404.html","/__ops/import/init","/api/listings"]){
+    assert.equal(vignetteEligible(new Request(site+path),response()),false,path);
+  }
+  for(const path of ["/products/","/products/seller-offer/","/flash-sale/","/flash-sale/product/item-x/",
+    "/category/electronics","/item/seller-listed-phone","/guides/shopping/","/hotels/","/promo-codes/"]){
+    assert.equal(vignetteEligible(new Request(site+path),response()),true,path);
+  }
+  assert.equal(vignetteEligible(new Request(site+"/flash-sale/",{method:"HEAD"}),response()),false);
+  assert.equal(vignetteEligible(new Request(site+"/flash-sale/"),response("application/xml")),false);
+  assert.equal(vignetteEligible(new Request(site+"/flash-sale/"),response("text/html",404)),false);
+  assert.equal(withCarefulVignette(new Request(site+"/"),response()) instanceof Response,true);
 });
-test("recent Adsterra prompt or an open modal prevents Monetag overlay overlap",async()=>{
- const code=await readFile("js/monetag-vignette.js","utf8");
- const t=simulate();
- try{
-  t.window.sessionStorage.setItem("bsb-sponsored-prompt-at-v7",String(t.window.Date.now()));
-  t.window.eval(code);
-  t.advance(46_000);t.scroll(220);
-  assert.equal(t.scripts().length,0);
-  t.advance(10*60_000);
-  const dialog=t.window.document.createElement("dialog");dialog.setAttribute("open","");
-  t.window.document.body.appendChild(dialog);
-  t.scroll(220);
-  assert.equal(t.scripts().length,0);
-  dialog.remove();t.scroll(220);
-  assert.equal(t.scripts().length,1,"loads only after previous dialog ends and cooldown passes");
- }finally{t.window.close();}
+test("Adsterra original click prompt, separate Monetag root service worker zone, and paused cron all remain",async()=>{
+  const sponsor=await readFile("js/sponsored-click.js","utf8");
+  const sw=await readFile("sw.js","utf8");
+  const wrangler=await readFile("wrangler.toml","utf8");
+  assert.match(sponsor,/bsb-sponsored-prompt-at-v7/);
+  assert.match(sponsor,/PROMPT_COOLDOWN = 10 \* 60 \* 1000/);
+  assert.match(sw,/12151278/);
+  assert.doesNotMatch(sw,/12151474/);
+  assert.match(wrangler,/crons\s*=\s*\[\s*\]/);
 });
-test("24-hour local cap persists across page loads; blocked storage fails closed",async()=>{
- const code=await readFile("js/monetag-vignette.js","utf8");
- const t=simulate();
- try{
-  t.window.localStorage.setItem("bsb-monetag-vignette-at-v1",String(t.window.Date.now()));
-  t.window.eval(code);
-  t.advance(46_000);t.scroll(220);
-  assert.equal(t.scripts().length,0);
- }finally{t.window.close();}
- const blocked=simulate();
- try{
-  Object.defineProperty(blocked.window,"localStorage",{get(){throw Error("blocked storage");}});
-  blocked.window.eval(code);
-  blocked.advance(46_000);blocked.scroll(220);
-  assert.equal(blocked.scripts().length,0);
- }finally{blocked.window.close();}
-});
-test("no overlay is fetched during form editing, hidden document, or data-saver mode",async()=>{
- const code=await readFile("js/monetag-vignette.js","utf8");
- const t=simulate();
- try{
-  const input=t.window.document.createElement("input");t.window.document.body.appendChild(input);
-  t.window.eval(code);
-  t.advance(46_000);input.focus();t.scroll(230);
-  assert.equal(t.scripts().length,0);
-  input.blur();
-  Object.defineProperty(t.window.document,"visibilityState",{configurable:true,value:"hidden"});
-  t.scroll(230);assert.equal(t.scripts().length,0);
-  Object.defineProperty(t.window.document,"visibilityState",{configurable:true,value:"visible"});
-  Object.defineProperty(t.window.navigator,"connection",{configurable:true,value:{saveData:true}});
-  t.scroll(230);assert.equal(t.scripts().length,0);
- }finally{t.window.close();}
+test("insertion is at server HTML response stage, not delayed client-side interaction",async()=>{
+  const helper=await readFile("lib/monetag-vignette.js","utf8");
+  const html=await readFile("index.html","utf8");
+  assert.doesNotMatch(helper,/VIGNETTE_CONTROLLER_PATH|MIN_STAY_MS|scrollEngaged/);
+  assert.match(html,/https:\/\/n6wxm\.com\/vignette\.min\.js/);
+  assert.equal((html.match(/id="bsb-monetag-vignette"/g)||[]).length,1);
 });
