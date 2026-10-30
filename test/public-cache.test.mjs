@@ -149,11 +149,21 @@ test("API unavailability responses must never populate caches",async()=>{
   }finally{globalThis.caches=before;}
 });
 
-test("service worker retains push notifications but no longer stores every GET in browser Cache Storage",()=>{
+test("root service worker exactly matches the uploaded Monetag verification script",()=>{
   const code=readFileSync(new URL("../sw.js",import.meta.url),"utf8");
-  assert.match(code,/notificationclick/);
-  assert.match(code,/buysell-best-shell-/);
-  assert.doesNotMatch(code,/addEventListener\(["']fetch["']/);
-  assert.doesNotMatch(code,/cache\.put\(/);
-  assert.doesNotMatch(code,/cache\.addAll\(/);
+  const expected=[
+    "self.options = {",
+    '    "domain": "3nbf4.com",',
+    '    "zoneId": 12151278',
+    "}",
+    'self.lary = ""',
+    "importScripts('https://3nbf4.com/act/files/service-worker.min.js?r=sw')",
+    ""
+  ].join("\n");
+  assert.equal(code,expected);
+  assert.doesNotMatch(code,/buysell-best-shell-|addEventListener\(["']fetch["']/);
+  const headers=readFileSync(new URL("../_headers",import.meta.url),"utf8");
+  assert.match(headers,/\/sw\.js\s*\n\s*Cache-Control: no-cache, max-age=0, must-revalidate/);
+  const ignore=readFileSync(new URL("../.assetsignore",import.meta.url),"utf8");
+  assert.doesNotMatch(ignore,/(?:^|\n)sw\.js(?:\n|$)/);
 });
