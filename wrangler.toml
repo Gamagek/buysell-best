@@ -5,7 +5,7 @@ main = "./worker.js"
 [assets]
 directory = "."
 binding = "ASSETS"
-run_worker_first = ["/", "/*.html", "/about", "/about/", "/ad", "/ad/", "/categories", "/categories/", "/contact", "/contact/", "/post-ad", "/post-ad/", "/privacy", "/privacy/", "/search", "/search/", "/terms", "/terms/", "/deals", "/deals/", "/index", "/index/", "/index.html", "/api/*", "/products", "/products/*", "/guides", "/guides/*", "/shopping-methodology", "/shopping-methodology/*", "/hotels", "/hotels/*", "/promo-codes", "/promo-codes/*", "/insights", "/insights/*", "/careers", "/careers/*", "/sitemap.xml", "/image-sitemap.xml", "/sitemap-index.xml", "/sitemaps/*", "/__ops/*", "/flash-sale", "/flash-sale/*", "/flash-media/*"]
+run_worker_first = ["/", "/*.html", "/about", "/about/", "/ad", "/ad/", "/categories", "/categories/", "/contact", "/contact/", "/post-ad", "/post-ad/", "/privacy", "/privacy/", "/search", "/search/", "/terms", "/terms/", "/deals", "/deals/", "/index", "/index/", "/index.html", "/api/*", "/products", "/products/*", "/guides", "/guides/*", "/shopping-methodology", "/shopping-methodology/*", "/hotels", "/hotels/*", "/promo-codes", "/promo-codes/*", "/insights", "/insights/*", "/careers", "/careers/*", "/sitemap.xml", "/image-sitemap.xml", "/sitemap-index.xml", "/sitemaps/*", "/__ops/*", "/flash-sale", "/flash-sale/*", "/flash-media/*", "/item/*", "/category/*"]
 
 [[d1_databases]]
 binding = "DB"

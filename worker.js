@@ -19,6 +19,7 @@ import { AFFILIATE_PRODUCTS, findProduct, featuredCarouselItems, productPath, re
 import { findShoppingProduct, renderShoppingProductPage, shoppingProductPath, findGuide, findGuideCategory, guidePath, categoryPath, renderGuidesIndex, renderGuideCategory, renderShoppingGuide, renderShoppingMethodology, renderGuidesSpotlight, guideSitemapEntries } from "./lib/shopping-guides.js";
 import { renderHotelComparison, renderPromoCodes, travelSitemapEntries } from "./lib/travel-guides.js";
 import { withDisplayAdvertising } from "./lib/display-ads.js";
+import { withCarefulVignette } from "./lib/monetag-vignette.js";
 import { renderHighIntentIndex, renderHighIntentArticle, findHighIntentGuide, renderHighIntentSpotlight, highIntentSitemapEntries, highIntentPath } from "./lib/high-intent-guides.js";
 
 const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261017-native-ad-v7"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261017-native-ad-v7" defer></script>';
@@ -700,7 +701,10 @@ export default {
   async fetch(request, env, ctx) {
     const cached = await cachedPublicResponse(request, env, ctx,
       () => serveUncached(request, env, ctx));
-    return cached || serveUncached(request, env, ctx);
+    const response = cached || await serveUncached(request, env, ctx);
+    // Inject once at the response boundary (after public edge caching) on
+    // eligible HTML only; never into API, crawler XML or ad verification files.
+    return withCarefulVignette(request, response);
   }
 };
 
