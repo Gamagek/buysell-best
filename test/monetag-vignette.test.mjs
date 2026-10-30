@@ -107,8 +107,8 @@ test("no overlay is fetched during form editing, hidden document, or data-saver 
  try{
   const input=t.window.document.createElement("input");t.window.document.body.appendChild(input);
   t.window.eval(code);
-  t.advance(46_000);t.scroll(230);input.focus();
-  t.scroll(230);assert.equal(t.scripts().length,0);
+  t.advance(46_000);input.focus();t.scroll(230);
+  assert.equal(t.scripts().length,0);
   input.blur();
   Object.defineProperty(t.window.document,"visibilityState",{configurable:true,value:"hidden"});
   t.scroll(230);assert.equal(t.scripts().length,0);
