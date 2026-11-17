@@ -110,7 +110,7 @@ export async function localInference(prompt,{baseUrl="http://127.0.0.1:8811",tim
   const response=await fetch(new URL("/v1/chat/completions",origin),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({
    model:"local",
    messages:[{role:"system",content:"You are a source-grounded editorial assistant. Be cautious, never invent specs or quality judgments."},{role:"user",content:prompt}],
-   temperature:0.12,max_tokens:350,stream:false,chat_template_kwargs:{enable_thinking:false}
+   temperature:0.12,max_tokens:Math.max(64,Math.min(350,Number(process.env.HF_REVIEW_MAX_TOKENS)||350)),stream:false,chat_template_kwargs:{enable_thinking:false}
   }),signal:controller.signal});
   if(!response.ok)throw Error("LOCAL_MODEL_HTTP_"+response.status);
   const json=await response.json();
