@@ -15,12 +15,18 @@ function allowedPageUrl(value){
  if(u.protocol!=="https:"||u.hostname!=="buysell.best"||u.username||u.password||u.search||u.hash||!/^\/flash-sale\/product\/[a-z0-9-]+\/$/.test(u.pathname)) throw Error("INVALID_PAGE_URL");
  return u.href;
 }
-export function approvedAdmitadDestination(value){
+export function approvedAdmitadDestination(value,expectedId=null){
  try{
   const u=new URL(String(value));
   if(u.protocol!=="https:"||u.hostname!=="rzekl.com"||u.username||u.password||!/^\/g\/[a-zA-Z0-9]+\//.test(u.pathname))return false;
-  const merchant=new URL(u.searchParams.get("ulp")||"");
-  return merchant.protocol==="https:"&&/(^|\.)aliexpress\.com$/.test(merchant.hostname)&&/\/(?:item|i)\/\d+\.html/i.test(merchant.pathname)&&!merchant.username&&!merchant.password;
+  const route=new URL(u.searchParams.get("ulp")||"");
+  if(route.protocol!=="https:"||route.username||route.password)return false;
+  let merchant=route;
+  if(route.hostname==="s.click.aliexpress.com"&&route.pathname==="/deep_link.htm")
+   merchant=new URL(route.searchParams.get("dl_target_url")||"");
+  if(merchant.protocol!=="https:"||!/(^|\.)aliexpress\.com$/.test(merchant.hostname)||merchant.username||merchant.password)return false;
+  const itemId=merchant.pathname.match(/^\/(?:item|i)\/(\d{8,25})\.html$/i)?.[1];
+  return !!itemId&&(!expectedId||itemId===expectedId);
  }catch{return false;}
 }
 export function extractVerifiedListing(html,requestedUrl){
@@ -39,8 +45,11 @@ export function extractVerifiedListing(html,requestedUrl){
  if(!product)throw Error("PRODUCT_SCHEMA_MISSING");
  const match=html.match(/<link\s+[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i);
  if(!match||match[1]!==url)throw Error("PRODUCT_CANONICAL_MISMATCH");
+ const slug=new URL(url).pathname.split("/")[3];
+ const id=slug.match(/-(\d{8,25})$/)?.[1]||null;
+ if(!id)throw Error("INVALID_PRODUCT_ID");
  const offer=Array.isArray(product.offers)?product.offers[0]:product.offers;
- if(!approvedAdmitadDestination(offer?.url))throw Error("TRACKED_DESTINATION_MISSING");
+ if(!approvedAdmitadDestination(offer?.url,id))throw Error("TRACKED_DESTINATION_MISSING");
  const title=String(product.name||"").replace(/\s+/g," ").trim().slice(0,180);
  const price=Number(offer?.price);
  if(title.length<12||!Number.isFinite(price)||price<=0||price>100000||offer?.priceCurrency!=="USD")throw Error("INVALID_SOURCE_FACTS");
@@ -48,8 +57,6 @@ export function extractVerifiedListing(html,requestedUrl){
  let imageURL;
  try{imageURL=new URL(String(photo||""))}catch{throw Error("IMAGE_MISSING");}
  if(imageURL.protocol!=="https:"||imageURL.hostname!=="buysell.best"||!/^\/flash-media\/items\/bulk-[a-z0-9]+\.(?:jpg|png|webp|avif)$/.test(imageURL.pathname)) throw Error("SOURCE_IMAGE_MISSING");
- const slug=new URL(url).pathname.split("/")[3];
- const id=slug.match(/-(\d{8,25})$/)?.[1]||null;
  const description=String(product.description||"").replace(/\s+/g," ").trim().slice(0,350);
  return {
   source_page:url,source_kind:"buy_sell_cached_admitad_feed_listing",id,title,
@@ -81,7 +88,7 @@ export function reviewQualityGate(text,facts){
  if(raw.length<220||raw.length>3600)reasons.push("draft_length_outside_bounds");
  if(BANNED.test(raw))reasons.push("unsupported_quality_or_test_claim");
  if(!/(?:verify|confirm|check|compare|inspect)/i.test(raw))reasons.push("buyer_checks_missing");
- if(!/(?:not independently verified|not verified|unverified|not confirmed|unknown|cannot confirm)/i.test(raw))reasons.push("source_limitations_missing");
+ if(!/(?:not independently verified|no independent verification|no verified (?:specs?|specifications?|buyer reviews?|customer reviews?)|not verified|unverified|not confirmed|unknown|cannot confirm)/i.test(raw))reasons.push("source_limitations_missing");
  if(!raw.toLowerCase().includes(facts.title.toLowerCase().slice(0,24)))reasons.push("product_identity_missing");
  if(/(?:https?:\/\/|www\.)/i.test(raw))reasons.push("unreviewed_external_link");
  return {passed:reasons.length===0,reasons};
