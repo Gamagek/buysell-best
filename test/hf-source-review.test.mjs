@@ -41,6 +41,7 @@ test("human source-review is mandatory even if draft passes conservative quality
  assert.equal(doc.review_status,"DRAFT_REQUIRES_HUMAN_SOURCE_REVIEW");
  assert.equal(doc.auto_publish,false);
  assert.equal(doc.quality_gate.passed,true);
+ assert.equal(reviewQualityGate(fixture.title+" is a USD 0.07 feed listing. No independent verification of specifications or buyer feedback is available. Verify dimensions and compatibility before buying. Check seller returns and shipping.",fixture).passed,true);
  assert.equal(reviewQualityGate("Excellent durable guaranteed high-quality material that fits all cars.",fixture).passed,false);
  assert.match(buildEvidencePrompt(fixture),/No invented features/);
 });
