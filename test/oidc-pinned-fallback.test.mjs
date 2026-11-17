@@ -14,7 +14,7 @@ test("date-limited reviewed GitHub public keys are well-formed RSA verification-
   assert.deepEqual(key.usages,["verify"]);
  }
  assert.equal(trustedGithubPublicKeysAt(Date.UTC(2026,9,24)).length,4);
- assert.equal(trustedGithubPublicKeysAt(Date.UTC(2026,10,15)),null,"expired pins fail closed");
+ assert.equal(trustedGithubPublicKeysAt(Date.UTC(2026,11,2)),null,"refreshed pins still fail closed at expiration");
 });
 test("temporary GitHub JWKS outage NEVER authenticates attacker tokens, even if kid is pinned",async()=>{
  const key=await crypto.subtle.generateKey({name:"RSASSA-PKCS1-v1_5",
