@@ -1,0 +1,116 @@
+name: Hugging Face Qwen3 Grounded Review Draft (Manual Test)
+
+on:
+  workflow_dispatch:
+    inputs:
+      product_url:
+        description: "Verified BuySell.Best AliExpress product page (exact canonical URL)"
+        required: false
+        default: "https://buysell.best/flash-sale/product/plastic-car-rivets-strong-designs-retainer-clip-91505tm8003-for-automoti-1005010507993958/"
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/hf-source-review.yml"
+      - "scripts/hf-source-review.mjs"
+      - "test/hf-source-review.test.mjs"
+      - "test/fixtures/hf-review-source-snapshot.json"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hf-source-review-demo
+  cancel-in-progress: false
+
+jobs:
+  draft:
+    name: Generate evidence-limited draft with local open-weight Qwen3
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      PRODUCT_URL: ${{ github.event.inputs.product_url || 'https://buysell.best/flash-sale/product/plastic-car-rivets-strong-designs-retainer-clip-91505tm8003-for-automoti-1005010507993958/' }}
+      HF_REVIEW_MODEL_NAME: "ggml-org/Qwen3-1.7B-GGUF Q4_K_M"
+    steps:
+      - name: Checkout trusted source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Run verifier tests before downloading model
+        run: node --test test/hf-source-review.test.mjs
+
+      - name: Download prebuilt llama.cpp CPU runtime (pinned release)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/llama"
+          curl --fail --location --silent --show-error --retry 2 --max-time 180 \
+            "https://github.com/ggml-org/llama.cpp/releases/download/b12477/llama-b12477-bin-ubuntu-x64.tar.gz" \
+            | tar -xz -C "$RUNNER_TEMP/llama" --strip-components=1
+          "$RUNNER_TEMP/llama/llama-server" --version | head -n 3
+
+      - name: Download pinned open-weight Hugging Face model
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --silent --show-error --retry 2 --max-time 480 \
+            "https://huggingface.co/ggml-org/Qwen3-1.7B-GGUF/resolve/daeb8e2d528a760970442092f6bf1e55c3b659eb/Qwen3-1.7B-Q4_K_M.gguf" \
+            -o "$RUNNER_TEMP/llama/Qwen3-1.7B-Q4_K_M.gguf"
+          test "$(stat -c %s "$RUNNER_TEMP/llama/Qwen3-1.7B-Q4_K_M.gguf")" -gt 1000000000
+
+      - name: Start localhost-only model inference
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/llama"
+          LD_LIBRARY_PATH="$PWD:${LD_LIBRARY_PATH:-}" \
+          nohup ./llama-server \
+            -m ./Qwen3-1.7B-Q4_K_M.gguf \
+            --host 127.0.0.1 --port 8811 \
+            --ctx-size 2048 --parallel 1 --threads 4 --reasoning off --no-warmup \
+            > "$RUNNER_TEMP/llama-log.txt" 2>&1 </dev/null &
+          echo $! > "$RUNNER_TEMP/llama.pid"
+          for i in {1..75}; do
+            if curl --fail --silent --max-time 3 http://127.0.0.1:8811/health | grep -q '"status":"ok"'; then
+              echo "Hugging Face model ready on localhost"; exit 0
+            fi
+            sleep 2
+          done
+          tail -n 30 "$RUNNER_TEMP/llama-log.txt"
+          exit 1
+
+      - name: Create source-grounded draft (NEVER auto-publish)
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/hf-source-review.mjs \
+            --url "$PRODUCT_URL" \
+            --fixture test/fixtures/hf-review-source-snapshot.json \
+            --output "$RUNNER_TEMP/hf-review-drafts/source-limited-review.json"
+
+      - name: Verify draft status and protect public site from unchecked claims
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module -e '
+            import {readFileSync} from "node:fs";
+            const x=JSON.parse(readFileSync(process.argv[1],"utf8"));
+            if (x.auto_publish !== false || x.review_status !== "DRAFT_REQUIRES_HUMAN_SOURCE_REVIEW") throw Error("draft escaped review gate");
+            if (!x.product?.title || !x.source?.url || !x.model || !x.ai_draft) throw Error("evidence or generated draft missing");
+            console.log("AI draft generated; public auto-publishing remains disabled. Gate:",JSON.stringify(x.quality_gate));
+          ' "$RUNNER_TEMP/hf-review-drafts/source-limited-review.json"
+
+      - name: Save private-by-default source review artifact (draft only)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: huggingface-source-review-draft
+          path: ${{ runner.temp }}/hf-review-drafts/*.json
+          if-no-files-found: warn
+          retention-days: 7
