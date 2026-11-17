@@ -1,0 +1,88 @@
+name: Qwen3 Hourly AI Affiliate Review Publisher
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '37 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/hf-bulk-review-publish.yml'
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: buysell-ai-review-hourly
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.repository == 'Gamagek/buysell-best' && github.ref == 'refs/heads/main'
+    name: Bounded Qwen3 product guide publishing
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - name: Checkout source without credentials
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v5
+        with:
+          node-version: '24'
+
+      - name: Check publishing and OIDC security tests
+        run: node --test test/ai-review-publisher.test.mjs test/hf-source-review.test.mjs
+
+      - name: Download prebuilt llama.cpp CPU runtime (pinned release)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/llama"
+          curl --fail --location --silent --show-error --retry 2 --max-time 180 \
+            "https://github.com/ggml-org/llama.cpp/releases/download/b12477/llama-b12477-bin-ubuntu-x64.tar.gz" \
+            | tar -xz -C "$RUNNER_TEMP/llama" --strip-components=1
+          "$RUNNER_TEMP/llama/llama-server" --version | head -n 3
+
+      - name: Download pinned open-weight Hugging Face model
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --silent --show-error --retry 2 --max-time 480 \
+            "https://huggingface.co/ggml-org/Qwen3-1.7B-GGUF/resolve/daeb8e2d528a760970442092f6bf1e55c3b659eb/Qwen3-1.7B-Q4_K_M.gguf" \
+            -o "$RUNNER_TEMP/llama/Qwen3-1.7B-Q4_K_M.gguf"
+          test "$(stat -c %s "$RUNNER_TEMP/llama/Qwen3-1.7B-Q4_K_M.gguf")" -gt 1000000000
+
+      - name: Start localhost-only model inference
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/llama"
+          LD_LIBRARY_PATH="$PWD:${LD_LIBRARY_PATH:-}" \
+          nohup ./llama-server \
+            -m ./Qwen3-1.7B-Q4_K_M.gguf \
+            --host 127.0.0.1 --port 8811 \
+            --ctx-size 2048 --parallel 1 --threads 4 --reasoning off --no-warmup \
+            > "$RUNNER_TEMP/llama-log.txt" 2>&1 </dev/null &
+          echo $! > "$RUNNER_TEMP/llama.pid"
+          for i in {1..75}; do
+            if curl --fail --silent --max-time 3 http://127.0.0.1:8811/health | grep -q '"status":"ok"'; then
+              echo "Hugging Face model ready on localhost"; exit 0
+            fi
+            sleep 2
+          done
+          tail -n 30 "$RUNNER_TEMP/llama-log.txt"
+          exit 1
+
+      - name: Generate and publish quality-gated buying analyses
+        env:
+          PRIVATE_4GET_BASE_URL: ${{ vars.PRIVATE_4GET_BASE_URL || '' }}
+          AI_REVIEWS_PER_RUN: '6'
+        run: node scripts/hf-bulk-review-publisher.mjs
+
+      - name: Verify run result exists
+        if: always()
+        run: echo "See REVIEW_BATCH_END in this run's logs. Public pages render only accepted reviews."
