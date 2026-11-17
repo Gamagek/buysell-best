@@ -88,7 +88,7 @@ export function reviewQualityGate(text,facts){
  if(raw.length<220||raw.length>3600)reasons.push("draft_length_outside_bounds");
  if(BANNED.test(raw))reasons.push("unsupported_quality_or_test_claim");
  if(!/(?:verify|confirm|check|compare|inspect)/i.test(raw))reasons.push("buyer_checks_missing");
- if(!/(?:not independently verified|not verified|unverified|not confirmed|unknown|cannot confirm)/i.test(raw))reasons.push("source_limitations_missing");
+ if(!/(?:not independently verified|no independent verification|no verified (?:specs?|specifications?|buyer reviews?|customer reviews?)|not verified|unverified|not confirmed|unknown|cannot confirm)/i.test(raw))reasons.push("source_limitations_missing");
  if(!raw.toLowerCase().includes(facts.title.toLowerCase().slice(0,24)))reasons.push("product_identity_missing");
  if(/(?:https?:\/\/|www\.)/i.test(raw))reasons.push("unreviewed_external_link");
  return {passed:reasons.length===0,reasons};
