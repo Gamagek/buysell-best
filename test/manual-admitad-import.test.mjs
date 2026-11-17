@@ -6,7 +6,7 @@ test("one-off importer is Cloudflare-account-only, and never silently enables pa
  const wr=await readFile("wrangler.toml","utf8");
  const w=await readFile("worker.js","utf8");
  const source=await readFile("lib/manual-admitad-import.js","utf8");
- assert.match(wr,/crons\s*=\s*\[\s*\]/);
+ assert.match(wr,/0 \* \* \* \*/); // Owner explicitly resumed hourly verified imports on 2026-11-17
  assert.match(wr,/name\s*=\s*"buysell-admitad-manual"/);
  assert.match(wr,/class_name\s*=\s*"ManualAdmitadImport"/);
  assert.doesNotMatch(wr,/schedules\s*=/);
