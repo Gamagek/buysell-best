@@ -57,9 +57,9 @@ test("source-backed batch only publishes seller-photo-backed USD discounted prod
  };
  const env={DB:db,FLASH_MEDIA:{async put(key,bytes){images.push({key,size:bytes.byteLength})}}};
  assert.equal((await initOneTimeCatalogue(env)).status,"ready");
- const raw={offer_id:"12345",name:"Genuine wireless travel earphones",category_name:"Electronics",
+ const raw={offer_id:"1005001234567890",name:"Genuine wireless travel earphones",category_name:"Electronics",
   price:12,oldprice:30,currencyId:"USD",picture:"https://ae01.alicdn.com/kf/real-photo.jpg",
-  tracking_link:"https://rzekl.com/g/verified123/?ulp=https%3A%2F%2Fwww.aliexpress.com%2Fitem%2F12345.html",description:"Source-provided device accessories and specification details that the buyer should verify with the merchant."};
+  tracking_link:"https://rzekl.com/g/verified123/?ulp=https%3A%2F%2Fwww.aliexpress.com%2Fitem%2F1005001234567890.html",description:"Source-provided device accessories and specification details that the buyer should verify with the merchant."};
  const jpg=new Uint8Array(340);jpg.set([255,216,255],0);
  const fetcher=async()=>new Response(jpg,{status:200,headers:{"content-type":"image/jpeg"}});
  const r=await importOneTimeVerifiedBatch(env,[raw,{...raw,offer_id:"bad",currencyId:"LKR"}],{now:new Date("2026-10-24"),fetcher});
