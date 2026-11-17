@@ -6,6 +6,7 @@ export {ManualAdmitadImport} from "./lib/manual-admitad-import.js";
 import {imageSitemapFromCanonical} from "./lib/image-sitemap.js";
 import {bulkProduct,bulkDirectory,renderBulkHome,renderBulkProductPage,renderBulkDirectoryPage,bulkRelatedProducts,importHourlyBulkProducts} from "./lib/bulk-products.js";
 import {renderEditorialVisual} from "./lib/bulk-editorial.js";
+import {readAiReview,reviewOperations} from "./lib/ai-review-store.js";
 import {bulkPublishedCount,bulkSitemapIndex,bulkSitemapShard} from "./lib/bulk-sitemap.js";
 import {serveAuthorizedImport} from "./lib/one-time-import-ops.js";
 import {renderAffiliateShard,renderPublicSitemapIndex} from "./lib/affiliate-sitemaps.js";
@@ -486,7 +487,8 @@ async function serveSeoPage(request,env) {
       const path="/flash-sale/product/"+stored.slug+"/";
       if(pathname!==path)return Response.redirect("https://buysell.best"+path,301);
       const related=await bulkRelatedProducts(env,stored.slug,stored.category);
-      const html=renderBulkProductPage(stored,new Date(),related);
+      const aiReview=await readAiReview(env,stored.slug);
+      const html=renderBulkProductPage(stored,new Date(),related,aiReview);
       return new Response(html,{headers:{"content-type":"text/html; charset=UTF-8",
         "cache-control":"public, max-age=60, s-maxage=300","x-content-type-options":"nosniff"}});
     }
@@ -715,6 +717,7 @@ export default {
 async function serveUncached(request, env, ctx) {
     const pathname=new URL(request.url).pathname;
     if(pathname.startsWith("/__ops/import/"))return serveAuthorizedImport(request,env);
+    if(pathname.startsWith("/__ops/reviews/"))return reviewOperations(request,env);
     if(pathname.startsWith("/flash-media/"))return serveFlashMedia(request,env,pathname.slice("/flash-media/".length),ctx);
     const visual=pathname.match(/^\/flash-visual\/([a-z0-9-]+)\.svg$/);
     if(visual){
