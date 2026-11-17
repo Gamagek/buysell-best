@@ -4,7 +4,8 @@ import {trendingSitemapEntry} from "./lib/trending-sitemap.js";
 import {syncFlashSale,loadFlashSale,renderFlashHome,renderFlashPage,flashSaleSitemap,serveFlashMedia,findFlashProduct,renderFlashProductPage,flashProductPath} from "./lib/flash-sale.js";
 export {ManualAdmitadImport} from "./lib/manual-admitad-import.js";
 import {imageSitemapFromCanonical} from "./lib/image-sitemap.js";
-import {bulkProduct,bulkDirectory,renderBulkHome,renderBulkProductPage,renderBulkDirectoryPage} from "./lib/bulk-products.js";
+import {bulkProduct,bulkDirectory,renderBulkHome,renderBulkProductPage,renderBulkDirectoryPage,bulkRelatedProducts,importHourlyBulkProducts} from "./lib/bulk-products.js";
+import {renderEditorialVisual} from "./lib/bulk-editorial.js";
 import {bulkPublishedCount,bulkSitemapIndex,bulkSitemapShard} from "./lib/bulk-sitemap.js";
 import {serveAuthorizedImport} from "./lib/one-time-import-ops.js";
 import {renderAffiliateShard,renderPublicSitemapIndex} from "./lib/affiliate-sitemaps.js";
@@ -484,7 +485,8 @@ async function serveSeoPage(request,env) {
     if(stored){
       const path="/flash-sale/product/"+stored.slug+"/";
       if(pathname!==path)return Response.redirect("https://buysell.best"+path,301);
-      const html=renderBulkProductPage(stored);
+      const related=await bulkRelatedProducts(env,stored.slug,stored.category);
+      const html=renderBulkProductPage(stored,new Date(),related);
       return new Response(html,{headers:{"content-type":"text/html; charset=UTF-8",
         "cache-control":"public, max-age=60, s-maxage=300","x-content-type-options":"nosniff"}});
     }
@@ -695,7 +697,9 @@ export default {
       ctx.waitUntil(syncFlashSale(env).catch(() => {}));
     // Read-only URL inspections: five URLs per hour with a persisted cursor.
     if (event.cron === '0 * * * *') ctx.waitUntil(syncSearchConsole(env).catch(() => {}));
-    // Owner paused hourly product sync; retain read-only Search Console monitoring.
+    // The owner authorized recurring feed-backed catalogue publishing on 2026-11-17.
+    // Source URL stays an encrypted Worker secret; all offers are strictly filtered.
+    if (event.cron === '0 * * * *') ctx.waitUntil(importHourlyBulkProducts(env).catch(() => {}));
   },
 
   async fetch(request, env, ctx) {
@@ -712,6 +716,12 @@ async function serveUncached(request, env, ctx) {
     const pathname=new URL(request.url).pathname;
     if(pathname.startsWith("/__ops/import/"))return serveAuthorizedImport(request,env);
     if(pathname.startsWith("/flash-media/"))return serveFlashMedia(request,env,pathname.slice("/flash-media/".length),ctx);
+    const visual=pathname.match(/^\/flash-visual\/([a-z0-9-]+)\.svg$/);
+    if(visual){
+      const product=await bulkProduct(env,visual[1]);
+      if(!product)return new Response("Not found",{status:404,headers:{"x-robots-tag":"noindex"}});
+      return new Response(renderEditorialVisual(product),{headers:{"content-type":"image/svg+xml; charset=UTF-8","cache-control":"public, max-age=86400, s-maxage=604800","x-content-type-options":"nosniff","content-security-policy":"default-src 'none'; style-src 'unsafe-inline'; sandbox"}});
+    }
     const seoResponse=await serveSeoPage(request,env);
     if(seoResponse){
       if(request.method === "HEAD") return new Response(null, {status:seoResponse.status,headers:seoResponse.headers});

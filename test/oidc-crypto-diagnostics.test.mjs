@@ -47,5 +47,5 @@ test("GitHub OIDC diagnostics never log JWT, identity claims or config values",a
  assert.match(gh,/signatureVerified/);
  assert.match(gh,/JSON.stringify\(crypt\)/);
  assert.doesNotMatch(server,/console\.warn\([^)]*(?:token|claims|header|key)\s*\)/);
- assert.match(cfg,/crons\s*=\s*\[\s*\]/);
+ assert.match(cfg,/0 \* \* \* \*/); // Owner explicitly resumed hourly verified imports on 2026-11-17
 });

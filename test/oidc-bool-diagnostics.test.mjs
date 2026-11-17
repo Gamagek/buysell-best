@@ -15,5 +15,5 @@ test("one-time import logs only boolean OIDC comparisons, never bearer token or 
  const ops=await readFile("lib/one-time-import-ops.js","utf8");
  assert.match(ops,/verifyGithubImportIdentity\(request\)/);
  const cfg=await readFile("wrangler.toml","utf8");
- assert.match(cfg,/crons\s*=\s*\[\s*\]/,"recurring schedules remain off");
+ assert.match(cfg,/0 \* \* \* \*/); // Owner explicitly resumed hourly verified imports on 2026-11-17
 });

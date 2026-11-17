@@ -55,7 +55,7 @@ test("Adsterra original click prompt, separate Monetag root service worker zone,
   assert.match(sponsor,/PROMPT_COOLDOWN = 10 \* 60 \* 1000/);
   assert.match(sw,/12151278/);
   assert.doesNotMatch(sw,/12151474/);
-  assert.match(wrangler,/crons\s*=\s*\[\s*\]/);
+  assert.match(wrangler,/0 \* \* \* \*/); // Owner explicitly resumed hourly verified imports on 2026-11-17
 });
 test("insertion is at server HTML response stage, not delayed client-side interaction",async()=>{
   const helper=await readFile("lib/monetag-vignette.js","utf8");

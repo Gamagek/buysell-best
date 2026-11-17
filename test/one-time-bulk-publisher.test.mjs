@@ -59,7 +59,7 @@ test("source-backed batch only publishes seller-photo-backed USD discounted prod
  assert.equal((await initOneTimeCatalogue(env)).status,"ready");
  const raw={offer_id:"12345",name:"Genuine wireless travel earphones",category_name:"Electronics",
   price:12,oldprice:30,currencyId:"USD",picture:"https://ae01.alicdn.com/kf/real-photo.jpg",
-  tracking_link:"https://rzekl.com/seller-ad",description:"Source-provided device accessories and specification details that the buyer should verify with the merchant."};
+  tracking_link:"https://rzekl.com/g/verified123/?ulp=https%3A%2F%2Fwww.aliexpress.com%2Fitem%2F12345.html",description:"Source-provided device accessories and specification details that the buyer should verify with the merchant."};
  const jpg=new Uint8Array(340);jpg.set([255,216,255],0);
  const fetcher=async()=>new Response(jpg,{status:200,headers:{"content-type":"image/jpeg"}});
  const r=await importOneTimeVerifiedBatch(env,[raw,{...raw,offer_id:"bad",currencyId:"LKR"}],{now:new Date("2026-10-24"),fetcher});
@@ -106,7 +106,7 @@ test("one-time runner cannot be scheduled and every photo publish is independent
  assert.match(yaml,/import-control\/one-shot-admitad-20261024\.json/);
  assert.match(yaml,/id-token: write/);
  assert.doesNotMatch(yaml,/cron:|schedule:/);
- assert.match(cfg,/crons\s*=\s*\[\s*\]/);
+ assert.match(cfg,/0 \* \* \* \*/); // Owner explicitly resumed hourly verified imports on 2026-11-17
  assert.match(runner,/ACTIONS_ID_TOKEN_REQUEST_TOKEN/);
  assert.match(runner,/NO_ACTUAL_APPROVED_AFFILIATE_OFFERS/);
  assert.match(runner,/maxRecords:1000000/);
