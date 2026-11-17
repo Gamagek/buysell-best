@@ -13,6 +13,18 @@ async function idToken(){
  const r=await fetch(target,{headers:{authorization:"Bearer "+secret},signal:AbortSignal.timeout(12000)});
  if(!r.ok)throw Error("GITHUB_OIDC_ERROR");
  const x=await r.json();if(typeof x.value!=="string"||x.value.length>9000)throw Error("GITHUB_OIDC_INVALID");
+ try{
+  // Print ONLY comparison booleans: never the signed JWT or claim values.
+  const p=JSON.parse(Buffer.from(x.value.split(".")[1],"base64url").toString("utf8"));
+  console.log("REVIEW_OIDC_CLAIM_MATCH",JSON.stringify({
+   issuer:p.iss==="https://token.actions.githubusercontent.com",
+   audience:p.aud===AUD,
+   repository:p.repository==="Gamagek/buysell-best",
+   ref:p.ref==="refs/heads/main",
+   workflow:p.workflow_ref==="Gamagek/buysell-best/.github/workflows/hf-bulk-review-publish.yml@refs/heads/main",
+   event:["push","schedule","workflow_dispatch"].includes(p.event_name)
+  }));
+ }catch{console.log("REVIEW_OIDC_CLAIM_CHECK_UNAVAILABLE");}
  jwt=x.value;issued=Date.now();return jwt;
 }
 export async function callOps(action,payload=null){
