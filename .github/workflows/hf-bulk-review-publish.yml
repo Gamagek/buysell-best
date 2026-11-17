@@ -8,6 +8,11 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/hf-bulk-review-publish.yml'
+      - 'lib/github-oidc-review.js'
+      - 'lib/pinned-github-oidc-jwks.js'
+      - 'lib/ai-review-store.js'
+      - 'scripts/hf-bulk-review-publisher.mjs'
+      - 'test/ai-review-publisher.test.mjs'
 
 permissions:
   contents: read
