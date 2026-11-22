@@ -4,6 +4,8 @@ on:
     branches: [main]
     paths:
       - 'ops/monetag-vignette-deploy-20261030.txt'
+      - 'signal-strong-teeth-toothpaste-200g-review.html'
+      - 'sitemap.xml'
       - '.github/workflows/deploy-monetag-vignette-20261030.yml'
 permissions:
   contents: read
