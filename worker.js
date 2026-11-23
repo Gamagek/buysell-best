@@ -378,7 +378,7 @@ async function renderDealHub(env,type,slug,country="US"){
 }
 async function renderSitemap(env){
   const flashSale=await loadFlashSale(env);
-  const staticPaths=["/","/categories.html","/post-ad.html","/about.html","/contact.html","/privacy.html","/terms.html"];
+  const staticPaths=["/","/categories.html","/post-ad.html","/about.html","/contact.html","/privacy.html","/terms.html","/signal-strong-teeth-toothpaste-200g-review-2026-11-24.html"];
   const categoryPaths=["phones","electronics","vehicles","property","fashion","furniture","services","other"];
   let dynamic="",latestAll="",latestByCategory={};
   if(env?.DB){
