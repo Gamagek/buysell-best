@@ -23,6 +23,7 @@ import { renderHotelComparison, renderPromoCodes, travelSitemapEntries } from ".
 import { withDisplayAdvertising } from "./lib/display-ads.js";
 import { withCarefulVignette } from "./lib/monetag-vignette.js";
 import {AD_PROVIDER_MODE,withPendingNeworStructure} from "./lib/ad-provider-switch.js";
+import {withAdsterraSocialBar} from "./lib/adsterra-social-bar.js";
 import { renderHighIntentIndex, renderHighIntentArticle, findHighIntentGuide, renderHighIntentSpotlight, highIntentSitemapEntries, highIntentPath } from "./lib/high-intent-guides.js";
 
 const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261017-native-ad-v7"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261017-native-ad-v7" defer></script>';
@@ -721,7 +722,8 @@ export default {
     // Site-wide ad provider switch is applied after edge-cache retrieval so
     // even cached pages cannot load legacy popups or banners in pending mode.
     if (AD_PROVIDER_MODE==="legacy") return withCarefulVignette(request, response);
-    return withPendingNeworStructure(request, response);
+    const clean=withPendingNeworStructure(request, response);
+    return AD_PROVIDER_MODE==="adsterra_social_bar" ? withAdsterraSocialBar(request,clean,env) : clean;
   }
 };
 
