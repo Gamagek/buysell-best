@@ -33,6 +33,13 @@ function withSponsoredSupport(response) {
   return new HTMLRewriter().on("head", {element(element) {element.append(sponsoredHead + adsenseAccountMeta, {html:true});}}).transform(response);
 }
 
+// The Google publisher verification meta stays in place during the ad pause.
+// It does not itself load an ad or bypass Ad Manager / MCM approval.
+function withGooglePublisherVerification(response) {
+  if (!response.ok || !response.headers.get("content-type")?.includes("text/html")) return response;
+  return new HTMLRewriter().on("head", {element(element) {element.append(adsenseAccountMeta, {html:true});}}).transform(response);
+}
+
 async function renderAffiliateHome(request, env) {
   const [flash,bulk]=await Promise.all([loadFlashSale(env),bulkDirectory(env,{size:24})]);
   const couponCards=await loadVerifiedCoupons(env);
@@ -735,7 +742,7 @@ async function serveUncached(request, env, ctx) {
       const path = new URL(request.url).pathname;
       // Career research has one user-initiated sponsored step before official portals,
       // not additional top, sidebar or bottom advertising placements.
-      if (AD_PROVIDER_MODE!=="legacy") return seoResponse;
+      if (AD_PROVIDER_MODE!=="legacy") return withGooglePublisherVerification(seoResponse);
       if (path === "/careers/" || path.startsWith("/careers/")) return withSponsoredSupport(seoResponse);
       return withDisplayAdvertising(request, path === "/" || path === "/index.html" ? seoResponse : withSponsoredSupport(seoResponse));
     }
