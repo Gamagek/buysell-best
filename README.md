@@ -1,5 +1,7 @@
 # BuySell.Best
 
+> **Ads status (2026-11-26):** All Adsterra banner/native/popup/Smartlink and Monetag vignette placements are **temporarily paused in production** via `AD_PROVIDER_MODE="newor_pending"`. Newor/Google AdX is **not live** until publisher/MCM approval and official ad tags. The entire original setup is preserved under branch [`backup/adsterra-monetag-full-setup-20261126`](https://github.com/Gamagek/buysell-best/tree/backup/adsterra-monetag-full-setup-20261126). See [`docs/newor-elevate-reversible-ad-pause-20261126.md`](docs/newor-elevate-reversible-ad-pause-20261126.md). The advertising sections below document the **restorable legacy setup**, not currently active ad delivery.
+
 Mobile-first classified marketplace starter for https://buysell.best.
 
 ## Included
