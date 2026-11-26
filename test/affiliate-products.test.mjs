@@ -91,7 +91,7 @@ test("canonical redirects, HEAD, unknown products and image sitemap are correct"
   xml.window.close();
 });
 
-test("Adsterra Social Bar mode disables legacy tags and awaits genuine approved code",async()=>{
+test("Adsterra Social Bar mode enables one approved public script while legacy ads stay disabled",async()=>{
  const paths=["/","/index.html","/about.html","/contact.html","/categories.html","/search.html","/privacy.html","/terms.html","/ad.html","/post-ad.html","/guides/",guidePath(SHOPPING_GUIDES[0]),productPath(product),"/hotels/","/promo-codes/"];
  for(const pathname of paths){
   const response=await worker.dispatchFetch(origin+pathname);
@@ -103,8 +103,11 @@ test("Adsterra Social Bar mode disables legacy tags and awaits genuine approved 
   assert.equal(doc.querySelectorAll('script[src*="highrevenueformat"],script[src*="n6wxm"],script[src*="deludersottage"],script[src*="profitableratecpmnetwork"]').length,0,pathname);
   assert.equal(doc.querySelectorAll('[href*="profitableratecpmnetwork.com"]').length,0,pathname);
   assert.equal(doc.querySelectorAll('[data-newor-slot]').length,0,pathname);
-  assert.equal(doc.querySelector("#bsb-adsterra-social-bar"),null,pathname);
-  assert.equal(doc.querySelector("#bsb-social-bar-redirect"),null,pathname);
+  const exempt=["/contact.html","/privacy.html","/terms.html","/post-ad.html","/404.html"].includes(pathname);
+  const ad=doc.querySelector("#bsb-adsterra-social-bar");
+  assert.equal(ad?.getAttribute("src")||null,exempt?null:"https://bauval.org/14/d8063d5aecade427591382df80071470",pathname);
+  assert.equal(doc.querySelectorAll("#bsb-adsterra-social-bar").length,exempt?0:1,pathname);
+  assert.equal(doc.querySelectorAll("#bsb-social-bar-redirect").length,exempt?0:1,pathname);
   assert.ok(doc.querySelector('link[rel="canonical"]'),pathname);
   dom.window.close();
  }
