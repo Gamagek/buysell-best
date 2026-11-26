@@ -91,23 +91,20 @@ test("canonical redirects, HEAD, unknown products and image sitemap are correct"
   xml.window.close();
 });
 
-test("Newor approval-pending mode disables every legacy ad while retaining vendor source for restore",async()=>{
+test("Adsterra Social Bar mode disables legacy tags and awaits genuine approved code",async()=>{
  const paths=["/","/index.html","/about.html","/contact.html","/categories.html","/search.html","/privacy.html","/terms.html","/ad.html","/post-ad.html","/guides/",guidePath(SHOPPING_GUIDES[0]),productPath(product),"/hotels/","/promo-codes/"];
  for(const pathname of paths){
   const response=await worker.dispatchFetch(origin+pathname);
   assert.equal(response.status,200,pathname);
   const body=await response.text();
   const dom=new JSDOM(body),doc=dom.window.document;
-  assert.equal(doc.querySelector('meta[name="bsb-ad-provider"]')?.content,"newor-pending",pathname);
+  assert.equal(doc.querySelector('meta[name="bsb-ad-provider"]')?.content,"adsterra-social-bar",pathname);
   assert.equal(doc.querySelectorAll(".display-ad, #bsb-monetag-vignette, #bsb-sponsored-clicks, #bsb-optional-popup-offer, #bsb-popup-offer-loader").length,0,pathname);
   assert.equal(doc.querySelectorAll('script[src*="highrevenueformat"],script[src*="n6wxm"],script[src*="deludersottage"],script[src*="profitableratecpmnetwork"]').length,0,pathname);
   assert.equal(doc.querySelectorAll('[href*="profitableratecpmnetwork.com"]').length,0,pathname);
-  if(["/","/index.html","/guides/",guidePath(SHOPPING_GUIDES[0]),productPath(product),"/hotels/","/promo-codes/"].includes(pathname)){
-    assert.ok(doc.querySelector('[data-newor-slot="top"][hidden]'),pathname);
-    assert.ok(doc.querySelector('[data-newor-slot="in-content"][hidden]'),pathname);
-    assert.ok(doc.querySelector('[data-newor-slot="bottom"][hidden]'),pathname);
-  }
-  if(pathname===productPath(product)) assert.ok(doc.querySelector('[data-newor-slot="outstream-video"][hidden]'),pathname);
+  assert.equal(doc.querySelectorAll('[data-newor-slot]').length,0,pathname);
+  assert.equal(doc.querySelector("#bsb-adsterra-social-bar"),null,pathname);
+  assert.equal(doc.querySelector("#bsb-social-bar-redirect"),null,pathname);
   assert.ok(doc.querySelector('link[rel="canonical"]'),pathname);
   dom.window.close();
  }

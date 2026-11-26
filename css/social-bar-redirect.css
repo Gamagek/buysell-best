@@ -1,0 +1,12 @@
+.bsb-social-step{position:fixed;inset:0;z-index:2147482000;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.67);padding:16px}
+.bsb-social-step-panel{box-sizing:border-box;width:min(100%,430px);padding:20px;border-radius:14px;background:#fff;color:#0f172a;box-shadow:0 24px 56px rgba(0,0,0,.25);font:400 15px/1.6 system-ui,sans-serif}
+.bsb-social-step-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.bsb-social-step-label{font-size:11px;font-weight:700;letter-spacing:.08em;color:#64748b}
+.bsb-social-step-close{border:0;background:transparent;font-size:25px;line-height:1;cursor:pointer;color:#475569}
+.bsb-social-step-panel h2{font-size:21px;line-height:1.35;margin:13px 0}
+.bsb-social-step-panel p{margin:8px 0 20px;color:#475569}
+.bsb-social-step-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.bsb-social-step-go{display:inline-block;background:#0f766e;color:white!important;text-decoration:none;border-radius:8px;padding:9px 15px;font-weight:650}
+.bsb-social-step-stay{font:inherit;border:1px solid #cbd5e1;background:white;padding:8px 12px;border-radius:8px;cursor:pointer}
+.bsb-social-step-panel :focus-visible{outline:2px solid #2563eb;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){.bsb-social-step *{scroll-behavior:auto!important}}
