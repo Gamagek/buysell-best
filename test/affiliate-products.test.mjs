@@ -48,7 +48,7 @@ test("product HTML contains crawlable content, ten pictures, canonical and truth
   assert.equal(schema.aggregateRating,undefined);
   assert.ok(ld.some(x=>x["@type"]==="BreadcrumbList"));
   assert.equal(doc.querySelector(".product-buy").href,product.affiliateUrl);
-  assert.ok(doc.querySelector("#bsb-sponsored-clicks"));
+  assert.equal(doc.querySelector("#bsb-sponsored-clicks"),null);
   assert.match(doc.querySelector(".claims-note").textContent,/not been independently tested/);
   dom.window.close();
 });
@@ -91,48 +91,35 @@ test("canonical redirects, HEAD, unknown products and image sitemap are correct"
   xml.window.close();
 });
 
-test("distinct native-sized banners cover rich pages and leave forms, errors and APIs unobstructed",async()=>{
-  const paths=["/","/index.html","/about.html","/contact.html","/categories.html","/search.html","/privacy.html","/terms.html","/ad.html","/post-ad.html","/guides/",guidePath(SHOPPING_GUIDES[0]),productPath(product),"/hotels/","/promo-codes/"];
-  for(const pathname of paths) {
-    const response=await worker.dispatchFetch(origin+pathname);
-    assert.equal(response.status,200,pathname);
-    const dom=new JSDOM(await response.text()),doc=dom.window.document;
-    assert.equal(doc.querySelectorAll("#bsb-display-ad").length,1,pathname);
-    assert.equal(doc.querySelectorAll('script[src="'+DISPLAY_AD_SCRIPT+'"]').length,1,pathname);
-    assert.equal(doc.querySelectorAll(".site-ad").length,0,pathname);
-    const slot=doc.querySelector("#bsb-display-ad");
-    assert.equal(slot.previousElementSibling.classList.contains("site-header"),true,pathname);
-    assert.equal(slot.querySelector(".display-ad-label").textContent,"Advertisement");
-    const options=slot.querySelector("script:not([src])").textContent;
-    assert.ok(options.includes(DISPLAY_AD_KEY));assert.match(options,/'height': 50/);assert.match(options,/'width': 320/);
-    assert.equal(slot.querySelector("script[src]").hasAttribute("async"),false);
-    assert.equal(doc.querySelectorAll("#bsb-display-ad-style").length,1);
-    assert.equal(doc.querySelectorAll("#bsb-display-ad iframe").length,0,"No custom nested frame; the vendor tag renders its own ad");
-    const bottom=doc.querySelector("#bsb-display-ad-bottom");
-    assert.ok(bottom,pathname);
-    assert.equal(bottom.nextElementSibling.classList.contains("site-footer"),true,pathname);
-    assert.ok(bottom.querySelector(".display-ad-offer[data-sponsored-bypass]"));
-    const rich=["/","/index.html","/guides/",guidePath(SHOPPING_GUIDES[0]),productPath(product),"/hotels/","/promo-codes/"].includes(pathname);
-    assert.equal(doc.querySelectorAll(".display-ad").length,rich?3:2,pathname);
-    assert.equal(doc.querySelectorAll("#bsb-display-ad-sidebar").length,rich?1:0,pathname);
-    for(const [position,unit] of Object.entries(DISPLAY_AD_UNITS)) {
-      if(position==="sidebar"&&!rich)continue;
-      const script=doc.querySelector('script[src="https://www.highrevenueformat.com/'+unit.key+'/invoke.js"]');
-      assert.ok(script,pathname+" "+position);
-      assert.equal(doc.querySelectorAll('script[src="'+script.src+'"]').length,1);
-      assert.equal(script.hasAttribute("async"),false);
-      const size=script.closest(".display-ad-slot").style;
-      assert.equal(size.width,unit.width+"px");assert.equal(size.height,unit.height+"px");
-    }
-    assert.equal(doc.querySelectorAll('script[src*="pl31870182"]').length,0,"The native ad loads only after a real shopping click");
-    dom.window.close();
+test("Newor approval-pending mode disables every legacy ad while retaining vendor source for restore",async()=>{
+ const paths=["/","/index.html","/about.html","/contact.html","/categories.html","/search.html","/privacy.html","/terms.html","/ad.html","/post-ad.html","/guides/",guidePath(SHOPPING_GUIDES[0]),productPath(product),"/hotels/","/promo-codes/"];
+ for(const pathname of paths){
+  const response=await worker.dispatchFetch(origin+pathname);
+  assert.equal(response.status,200,pathname);
+  const body=await response.text();
+  const dom=new JSDOM(body),doc=dom.window.document;
+  assert.equal(doc.querySelector('meta[name="bsb-ad-provider"]')?.content,"newor-pending",pathname);
+  assert.equal(doc.querySelectorAll(".display-ad, #bsb-monetag-vignette, #bsb-sponsored-clicks, #bsb-optional-popup-offer, #bsb-popup-offer-loader").length,0,pathname);
+  assert.equal(doc.querySelectorAll('script[src*="highrevenueformat"],script[src*="n6wxm"],script[src*="deludersottage"],script[src*="profitableratecpmnetwork"]').length,0,pathname);
+  assert.equal(doc.querySelectorAll('[href*="profitableratecpmnetwork.com"]').length,0,pathname);
+  if(["/","/index.html","/guides/",guidePath(SHOPPING_GUIDES[0]),productPath(product),"/hotels/","/promo-codes/"].includes(pathname)){
+    assert.ok(doc.querySelector('[data-newor-slot="top"][hidden]'),pathname);
+    assert.ok(doc.querySelector('[data-newor-slot="in-content"][hidden]'),pathname);
+    assert.ok(doc.querySelector('[data-newor-slot="bottom"][hidden]'),pathname);
   }
-  for(const pathname of ["/products/does-not-exist/","/404.html","/not-a-real-page","/api/listings","/sitemap.xml","/js/sponsored-click.js"]) {
-    const response=await worker.dispatchFetch(origin+pathname),body=await response.text();
-    assert.ok(!body.includes('id="bsb-display-ad"'),pathname);
-  }
-  const config=await readFile("wrangler.toml","utf8");
-  for(const pattern of ["/*.html","/about","/about/","/search","/search/"])assert.ok(config.includes('"'+pattern+'"'),pattern);
+  if(pathname===productPath(product)) assert.ok(doc.querySelector('[data-newor-slot="outstream-video"][hidden]'),pathname);
+  assert.ok(doc.querySelector('link[rel="canonical"]'),pathname);
+  dom.window.close();
+ }
+ for(const pathname of ["/products/does-not-exist/","/404.html","/not-a-real-page","/api/listings","/sitemap.xml"]){
+  const response=await worker.dispatchFetch(origin+pathname),body=await response.text();
+  assert.ok(!body.includes('data-newor-slot='),pathname);
+ }
+ const legacy=await readFile("lib/display-ads.js","utf8");
+ assert.match(legacy,/export function withDisplayAdvertising/);
+ assert.match(legacy,/highrevenueformat\.com/);
+ const click=await readFile("js/sponsored-click.js","utf8");
+ assert.match(click,/NATIVE_SCRIPT/);
 });
 
 const adCode=await readFile("js/sponsored-click.js","utf8");
@@ -316,9 +303,7 @@ test("worldwide hotel selector, search details and truthful source pages render 
   const extraInlineScripts=[...doc.querySelectorAll("script:not([src]):not([type='application/ld+json'])")]
     .filter(script=>!script.closest(".display-ad") && script.id!=="bsb-monetag-vignette");
   assert.equal(extraInlineScripts.length,0);
-  const monetag=doc.querySelector("head > script#bsb-monetag-vignette");
-  assert.equal(monetag?.getAttribute("data-cfasync"),"false");
-  assert.match(monetag?.textContent||"",/12151474.*n6wxm\.com\/vignette\.min\.js/);
+  assert.equal(doc.querySelector("head > script#bsb-monetag-vignette"),null);
   assert.equal(doc.querySelector('link[rel="canonical"]').href,origin+"/hotels/");
   assert.equal(doc.querySelector('meta[name="google-adsense-account"]').content,"ca-pub-4485257027995607");
   const providerLinks=[...doc.querySelectorAll("[data-hotel-provider]")];
@@ -408,7 +393,7 @@ test("every shopping guide serves substantive crawlable content, source links, a
     assert.equal(titles.has(title),false);titles.add(title);
     assert.equal(descriptions.has(description),false);descriptions.add(description);
     assert.match(doc.querySelector('meta[name="robots"]').content,/index,follow,max-image-preview:large/);
-    assert.equal(doc.querySelectorAll("#bsb-sponsored-clicks").length,1);
+    assert.equal(doc.querySelectorAll("#bsb-sponsored-clicks").length,0);
     assert.equal(doc.querySelectorAll(".shopping-option").length,guide.selection.length);
     assert.ok(doc.querySelector(".shopping-prose").textContent.split(/\s+/).length>750,guide.slug);
     assert.ok(doc.querySelectorAll(".shopping-sources li a").length>=2);
