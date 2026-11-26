@@ -5,16 +5,19 @@ import {JSDOM} from "jsdom";
 import {Miniflare,convertV4MiniflareOptions} from "miniflare";
 import path from "node:path";
 import {AD_PROVIDER_MODE} from "../lib/ad-provider-switch.js";
-import {verifiedSocialBarScript,socialBarEligible} from "../lib/adsterra-social-bar.js";
+import {verifiedSocialBarScript,socialBarEligible,APPROVED_SOCIAL_BAR_SCRIPT} from "../lib/adsterra-social-bar.js";
 
 const EXAMPLE="https://pl12345678.example.org/social.js";
-test("Social Bar stays dormant until owner sets authentic script in worker config",()=>{
+test("Social Bar uses the owner-approved extensionless URL and keeps an emergency off switch",()=>{
  assert.equal(AD_PROVIDER_MODE,"adsterra_social_bar");
- assert.equal(verifiedSocialBarScript({}),null);
+ assert.equal(verifiedSocialBarScript({}),APPROVED_SOCIAL_BAR_SCRIPT);
+ assert.equal(APPROVED_SOCIAL_BAR_SCRIPT,"https://bauval.org/14/d8063d5aecade427591382df80071470");
+ assert.equal(verifiedSocialBarScript({ADSTERRA_SOCIAL_BAR_SCRIPT_URL:""}),null);
  assert.equal(verifiedSocialBarScript({ADSTERRA_SOCIAL_BAR_SCRIPT_URL:EXAMPLE}),EXAMPLE);
- for(const unsafe of ["","javascript:alert(1)","http://x.example/social.js",
+ for(const unsafe of ["javascript:alert(1)","http://x.example/social.js",
    "//pl.example/social.js","https://x.example/social.js?ref=1","https://u:p@x.example/social.js",
-   "https://x.example:4000/social.js","https://x.example/social.html"]){
+   "https://x.example:4000/social.js","https://x.example/social.html",
+   "https://bauval.org/14/not-a-valid-ad-id","https://bauval.org/14/d8063d5aecade427591382df80071470?bad=1"]){
   assert.equal(verifiedSocialBarScript({ADSTERRA_SOCIAL_BAR_SCRIPT_URL:unsafe}),null,unsafe);
  }
  const html=new Response("<html><body></body></html>",{status:200,headers:{"content-type":"text/html"}});
