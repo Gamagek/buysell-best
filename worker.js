@@ -22,6 +22,7 @@ import { findShoppingProduct, renderShoppingProductPage, shoppingProductPath, fi
 import { renderHotelComparison, renderPromoCodes, travelSitemapEntries } from "./lib/travel-guides.js";
 import { withDisplayAdvertising } from "./lib/display-ads.js";
 import { withCarefulVignette } from "./lib/monetag-vignette.js";
+import {AD_PROVIDER_MODE,withPendingNeworStructure} from "./lib/ad-provider-switch.js";
 import { renderHighIntentIndex, renderHighIntentArticle, findHighIntentGuide, renderHighIntentSpotlight, highIntentSitemapEntries, highIntentPath } from "./lib/high-intent-guides.js";
 
 const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261017-native-ad-v7"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261017-native-ad-v7" defer></script>';
@@ -710,7 +711,10 @@ export default {
     const response = cached || await serveUncached(request, env, ctx);
     // Inject once at the response boundary (after public edge caching) on
     // eligible HTML only; never into API, crawler XML or ad verification files.
-    return withCarefulVignette(request, response);
+    // Site-wide ad provider switch is applied after edge-cache retrieval so
+    // even cached pages cannot load legacy popups or banners in pending mode.
+    if (AD_PROVIDER_MODE==="legacy") return withCarefulVignette(request, response);
+    return withPendingNeworStructure(request, response);
   }
 };
 
@@ -731,13 +735,17 @@ async function serveUncached(request, env, ctx) {
       const path = new URL(request.url).pathname;
       // Career research has one user-initiated sponsored step before official portals,
       // not additional top, sidebar or bottom advertising placements.
+      if (AD_PROVIDER_MODE!=="legacy") return seoResponse;
       if (path === "/careers/" || path.startsWith("/careers/")) return withSponsoredSupport(seoResponse);
       return withDisplayAdvertising(request, path === "/" || path === "/index.html" ? seoResponse : withSponsoredSupport(seoResponse));
     }
 
     const url = new URL(request.url);
     const name = route(url.pathname);
-    if (!name) return withDisplayAdvertising(request, await serveAsset(request, env));
+    if (!name) {
+      const asset=await serveAsset(request,env);
+      return AD_PROVIDER_MODE==="legacy" ? withDisplayAdvertising(request,asset) : asset;
+    }
 
     const mod = await handlers[name]();
     const action = methodName(request);
