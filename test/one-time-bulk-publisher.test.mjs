@@ -62,7 +62,7 @@ test("source-backed batch only publishes seller-photo-backed USD discounted prod
   tracking_link:"https://rzekl.com/g/verified123/?ulp=https%3A%2F%2Fwww.aliexpress.com%2Fitem%2F1005001234567890.html",description:"Source-provided device accessories and specification details that the buyer should verify with the merchant."};
  const jpg=new Uint8Array(340);jpg.set([255,216,255],0);
  const fetcher=async()=>new Response(jpg,{status:200,headers:{"content-type":"image/jpeg"}});
- const r=await importOneTimeVerifiedBatch(env,[raw,{...raw,offer_id:"bad",currencyId:"LKR"}],{now:new Date("2026-10-24"),fetcher});
+ const r=await importOneTimeVerifiedBatch(env,[raw,{...raw,offer_id:"bad",currencyId:"LKR"}],{now:new Date("2026-10-24"),fetcher,quotaCheck:async()=>({allowed:true,hourlyMax:5})});
  assert.equal(r.published,1);
  assert.equal(r.skipped,1);
  assert.equal(images.length,1);
