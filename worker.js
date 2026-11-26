@@ -24,6 +24,7 @@ import { withDisplayAdvertising } from "./lib/display-ads.js";
 import { withCarefulVignette } from "./lib/monetag-vignette.js";
 import {AD_PROVIDER_MODE,withPendingNeworStructure} from "./lib/ad-provider-switch.js";
 import {withAdsterraSocialBar} from "./lib/adsterra-social-bar.js";
+import {servePrivateAdsterraAudit} from "./lib/private-adsterra-audit.js";
 import { renderHighIntentIndex, renderHighIntentArticle, findHighIntentGuide, renderHighIntentSpotlight, highIntentSitemapEntries, highIntentPath } from "./lib/high-intent-guides.js";
 
 const sponsoredHead = '<link rel="stylesheet" href="/css/sponsored-click.css?v=20261017-native-ad-v7"><script id="bsb-sponsored-clicks" src="/js/sponsored-click.js?v=20261017-native-ad-v7" defer></script>';
@@ -729,6 +730,7 @@ export default {
 
 async function serveUncached(request, env, ctx) {
     const pathname=new URL(request.url).pathname;
+    if(pathname==="/__ops/adsterra/audit")return servePrivateAdsterraAudit(request,env);
     if(pathname.startsWith("/__ops/import/"))return serveAuthorizedImport(request,env);
     if(pathname.startsWith("/__ops/reviews/"))return reviewOperations(request,env);
     if(pathname.startsWith("/flash-media/"))return serveFlashMedia(request,env,pathname.slice("/flash-media/".length),ctx);
